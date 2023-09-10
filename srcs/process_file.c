@@ -301,5 +301,7 @@ int	process_file(char *file, t_scene *scene)
 			line = get_next_line(fd);
 	}	
 	close(fd);
+	if (!scene->ambient.declared || !scene->camera.declared || ! scene->light.declared)
+		return 8;
 	return (error);
 }

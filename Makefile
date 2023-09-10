@@ -42,8 +42,7 @@ $(O_DIR)	:
 
 $(O_DIR)%.o	:	$(S_DIR)%.c
 				@echo "$(BLUE)Compiling $@ ! $(RESET)\c"
-#@$(CC) $(W_FLAGS) -c $< -o $@
-				@$(CC)  -c $< -o $@
+				@$(CC) $(W_FLAGS) -c $< -o $@
 				@echo "... $(GREEN)OK$(RESET)" 
 
 $(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS) $(HEADER)

@@ -17,17 +17,17 @@ void rotate_plane(void *mlx, void *window, double angle)
     double cos_angle = cos(angle);
     double sin_angle = sin(angle);
 
-    int center_x = MAX_X * 0.6 / 2;
-    int center_y = MAX_Y * 0.6 / 2;
+    int center_x = WIDTH * 0.6 / 2;
+    int center_y = HEIGHT * 0.6 / 2;
 
-    for (int x = 0; x < MAX_X * 0.6; x++)
+    for (int x = 0; x < WIDTH * 0.6; x++)
     {
-        for (int y = 0; y < MAX_Y * 0.6; y++)
+        for (int y = 0; y < HEIGHT * 0.6; y++)
         {
             int new_x = (x - center_x) * cos_angle - (y - center_y) * sin_angle + center_x;
             int new_y = (x - center_x) * sin_angle + (y - center_y) * cos_angle + center_y;
 
-            if (new_x >= 0 && new_x < MAX_X && new_y >= 0 && new_y < MAX_Y)
+            if (new_x >= 0 && new_x < WIDTH && new_y >= 0 && new_y < HEIGHT)
             {
                 int plane_color = mlx_get_color_value(mlx, 0xFFFFFF); // Color blanco
                 mlx_pixel_put(mlx, window, new_x, new_y, plane_color);
@@ -41,9 +41,9 @@ void draw_plane(t_vars *vars)
     int x, y;
     int plane_color = 0xFFFFFF; // Color blanco (formato RGB)
 
-    for (x = 0; x < MAX_X * 0.6; x++)
+    for (x = 0; x < WIDTH * 0.6; x++)
     {
-        for (y = 0; y < MAX_Y * 0.6; y++)
+        for (y = 0; y < HEIGHT * 0.6; y++)
         {
             mlx_pixel_put(vars->mlx, vars->win, x, y, plane_color);
         }
@@ -99,19 +99,19 @@ void draw_sphere(t_vars *window, int x, int y, int radius, int color) {
     }
 }
 
-void	process_img(char *name)
+void	process_img(t_scene scene)
 {
 	t_vars	vars;
-	int sphere_x = MAX_X / 2;
-    int sphere_y = MAX_Y / 2;
+	int sphere_x = WIDTH / 2;
+    int sphere_y = HEIGHT / 2;
     int sphere_radius = 50;
 	int sphere_color = 0xFF00;
 
-	Vec3 rayOrigin = {1, 0, 0};
-    Vec3 rayDirection = {0, -0.5, -0.5};
+	t_point3d rayOrigin = {1, 0, 0};
+    t_point3d rayDirection = {0, -0.5, -0.5};
 	float lightDirection[3] = {0, -0.5, -0.5};
 
-    Sphere sphere = {{0, 0, -5}, 50.0};
+    t_sphere sphere = {{0, 0, -5}, 50.0, {255,0,0}};
     float t;
 
     if (intersectRaySphere(rayOrigin, rayDirection, sphere, &t)) {
@@ -120,7 +120,7 @@ void	process_img(char *name)
         printf("No hay intersección.\n");
     }
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, MAX_X, MAX_Y, name);
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, name);
    // draw_sphere(&vars, sphere_x, sphere_y, sphere_radius, sphere_color);
 	draw_sphere_with_highlight(&vars, sphere_x, sphere_y, sphere_radius, sphere_color, lightDirection),
 	draw_plane(&vars);
