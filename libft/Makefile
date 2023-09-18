@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+         #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/27 18:05:52 by jutrera-          #+#    #+#              #
-#    Updated: 2022/10/15 11:35:42 by jutrera-         ###   ########.fr        #
+#    Updated: 2023/09/18 12:45:05 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -Wpedantic -fsanitize=address -O3
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address
 
 I_DIR		=	include/
 O_DIR		=	obj/

@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/18 12:19:39 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:25:36 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void ft_init_scene(t_scene *scene)
 	scene->nb_pl = 0;
 	scene->nb_cy = 0;
 }
+
 int	ft_errormsg(int e)
 {
 	ft_printf("Error\n");

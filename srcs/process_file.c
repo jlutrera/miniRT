@@ -1,21 +1,32 @@
-#include "../include/miniRT.h"t_point3
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_file.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/18 12:23:43 by adpachec          #+#    #+#             */
+/*   Updated: 2023/09/18 13:17:32 by adpachec         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../include/miniRT.h"
 
-int is_normalized(t_point3 point)
+int is_normalized(t_vec vector)
 {
 	const float epsilon = 1e-10;
 	float modulo;
     
-	modulo = sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+	modulo = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
     return fabs(modulo - 1.0) < epsilon;
 }
 
-float ft_atofl(char *s)
+float ft_atod(char *s)
 {
 	char	**aux;
 	int		i;
-	float	value;
-	float	value2;
+	double	value;
+	double	value2;
 
 	aux = ft_split(s, '.');
 	i = 0;
@@ -45,7 +56,7 @@ int ft_get_point(char *s, t_point3 *position)
 	i = -1;
 	while (aux[++i])
 	{
-		values[i] = ft_atofl(aux[i]);
+		values[i] = ft_atod(aux[i]);
 		free(aux[i]);
 	}
 	free(aux);
@@ -54,6 +65,28 @@ int ft_get_point(char *s, t_point3 *position)
 	position->x = values[0];
 	position->y = values[1];
 	position->z = values[2];
+	return 0;
+}
+
+int ft_get_dir(char *s, t_vec *vector)
+{
+	char	**aux;
+	int		i;
+	float 	values[3];
+
+	aux = ft_split(s, ',');
+	i = -1;
+	while (aux[++i])
+	{
+		values[i] = ft_atod(aux[i]);
+		free(aux[i]);
+	}
+	free(aux);
+	if (i != 3)
+		return (-1);
+	vector->x = values[0];
+	vector->y = values[1];
+	vector->z = values[2];
 	return 0;
 }
 
@@ -95,7 +128,7 @@ int ft_load_ambient(t_ambient *ambient, char **s)
 	if (numcomponents != 3)
 		return 8;
 	ambient->declared = true;
-	ambient->ratio = ft_atofl(s[1]);
+	ambient->ratio = ft_atod(s[1]);
 	if (ambient->ratio < 0 || ambient->ratio > 1)
 		return 8;
 	if (ft_get_colour(s[2], &ambient->color) == -1)
@@ -120,7 +153,7 @@ int ft_load_camera(t_camera *camera, char **s)
 	camera->fov = ft_atoi(s[3]);
 	if (camera->fov < 0 || camera->fov > 180)
 		return 8;
-	if (ft_get_point(s[2], &camera->direction) == -1 || !is_normalized(camera->direction))
+	if (ft_get_dir(s[2], &camera->direction) == -1 || !is_normalized(camera->direction))
 		return 8;
 	return 0;
 }
@@ -139,7 +172,7 @@ int ft_load_light(t_light *light, char **s)
 	light->declared = true;
 	if (ft_get_point(s[1], &light->position) ==  -1)
 		return 8;
-	light->bright = ft_atofl(s[2]);
+	light->bright = ft_atod(s[2]);
 	if (light->bright < 0 || light->bright > 1)
 		return 8;
 	if (ft_get_colour(s[3], &light->color) == -1)
@@ -167,7 +200,7 @@ int ft_load_spheres(t_scene *scene, char **s)
 		aux[n] = scene->spheres[n];
 	free(scene->spheres);
 	scene->spheres = aux;
-	scene->spheres[n].radius = ft_atofl(s[2]) / 2;
+	scene->spheres[n].radius = ft_atod(s[2]) / 2;
 	if (ft_get_point(s[1], &scene->spheres[n].center) == -1 ||
 		scene->spheres[n].radius <= 0 ||
 		ft_get_colour(s[3], &scene->spheres[n].color) == -1)
@@ -196,7 +229,7 @@ int ft_load_planes(t_scene *scene, char **s)
 	free(scene->planes);
 	scene->planes = aux;
 	if (ft_get_point(s[1], &scene->planes[n].coordenate) == -1 ||
-		ft_get_point(s[2], &scene->planes[n].direction) == -1 ||
+		ft_get_dir(s[2], &scene->planes[n].direction) == -1 ||
 		!is_normalized(scene->planes[n].direction) ||
 		ft_get_colour(s[3], &scene->planes[n].color) == -1)
 		return 8;
@@ -206,7 +239,7 @@ int ft_load_planes(t_scene *scene, char **s)
 int check_cylinder(t_scene *scene, int n, char **s)
 {
 	if (ft_get_point(s[1], &scene->cylinders[n].coordenate) == -1 ||
-		ft_get_point(s[2], &scene->cylinders[n].direction) == -1 ||
+		ft_get_dir(s[2], &scene->cylinders[n].direction) == -1 ||
 		!is_normalized(scene->cylinders[n].direction) ||
 		scene->cylinders[n].radius <= 0 ||
 		scene->cylinders[n].height <= 0 ||
@@ -235,8 +268,8 @@ int ft_load_cylinders(t_scene *scene, char **s)
 		aux[n] = scene->cylinders[n];
 	free(scene->cylinders);
 	scene->cylinders = aux;
-	scene->cylinders[n].radius = ft_atofl(s[3]) / 2;
-	scene->cylinders[n].height = ft_atofl(s[4]);
+	scene->cylinders[n].radius = ft_atod(s[3]) / 2;
+	scene->cylinders[n].height = ft_atod(s[4]);
 	return check_cylinder(scene, n, s);
 }
 
@@ -262,7 +295,7 @@ int parse_line(char *line, t_scene *scene)
 
 	line_aux = ft_strtrim(line, " ");
 	data = ft_split(line_aux, ' ');
-	if (data[0][0] == 13)
+	if (data[0][0] == 13 || data[0][0] == 10)
 		error = 0;
 	else if (!ft_strcmp("A", data[0]))
 		error = ft_load_ambient(&scene->ambient, data);
@@ -282,12 +315,26 @@ int parse_line(char *line, t_scene *scene)
 	return (error);
 }
 
+int check_file_extension(const char *filename)
+{
+	const char *dot;
+	
+	dot = ft_strrchr(filename, '.');
+
+	if (dot && !ft_strcmp(dot, ".rt"))
+		return 0;
+	else
+		return -1;
+}
+
 int	process_file(char *file, t_scene *scene)
 {	
 	int		fd;
 	int		error;
 	char	*line;
 
+	if (check_file_extension(file) == -1)
+        return 1;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (-1);
@@ -301,7 +348,7 @@ int	process_file(char *file, t_scene *scene)
 			line = get_next_line(fd);
 	}	
 	close(fd);
-	if (!scene->ambient.declared || !scene->camera.declared || ! scene->light.declared)
+	if (!scene->ambient.declared || !scene->camera.declared || !scene->light.declared)
 		return 8;
 	return (error);
 }

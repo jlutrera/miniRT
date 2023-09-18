@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/18 12:06:50 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:25:16 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@
 # define P_CYAN 	0x4BB5FF
 
 //KEYCODE para Windows
- # define K_ESC   	0xFF1B
- # define K_UP    	0xFF52
- # define K_DOWN  	0xFF54
- # define K_LEFT  	0xFF51
- # define K_RIGHT 	0xFF53
- # define K_W 		119
- # define K_S 		115
- # define K_A 		97
- # define K_D 		100
+ # define K_ESC		0xFF1B
+ # define K_UP		0xFF52
+ # define K_DOWN	0xFF54
+ # define K_LEFT	0xFF51
+ # define K_RIGHT	0xFF53
+ # define K_W		119
+ # define K_S		115
+ # define K_A		97
+ # define K_D		100
  # define M_B_R		3
 
 //KeyCodes for Mac
@@ -61,8 +61,8 @@
 # define M_B_L		1
 
 //Window Size for the image
-# define WIDTH   	500
-# define HEIGHT   	500
+# define WIDTH		500
+# define HEIGHT		500
 
 //STRUCTS
 
@@ -109,14 +109,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point3	coordenate;
-	t_point3	direction;
+	t_vec		direction;
 	t_color		color;
 } t_plane;
 
 typedef struct s_cylinder
 {
 	t_point3	coordenate;
-	t_point3	direction;
+	t_vec		direction;
 	double		radius;
 	double		height;
 	t_color		color;
@@ -133,7 +133,7 @@ typedef struct s_camera
 {
 	bool		declared;
 	t_point3	position;
-	t_point3	direction;
+	t_vec		direction;
 	int			fov;
 } t_camera;
 
@@ -147,7 +147,7 @@ typedef	struct s_light
 
 typedef struct s_scene
 {
-	t_ambient 	ambient;
+	t_ambient	ambient;
 	t_camera	camera;
 	t_light		light;
 	t_sphere*	spheres;
