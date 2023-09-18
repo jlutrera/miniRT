@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/18 12:47:48 by adpachec          #+#    #+#              #
-#    Updated: 2023/09/18 12:49:23 by adpachec         ###   ########.fr        #
+#    Updated: 2023/09/18 13:56:59 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ S_DIR		=	./srcs/
 
 #Files
 LIB_A		=	libft.a
-SRCS		=	./srcs/process_file.c ./srcs/main.c 
+SRCS		=	./srcs/process_file.c ./srcs/main.c ./srcs/vec_operations1.c \
+				./srcs/vec_operations2.c ./srcs/color.c ./srcs/ray.c
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 HEADER		=	$(I_DIR)miniRT.h
 LIB_N		=	$(L_DIR)$(LIB_A)

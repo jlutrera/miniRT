@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/18 12:25:16 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:53:41 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,34 +84,40 @@ typedef struct s_point3
     double	x;
 	double	y;
 	double	z;
-} t_point3;
+} 			t_point3;
 
 typedef struct s_point
 {
     double	x;
 	double	y;
-} t_point;
+}			t_point;
 
 typedef struct s_color
 {
 	int	r;
 	int	g;
 	int	b;
-} t_color;
+}		t_color;
+
+typedef struct s_ray
+{
+	t_point3	origin;
+	t_vec		dir;
+}				t_ray;
 
 typedef struct s_sphere
 {
     t_point3	center;
     double		radius;
 	t_color		color;
-} t_sphere;
+} 				t_sphere;
 
 typedef struct s_plane
 {
 	t_point3	coordenate;
 	t_vec		direction;
 	t_color		color;
-} t_plane;
+} 				t_plane;
 
 typedef struct s_cylinder
 {
@@ -120,14 +126,14 @@ typedef struct s_cylinder
 	double		radius;
 	double		height;
 	t_color		color;
-} t_cylinder;
+} 				t_cylinder;
 
 typedef struct s_ambient
 {
 	bool		declared;
 	double		ratio;
 	t_color		color;
-} t_ambient;
+} 				t_ambient;
 
 typedef struct s_camera
 {
@@ -135,7 +141,7 @@ typedef struct s_camera
 	t_point3	position;
 	t_vec		direction;
 	int			fov;
-} t_camera;
+} 				t_camera;
 
 typedef	struct s_light
 {
@@ -143,7 +149,7 @@ typedef	struct s_light
 	t_point3	position;
 	double		bright;
 	t_color		color;
-} t_light;
+} 				t_light;
 
 typedef struct s_scene
 {
@@ -156,11 +162,14 @@ typedef struct s_scene
 	int			nb_pl;
 	t_cylinder*	cylinders;
 	int			nb_cy;
-} t_scene;
+} 				t_scene;
 
 //PROTOTYPES
 //void	process_img(char *name);
 //void	my_hooks(t_vars *vars);
 int		process_file(char *file, t_scene *scene);
+
+//Vectors
+t_vec vec(double x, double y, double z);
 
 #endif
