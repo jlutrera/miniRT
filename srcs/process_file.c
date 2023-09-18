@@ -1,7 +1,7 @@
-#include "../include/miniRT.h"
+#include "../include/miniRT.h"t_point3
 
 
-int is_normalized(t_point3d point)
+int is_normalized(t_point3 point)
 {
 	const float epsilon = 1e-10;
 	float modulo;
@@ -35,7 +35,7 @@ float ft_atofl(char *s)
 	return value - value2;
 }
 
-int ft_get_point(char *s, t_point3d *position)
+int ft_get_point(char *s, t_point3 *position)
 {
 	char	**aux;
 	int		i;
@@ -57,7 +57,7 @@ int ft_get_point(char *s, t_point3d *position)
 	return 0;
 }
 
-int ft_get_colour(char *s, t_colour *colours)
+int ft_get_colour(char *s, t_color *colours)
 {
 	char	**aux;
 	int		i;
@@ -98,7 +98,7 @@ int ft_load_ambient(t_ambient *ambient, char **s)
 	ambient->ratio = ft_atofl(s[1]);
 	if (ambient->ratio < 0 || ambient->ratio > 1)
 		return 8;
-	if (ft_get_colour(s[2], &ambient->colour) == -1)
+	if (ft_get_colour(s[2], &ambient->color) == -1)
 		return 8;
 	return 0;
 }
@@ -142,7 +142,7 @@ int ft_load_light(t_light *light, char **s)
 	light->bright = ft_atofl(s[2]);
 	if (light->bright < 0 || light->bright > 1)
 		return 8;
-	if (ft_get_colour(s[3], &light->colour) == -1)
+	if (ft_get_colour(s[3], &light->color) == -1)
 		return 8;
 	return 0;
 }
@@ -170,7 +170,7 @@ int ft_load_spheres(t_scene *scene, char **s)
 	scene->spheres[n].radius = ft_atofl(s[2]) / 2;
 	if (ft_get_point(s[1], &scene->spheres[n].center) == -1 ||
 		scene->spheres[n].radius <= 0 ||
-		ft_get_colour(s[3], &scene->spheres[n].colour) == -1)
+		ft_get_colour(s[3], &scene->spheres[n].color) == -1)
 		return 8;
 	return 0;
 }
@@ -198,7 +198,7 @@ int ft_load_planes(t_scene *scene, char **s)
 	if (ft_get_point(s[1], &scene->planes[n].coordenate) == -1 ||
 		ft_get_point(s[2], &scene->planes[n].direction) == -1 ||
 		!is_normalized(scene->planes[n].direction) ||
-		ft_get_colour(s[3], &scene->planes[n].colour) == -1)
+		ft_get_colour(s[3], &scene->planes[n].color) == -1)
 		return 8;
 	return 0;
 }
@@ -210,7 +210,7 @@ int check_cylinder(t_scene *scene, int n, char **s)
 		!is_normalized(scene->cylinders[n].direction) ||
 		scene->cylinders[n].radius <= 0 ||
 		scene->cylinders[n].height <= 0 ||
-		ft_get_colour(s[5], &scene->cylinders[n].colour) == -1)
+		ft_get_colour(s[5], &scene->cylinders[n].color) == -1)
 		return 8;
 	return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_img.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 09:49:22 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/09 09:49:22 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:18:30 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,14 @@ void draw_sphere(t_vars *window, int x, int y, int radius, int color) {
 void	process_img(t_scene scene)
 {
 	t_vars	vars;
-	int sphere_x = WIDTH / 2;
-    int sphere_y = HEIGHT / 2;
-    int sphere_radius = 50;
-	int sphere_color = 0xFF00;
+	int		sphere_x = WIDTH / 2;
+    int		sphere_y = HEIGHT / 2;
+    int		sphere_radius = 50;
+	int		sphere_color = 0xFF00;
+    char	*name;
 
-	t_point3d rayOrigin = {1, 0, 0};
-    t_point3d rayDirection = {0, -0.5, -0.5};
+	t_point3 rayOrigin = {1, 0, 0};
+    t_point3 rayDirection = {0, -0.5, -0.5};
 	float lightDirection[3] = {0, -0.5, -0.5};
 
     t_sphere sphere = {{0, 0, -5}, 50.0, {255,0,0}};

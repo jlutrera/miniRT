@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/13 22:42:53 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:19:39 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void printvalores(t_scene scene)
 	{
 		printf("id: A");
 		printf("   ratio = %.4f", scene.ambient.ratio);
-		printf("   colour = (%i,%i,%i)\n", scene.ambient.colour.r, scene.ambient.colour.g, scene.ambient.colour.b);
+		printf("   color = (%i,%i,%i)\n", scene.ambient.color.r, scene.ambient.color.g, scene.ambient.color.b);
 	}
 	if (scene.camera.declared)
 	{
@@ -35,7 +35,7 @@ void printvalores(t_scene scene)
 		printf("id: L");
 		printf("   light point = (%.4f,%.4f,%.4f)", scene.light.position.x, scene.light.position.y, scene.light.position.z );
 		printf("   bright = %.1f", scene.light.bright);
-		printf("   colour = (%i,%i,%i)\n", scene.light.colour.r, scene.light.colour.g, scene.light.colour.b);
+		printf("   color = (%i,%i,%i)\n", scene.light.color.r, scene.light.color.g, scene.light.color.b);
 	}
 	n = 0;
 	while (n < scene.nb_sp)
@@ -43,7 +43,7 @@ void printvalores(t_scene scene)
 		printf("id: sp [%i]", n);
 		printf("   center = (%.4f,%.4f,%.4f)", scene.spheres[n].center.x, scene.spheres[n].center.y, scene.spheres[n].center.z);
 		printf("   radius = %.4f", scene.spheres[n].radius);
-		printf("   colour = (%i,%i,%i)\n", scene.spheres[n].colour.r, scene.spheres[n].colour.g, scene.spheres[n].colour.b);
+		printf("   color = (%i,%i,%i)\n", scene.spheres[n].color.r, scene.spheres[n].color.g, scene.spheres[n].color.b);
 		printf("\n");
 		n++;
 	}
@@ -53,7 +53,7 @@ void printvalores(t_scene scene)
 		printf("id: pl [%i]", n);
 		printf("   coordinates = (%.4f,%.4f,%.4f)", scene.planes[n].coordenate.x, scene.planes[n].coordenate.y, scene.planes[n].coordenate.z);
 		printf("   direction =(%.4f,%.4f,%.4f)", scene.planes[n].direction.x, scene.planes[n].direction.y, scene.planes[n].direction.z );
-		printf("   colour = (%i,%i,%i)\n", scene.planes[n].colour.r, scene.planes[n].colour.g, scene.planes[n].colour.b);
+		printf("   color = (%i,%i,%i)\n", scene.planes[n].color.r, scene.planes[n].color.g, scene.planes[n].color.b);
 		printf("\n");
 		n++;
 	}
@@ -65,7 +65,7 @@ void printvalores(t_scene scene)
 		printf("   direction =(%.4f,%.4f,%.4f)", scene.cylinders[n].direction.x, scene.cylinders[n].direction.y, scene.cylinders[n].direction.z );
 		printf("   radius = %.4f", scene.cylinders[n].radius);
 		printf("   height = %.4f", scene.cylinders[n].height);
-		printf("   colour = (%i,%i,%i)\n", scene.cylinders[n].colour.r, scene.cylinders[n].colour.g, scene.cylinders[n].colour.b);
+		printf("   color = (%i,%i,%i)\n", scene.cylinders[n].color.r, scene.cylinders[n].color.g, scene.cylinders[n].color.b);
 		printf("\n");
 		n++;
 	}
