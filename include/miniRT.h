@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:47:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/18 12:01:59 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:04:58 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../libft/include/libft.h"
 # include <math.h>
 # include <limits.h>
-# include <float.h>
+# include <double.h>
 //Windows
 # include "../mlx_linux/mlx.h"
 // # include <X11/Xlib.h>
@@ -68,21 +68,28 @@
 
 typedef struct s_vars
 {
-    void *mlx;
-    void *win;
+    void	*mlx;
+    void	*win;
 } t_vars;
+
+typedef struct s_vec
+{
+    double	x;
+	double	y;
+	double	z;
+} t_vec;
 
 typedef struct s_point3
 {
-    float x;
-	float y;
-	float z;
+    double	x;
+	double	y;
+	double	z;
 } t_point3;
 
 typedef struct s_point
 {
-    int	x;
-	int	y;
+    double	x;
+	double	y;
 } t_point;
 
 typedef struct s_color
@@ -94,47 +101,47 @@ typedef struct s_color
 
 typedef struct s_sphere
 {
-    t_point3d	center;
-    float		radius;
+    t_point3	center;
+    double		radius;
 	t_color		color;
 } t_sphere;
 
 typedef struct s_plane
 {
-	t_point3d	coordenate;
-	t_point3d	direction;
+	t_point3	coordenate;
+	t_point3	direction;
 	t_color		color;
 } t_plane;
 
 typedef struct s_cylinder
 {
-	t_point3d	coordenate;
-	t_point3d	direction;
-	float		radius;
-	float		height;
+	t_point3	coordenate;
+	t_point3	direction;
+	double		radius;
+	double		height;
 	t_color		color;
 } t_cylinder;
 
 typedef struct s_ambient
 {
 	bool		declared;
-	float		ratio;
+	double		ratio;
 	t_color		color;
 } t_ambient;
 
 typedef struct s_camera
 {
 	bool		declared;
-	t_point3d	position;
-	t_point3d	direction;
+	t_point3	position;
+	t_point3	direction;
 	int			fov;
 } t_camera;
 
 typedef	struct s_light
 {
 	bool		declared;
-	t_point3d	position;
-	float		bright;
+	t_point3	position;
+	double		bright;
 	t_color		color;
 } t_light;
 
