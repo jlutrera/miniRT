@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/27 22:47:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/18 12:04:58 by adpachec         ###   ########.fr       */
+/*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
+/*   Updated: 2023/09/18 12:06:50 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../libft/include/libft.h"
 # include <math.h>
 # include <limits.h>
-# include <double.h>
+// # include <double.h>
 //Windows
 # include "../mlx_linux/mlx.h"
 // # include <X11/Xlib.h>
