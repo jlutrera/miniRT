@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:47:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/02/27 22:47:04 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:01:59 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <float.h>
 //Windows
 # include "../mlx_linux/mlx.h"
-# include <X11/Xlib.h>
+// # include <X11/Xlib.h>
 //Mac
 //# include <mlx.h>
 
@@ -66,69 +66,80 @@
 
 //STRUCTS
 
-typedef struct {
+typedef struct s_vars
+{
     void *mlx;
     void *win;
 } t_vars;
 
-typedef struct {
+typedef struct s_point3
+{
     float x;
 	float y;
 	float z;
-} t_point3d;
+} t_point3;
 
-typedef struct {
+typedef struct s_point
+{
     int	x;
 	int	y;
 } t_point;
 
-typedef struct {
+typedef struct s_color
+{
 	int	r;
 	int	g;
 	int	b;
-} t_colour;
+} t_color;
 
-typedef struct {
+typedef struct s_sphere
+{
     t_point3d	center;
     float		radius;
-	t_colour	colour;
+	t_color		color;
 } t_sphere;
 
-typedef struct {
+typedef struct s_plane
+{
 	t_point3d	coordenate;
 	t_point3d	direction;
-	t_colour	colour;
+	t_color		color;
 } t_plane;
 
-typedef struct {
+typedef struct s_cylinder
+{
 	t_point3d	coordenate;
 	t_point3d	direction;
 	float		radius;
 	float		height;
-	t_colour	colour;
+	t_color		color;
 } t_cylinder;
 
-typedef struct {
+typedef struct s_ambient
+{
 	bool		declared;
 	float		ratio;
-	t_colour	colour;
+	t_color		color;
 } t_ambient;
 
-typedef struct {
+typedef struct s_camera
+{
 	bool		declared;
 	t_point3d	position;
 	t_point3d	direction;
 	int			fov;
 } t_camera;
 
-typedef	struct {
+typedef	struct s_light
+{
 	bool		declared;
 	t_point3d	position;
 	float		bright;
-	t_colour	colour;
+	t_color		color;
 } t_light;
 
-typedef struct {
+typedef struct s_scene
+{
 	t_ambient 	ambient;
 	t_camera	camera;
 	t_light		light;
