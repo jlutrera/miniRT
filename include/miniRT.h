@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/18 13:53:41 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:16:40 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,27 @@
 
 typedef struct s_vars
 {
-    void	*mlx;
-    void	*win;
-} t_vars;
+	void	*mlx;
+	void	*win;
+}			t_vars;
 
 typedef struct s_vec
 {
-    double	x;
+	double	x;
 	double	y;
 	double	z;
-} t_vec;
+}			t_vec;
 
 typedef struct s_point3
 {
-    double	x;
+	double	x;
 	double	y;
 	double	z;
-} 			t_point3;
+}			t_point3;
 
 typedef struct s_point
 {
-    double	x;
+	double	x;
 	double	y;
 }			t_point;
 
@@ -107,8 +107,8 @@ typedef struct s_ray
 
 typedef struct s_sphere
 {
-    t_point3	center;
-    double		radius;
+	t_point3	center;
+	double		radius;
 	t_color		color;
 } 				t_sphere;
 
@@ -127,6 +127,14 @@ typedef struct s_cylinder
 	double		height;
 	t_color		color;
 } 				t_cylinder;
+
+typedef struct s_lst_obj
+{
+	void		*content;
+	short int	type;
+	double		last_dist;
+	bool		skip;
+} 				t_lst_obj;
 
 typedef struct s_ambient
 {
