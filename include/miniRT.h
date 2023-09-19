@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 11:55:03 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/19 13:30:32 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "../libft/include/libft.h"
 # include <math.h>
 # include <limits.h>
+# include "./errors.h"
+# include "./keycodes.h"
 // # include <double.h>
 //Windows
 # include "../mlx_linux/mlx.h"
@@ -137,11 +139,12 @@ typedef enum e_obj_type
 
 typedef struct s_lst_obj
 {
-	void		*content;
-	t_obj_type	type;
-	double		last_dist;
-	bool		skip;
-} 				t_lst_obj;
+	void				*object;
+	t_obj_type			type;
+	double				last_dist;
+	bool				skip;
+	struct s_lst_obj	*next;
+} 						t_lst_obj;
 
 typedef struct s_ambient
 {
@@ -171,12 +174,7 @@ typedef struct s_scene
 	t_ambient	ambient;
 	t_camera	camera;
 	t_light		light;
-	t_sphere*	spheres;
-	int			nb_sp;
-	t_plane*	planes;
-	int			nb_pl;
-	t_cylinder*	cylinders;
-	int			nb_cy;
+	t_lst_obj	*obj;
 } 				t_scene;
 
 //PROTOTYPES

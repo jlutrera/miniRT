@@ -6,12 +6,11 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 11:36:50 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/19 13:38:27 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
-#include "../include/errors.h"
 
 int is_normalized(t_vec vector)
 {
@@ -183,41 +182,81 @@ int ft_load_light(t_light *light, char **s)
 	return SUCCESS;
 }
 
+double	ft_get_dist(void)
+{
+	return (0.0);
+}
+
+t_lst_obj	*ft_init_obj(void *object, t_obj_type type,
+	double last_dist)
+{
+	t_lst_obj	*new_obj;
+
+	//probablemente forzar tipo de dato segun type:
+	//if (type == SPHERE)
+	//new_obj->object = (t_sphere *) object;
+
+	new_obj->object = object;
+	new_obj->type = type;
+	new_obj->last_dist = last_dist;
+	new_obj->skip = 0;
+	new_obj->next = NULL;
+	return (new_obj);
+}
+
+t_lst_obj *ft_obj_last(t_lst_obj *objects)
+{
+	t_lst_obj	*aux;
+
+	aux = objects;
+	if (!aux)
+		return (NULL);
+	while(aux->next != NULL)
+		aux = aux->next;
+	return (aux);
+}
+
+void	ft_add_back_obj(t_lst_obj **obj, void *object, t_obj_type type,
+	double last_dist)
+{
+	t_lst_obj	*new_obj;
+	t_lst_obj	*aux;
+
+	new_obj = ft_init_obj(object, type, last_dist);
+	if (obj)
+	{
+		if (!*obj)
+			*obj = new_obj;
+		else
+		{
+			aux = ft_obj_last(*obj);
+			if (!aux)
+				*obj = new_obj;
+			else
+				aux->next = new_obj;
+		}
+	}
+}
+
+t_sphere	*new_sphere(char **s)
+{
+	t_sphere	*new_sphere;
+
+	new_sphere = ft_calloc(sizeof(t_sphere *), 1);
+	if (!new_sphere)
+		exit (1);
+	new_sphere->radius = ft_atod(s[2]) / 2;
+	if (ft_get_point(s[1], &new_sphere->center) == -1)
+		ft_errormsg(BAD_COORDINATES_E, 0);
+	if (new_sphere->radius <= 0)
+		ft_errormsg(NEGATIVE_E, 0);
+	if (ft_get_colour(s[3], &new_sphere->color) == -1)
+		ft_errormsg(COLOUR_E, 0);
+	return (new_sphere);
+}
+
 int ft_load_spheres(t_scene *scene, char **s)
 {
-	int 		n;
-	t_sphere 	*aux;
-	int			numcomponents;
-
-	numcomponents = 0;
-	while (s[numcomponents])
-		numcomponents++;
-	printf("there are %i components\n", numcomponents);
-	if (numcomponents != 4)
-		return NUM_COMPONENTS_E;
-	scene->nb_sp++;
-	aux = ft_calloc(scene->nb_sp, sizeof(t_sphere));
-	if (!aux)
-		return MEMORY_E;
-	n = -1;
-	while (++n < scene->nb_sp - 1)
-		aux[n] = scene->spheres[n];
-	free(scene->spheres);
-	scene->spheres = aux;
-	scene->spheres[n].radius = ft_atod(s[2]) / 2;
-	if (ft_get_point(s[1], &scene->spheres[n].center) == -1)
-		return BAD_COORDINATES_E;
-	if (scene->spheres[n].radius <= 0)
-		return NEGATIVE_E;
-	if (ft_get_colour(s[3], &scene->spheres[n].color) == -1)
-		return COLOUR_E;
-	return SUCCESS;
-}
-
-int ft_load_planes(t_scene *scene, char **s)
-{
-	int 		n;
-	t_plane 	*aux;
 	int			numcomponents;
 
 	numcomponents = 0;
@@ -225,44 +264,66 @@ int ft_load_planes(t_scene *scene, char **s)
 		numcomponents++;
 	if (numcomponents != 4)
 		return NUM_COMPONENTS_E;
-	scene->nb_pl++;
-	aux = ft_calloc(scene->nb_pl, sizeof(t_sphere));
-	if (!aux)
-		return MEMORY_E;
-	n = -1;
-	while (++n < scene->nb_pl - 1)
-		aux[n] = scene->planes[n];
-	free(scene->planes);
-	scene->planes = aux;
-	if (ft_get_point(s[1], &scene->planes[n].coordenate) == -1 ||
-		ft_get_vector(s[2], &scene->planes[n].direction) == -1)
-		return BAD_COORDINATES_E;
-	if (!is_normalized(scene->planes[n].direction))
-		return NORM_VECTOR_E;
-	if (ft_get_colour(s[3], &scene->planes[n].color) == -1)
-		return COLOUR_E;
+	ft_add_back_obj(&(scene->obj), (t_sphere *) new_sphere(s),
+		SPHERE, ft_get_dist());
+	return (SUCCESS);
+}
+
+t_plane	*new_plane(char **s)
+{
+	t_plane	*new_plane;
+
+	new_plane = ft_calloc(sizeof(t_plane *), 1);
+	if (!new_plane)
+		exit (1);
+	if (ft_get_point(s[1], &new_plane->coordenate) == -1 ||
+		ft_get_vector(s[2], &new_plane->direction) == -1)
+		ft_errormsg(BAD_COORDINATES_E, 0);
+	if (!is_normalized(new_plane->direction))
+		ft_errormsg(NORM_VECTOR_E, 0);
+	if (ft_get_colour(s[3], &new_plane->color) == -1)
+		ft_errormsg(COLOUR_E, 0);
+	return (new_plane);
+}
+
+int	ft_load_planes(t_scene *scene, char **s)
+{
+	int			numcomponents;
+
+	numcomponents = 0;
+	while (s[numcomponents])
+		numcomponents++;
+	if (numcomponents != 4)
+		return NUM_COMPONENTS_E;
+	ft_add_back_obj(&(scene->obj), (t_plane *) new_plane(s),
+		PLANE, ft_get_dist());
 	return SUCCESS;
 }
 
-int check_cylinder(t_scene *scene, int n, char **s)
+t_cylinder	*new_cylinder(char **s)
 {
-	if (ft_get_point(s[1], &scene->cylinders[n].coordenate) == -1 ||
-		ft_get_vector(s[2], &scene->cylinders[n].direction) == -1)
-		return BAD_COORDINATES_E;
-	if (!is_normalized(scene->cylinders[n].direction))
-		return NORM_VECTOR_E;
-	if (scene->cylinders[n].radius <= 0 ||
-		scene->cylinders[n].height <= 0)
-		return NEGATIVE_E;
-	if (ft_get_colour(s[5], &scene->cylinders[n].color) == -1)
-		return COLOUR_E;
-	return SUCCESS;
+	t_cylinder	*new_cylinder;
+
+	new_cylinder = ft_calloc(sizeof(t_cylinder *), 1);
+	if (!new_cylinder)
+		exit (1);
+	new_cylinder->radius = ft_atod(s[3]) / 2;
+	new_cylinder->height = ft_atod(s[4]);
+	if (ft_get_point(s[1], &new_cylinder->coordenate) == -1 ||
+		ft_get_vector(s[2], &new_cylinder->direction) == -1)
+		ft_errormsg(BAD_COORDINATES_E, 0);
+	if (!is_normalized(new_cylinder->direction))
+		ft_errormsg(NORM_VECTOR_E, 0);
+	if (new_cylinder->radius <= 0 ||
+		new_cylinder->height <= 0)
+		ft_errormsg(NEGATIVE_E, 0);
+	if (ft_get_colour(s[5], &new_cylinder->color) == -1)
+		ft_errormsg(COLOUR_E, 0);
+	return (new_cylinder);
 }
 
 int ft_load_cylinders(t_scene *scene, char **s)
 {
-	int 		n;
-	t_cylinder 	*aux;
 	int			numcomponents;
 
 	numcomponents = 0;
@@ -270,18 +331,9 @@ int ft_load_cylinders(t_scene *scene, char **s)
 		numcomponents++;
 	if (numcomponents != 6)
 		return NUM_COMPONENTS_E;
-	scene->nb_cy++;
-	aux = ft_calloc(scene->nb_cy, sizeof(t_sphere));
-	if (!aux)
-		return MEMORY_E;
-	n = -1;
-	while (++n < scene->nb_cy - 1)
-		aux[n] = scene->cylinders[n];
-	free(scene->cylinders);
-	scene->cylinders = aux;
-	scene->cylinders[n].radius = ft_atod(s[3]) / 2;
-	scene->cylinders[n].height = ft_atod(s[4]);
-	return check_cylinder(scene, n, s);
+	ft_add_back_obj(&(scene->obj), (t_cylinder *) new_cylinder(s),
+		CYLINDER, ft_get_dist());
+	return SUCCESS;
 }
 
 void ft_free_data(char **data, char *line_aux)
@@ -347,7 +399,7 @@ int	process_file(char *file, t_scene *scene, int *n)
 	char	*line;
 
 	if (check_file_extension(file) == -1)
-        return EXTENSION_E;
+		return EXTENSION_E;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (FILE_E);
