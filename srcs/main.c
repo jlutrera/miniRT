@@ -76,6 +76,7 @@ void ft_init(t_scene *scene)
 	scene->ambient.declared = false;
 	scene->camera.declared = false;
 	scene->light.declared = false;
+	scene->obj = NULL;
 }
 
 // void ft_free_memory(t_scene *scene)

@@ -37,32 +37,29 @@ SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
 				./srcs/ft_strtrim.c 	./srcs/ft_substr.c 		 ./srcs/ft_tolower.c \
 				./srcs/ft_toupper.c		./srcs/get_next_line.c	 ./srcs/get_next_line_utils.c
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
+HEADER 		=	$(I_DIR)libft.h
 
 NRM 		= 	\033[0;39m
-RED 		= 	\033[0;91m
-GREEN 		= 	\033[0;92m
 YELLOW 		= 	\033[0;93m
-BLUE 		= 	\033[0;94m
+GRAY		=	\033[2;37m
 
 all			:	${NAME}
 
 $(O_DIR)	:
 				@mkdir -p $(O_DIR)
 
-$(O_DIR)%.o	:	$(S_DIR)%.c
-				@echo "$(BLUE)Compiling $@ !... $(NRM)\c"
-				@${CC} ${CFLAGS} -I$(I_DIR) -c $< -o $@
-				@echo "$(GREEN)OK$(NRM)"
+$(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
+				@echo "$(GRAY)Compiling $@ !$(NRM)"
+				@${CC} ${CFLAGS} -c $< -o $@
 
 ${NAME}		:	$(O_DIR) $(OBJS)
-				@echo "$(YELLOW)Linking object files ! $(NRM)\c"
+				@echo "$(YELLOW)Linking object files ! ... $(NRM)\c"
 				@ar rcs ${NAME} ${OBJS}
-				@echo "$(GREEN)SUCCESS !$(NRM)"
 				@ranlib $(NAME)
-				@echo "libft.a created successfully !"
+				@echo "libft.a created successfully !\n\n"
 
 clean		:
-				@rm -Rf $(O_DIR)/
+				@rm -Rf $(O_DIR)
 
 fclean		:	clean
 				@rm -f ${NAME}
