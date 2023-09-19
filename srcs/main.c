@@ -6,11 +6,12 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/18 12:19:39 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:44:46 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
+#include "../include/errors.h"
 
 void printvalores(t_scene scene)
 {
@@ -71,7 +72,7 @@ void printvalores(t_scene scene)
 	}
 }
 
-void ft_init_scene(t_scene *scene)
+void ft_init(t_scene *scene)
 {
 	scene->ambient.declared = false;
 	scene->camera.declared = false;
@@ -82,29 +83,6 @@ void ft_init_scene(t_scene *scene)
 	scene->nb_sp = 0;
 	scene->nb_pl = 0;
 	scene->nb_cy = 0;
-}
-int	ft_errormsg(int e)
-{
-	ft_printf("Error\n");
-	if (e == -1)
-		ft_printf("Is not possible open the file\n");
-	else if (e == 1)
-		ft_printf("Correct syntax: ./miniRT <file.rt>\n");
-	else if (e == 2)
-		ft_printf("There is more than one Ambient element\n");
-	else if (e == 3)
-		ft_printf("There is more than one Camera element\n");
-	else if (e == 4)
-		ft_printf("There is more than one Light element\n");
-	else if (e == 5)
-		ft_printf("Something is wrong in a Sphere component\n");
-	else if (e == 6)
-		ft_printf("Something is wrong in a Plane component\n");
-	else if (e == 7)
-		ft_printf("Something is wrong in a Cylinder component\n");
-	else if (e == 8)
-		ft_printf("Something is bad with the format file\n");
-	return (e);
 }
 
 void ft_free_memory(t_scene *scene)
@@ -118,15 +96,19 @@ int	main(int argc, char **argv)
 {
 	t_scene scene;
 	int		error;
+	int		n;
 
 	if (argc != 2)
-		return (ft_errormsg(1));
-	ft_init_scene(&scene);
-	error = process_file(argv[1], &scene);
+		return (ft_errormsg(SYNTAX_E, 0));
+	ft_init(&scene);
+	n = 0;
+	error = process_file(argv[1], &scene, &n);
 	if (error)
-		return ft_free_memory(&scene), ft_errormsg(error);
-	//process_img(scene);
+		return ft_free_memory(&scene), ft_errormsg(error, n);
 	printvalores(scene);
+	//process_planes(scene, argv[1]);
+	//process_spheres(scene, argv[1]);
+	//process_cylinders(scene, argv[1]);
 	ft_free_memory(&scene);
-	return (0);
+	return (SUCCESS);
 }
