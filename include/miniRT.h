@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 11:16:40 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/19 11:20:56 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,17 @@ typedef struct s_cylinder
 	t_color		color;
 } 				t_cylinder;
 
+typedef enum e_obj_type
+{
+	PLANE,
+	SPHERE,
+	CYLINDER,
+}	t_obj_type;
+
 typedef struct s_lst_obj
 {
 	void		*content;
-	short int	type;
+	t_obj_type	type;
 	double		last_dist;
 	bool		skip;
 } 				t_lst_obj;
