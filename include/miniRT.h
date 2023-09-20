@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 13:30:32 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:13:12 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ typedef struct s_scene
 //PROTOTYPES
 //void	process_img(char *name);
 void	my_hooks(t_vars *vars);
-int		process_file(char *file, t_scene *scene, int *n);
+int		process_file(char *file, t_scene **scene, int *n);
 
 //Vectors
 t_vec vec(double x, double y, double z);

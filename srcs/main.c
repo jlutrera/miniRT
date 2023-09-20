@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/20 17:37:55 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:43:30 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,63 +71,102 @@
 // 	}
 // }
 
-void	ft_init(t_scene *scene)
+void	ft_init(t_scene **scene)
 {
-	scene->ambient.declared = false;
-	scene->camera.declared = false;
-	scene->light.declared = false;
-	scene->obj = NULL;
+	*scene = (t_scene *) malloc (sizeof(t_scene) * 1);
+	if (!(*scene))
+		exit (1);
+	(*scene)->ambient.declared = false;
+    (*scene)->camera.declared = false;
+    (*scene)->light.declared = false;
+    (*scene)->obj = NULL;
 }
 
-// void ft_free_memory(t_scene *scene)
-// {
-// 	free(scene->spheres);
-// 	free(scene->planes);
-// 	free(scene->cylinders);
-// }
+void ft_free_memory(t_scene *scene)
+{
+	t_lst_obj *aux;
+	
+	printf("voy a free: %p\n", (scene)->obj);
+	if ((scene)->obj)
+	{
+		printf("dentro free\n");
+		while (scene->obj)
+		{
+			aux = (scene)->obj;
+			free(aux->object);
+			free(aux);
+			(scene)->obj = (scene)->obj->next;
+			printf("elimino\n");
+		}	
+	}
+	free(scene);
+}
 
 void	ft_print_scene(t_scene *scene)
 {
 	t_plane *plane;
 	t_sphere *sphere;
 	t_cylinder *cylinder;
+	t_lst_obj *aux;
 	
 	if (!scene)
 		exit (1);
-	while (scene->obj != NULL)
+	// if (scene->ambient.declared)
+	// {
+	// 	printf("id: A");
+	// 	printf("   ratio = %.4f", scene->ambient.ratio);
+	// 	printf("   color = (%i,%i,%i)\n", scene->ambient.color.r, scene->ambient.color.g, scene->ambient.color.b);
+	// }
+	// if (scene->camera.declared)
+	// {
+	// 	printf("id: C");
+	// 	printf("   view point = (%.4f,%.4f,%.4f)", scene->camera.position.x, scene->camera.position.y, scene->camera.position.z );
+	// 	printf("   orientation =(%.4f,%.4f,%.4f)", scene->camera.direction.x, scene->camera.direction.y, scene->camera.direction.z );
+	// 	printf("   FOV = %i\n", scene->camera.fov);
+	
+	// }
+	// if (scene->light.declared)
+	// {
+	// 	printf("id: L");
+	// 	printf("   light point = (%.4f,%.4f,%.4f)", scene->light.position.x, scene->light.position.y, scene->light.position.z );
+	// 	printf("   bright = %.1f", scene->light.bright);
+	// 	printf("   color = (%i,%i,%i)\n", scene->light.color.r, scene->light.color.g, scene->light.color.b);
+	// }
+	aux = scene->obj;
+	while (aux != NULL)
 	{
-		printf("Type: %d\n", scene->obj->type);
-		if (scene->obj->type == PLANE)
+		printf("Type: %d\n", aux->type);
+		if (aux->type == PLANE)
 		{
-			plane = (t_plane *) scene->obj->object;
+			plane = (t_plane *) aux->object;
 			printf("Coordenates: %f %f %f\n", plane->coordenate.x, plane->coordenate.y, plane->coordenate.z);
 			printf("Direction: %f %f %f\n", plane->direction.x, plane->direction.y, plane->direction.z);
 			printf("Color: %d %d %d\n", plane->color.r, plane->color.g, plane->color.b);
 		}
-		else if (scene->obj->type == SPHERE)
+		else if (aux->type == SPHERE)
 		{
-			sphere = (t_sphere *) scene->obj->object;
+			sphere = (t_sphere *) aux->object;
 			printf("Center: %f %f %f\n", sphere->center.x, sphere->center.y, sphere->center.z);
 			printf("Radius: %f\n", sphere->radius);
 			printf("Color: %d %d %d\n", sphere->color.r, sphere->color.g, sphere->color.b);
 		}
-		else if (scene->obj->type == CYLINDER)
+		else if (aux->type == CYLINDER)
 		{
-			cylinder = (t_cylinder *) scene->obj->object;
+			cylinder = (t_cylinder *) aux->object;
 			printf("Coordenate: %f %f %f\n", cylinder->coordenate.x, cylinder->coordenate.y, cylinder->coordenate.z);
 			printf("Direction: %f %f %f\n", cylinder->direction.x, cylinder->direction.y, cylinder->direction.z);
 			printf("Radius: %f\n", cylinder->radius);
 			printf("Height: %f\n", cylinder->height);
 			printf("Color: %d %d %d\n", cylinder->color.r, cylinder->color.g, cylinder->color.b);
 		}
-		scene->obj = scene->obj->next;
+		aux = aux->next;
 	}
 }
 
 
 int	main(int argc, char **argv)
 {
-	t_scene		scene;
+	t_scene		*scene;
 	int			error;
 	int			n;
 
@@ -138,12 +177,11 @@ int	main(int argc, char **argv)
 	error = process_file(argv[1], &scene, &n);
 	if (error)
 		return ft_errormsg(error, n);
-	ft_print_scene(&scene);
-		// return ft_free_memory(&scene), ft_errormsg(error, n);
-	// printvalores(scene);
+	ft_print_scene(scene);
+	ft_free_memory(scene);
 	//process_planes(scene, argv[1]);
 	//process_spheres(scene, argv[1]);
 	//process_cylinders(scene, argv[1]);
-	// ft_free_memory(&scene);
+	// return ft_free_memory(&scene), ft_errormsg(error, n);
 	return (SUCCESS);
 }

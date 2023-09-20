@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/20 16:02:29 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:37:09 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,10 +187,15 @@ t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist)
 {
 	t_lst_obj	*new_obj;
 
-	new_obj = malloc(sizeof(t_lst_obj));
+	new_obj = (t_lst_obj *) malloc(sizeof(t_lst_obj) * 1);
 	if (!new_obj)
 		return NULL;
-	new_obj->object = object;
+	if (type == SPHERE)
+		new_obj->object = (t_sphere *) object;
+	else if (type == PLANE)
+		new_obj->object = (t_plane *) object;
+	else if (type == CYLINDER)
+		new_obj->object = (t_cylinder *) object;
 	new_obj->type = type;
 	new_obj->last_dist = last_dist;
 	new_obj->skip = 0;
@@ -210,16 +215,18 @@ t_lst_obj *ft_obj_last(t_lst_obj *obj)
 	return (aux);
 }
 
-void	ft_add_back_obj(t_lst_obj **obj, void *object, t_obj_type type,	double last_dist)
+void	ft_add_back_obj(t_lst_obj **obj, void **object, t_obj_type type,	double last_dist)
 {
 	t_lst_obj	*new_obj;
 	t_lst_obj	*aux;
 
-	new_obj = ft_init_obj(object, type, last_dist);
+	new_obj = ft_init_obj(*object, type, last_dist);
 	if (new_obj) 
 	{
 		if (!(*obj))
+		{
 			*obj = new_obj;
+		}
 		else
 		{
 			aux = ft_obj_last(*obj);
@@ -263,7 +270,7 @@ t_sphere	*new_sphere(char **s, int *e)
 	return (new_sp);
 }
 
-int ft_load_spheres(t_scene *scene, char **s)
+int ft_load_spheres(t_lst_obj **obj, char **s)
 {
 	int			e;
 	t_sphere	*new_sp;
@@ -273,7 +280,7 @@ int ft_load_spheres(t_scene *scene, char **s)
 	new_sp = new_sphere(s, &e);
 	if (!new_sp)
 		return e;
-	ft_add_back_obj(&(scene->obj), new_sp, SPHERE, ft_get_dist());
+	ft_add_back_obj(obj, (void**) &new_sp, SPHERE, ft_get_dist());
 	return (SUCCESS);
 }
 
@@ -309,7 +316,7 @@ t_plane	*new_plane(char **s, int *e)
 	return (new_pl);
 }
 
-int	ft_load_planes(t_scene *scene, char **s)
+int	ft_load_planes(t_lst_obj **obj, char **s)
 {
 	int			e;
 	t_plane		*new_pl;
@@ -319,7 +326,7 @@ int	ft_load_planes(t_scene *scene, char **s)
 	new_pl = new_plane(s, &e);
 	if (!new_pl)
 		return e;
-	ft_add_back_obj(&(scene->obj), new_pl, PLANE, ft_get_dist());
+	ft_add_back_obj(obj, (void**) &new_pl, PLANE, ft_get_dist());
 	return SUCCESS;
 }
 
@@ -363,7 +370,7 @@ t_cylinder	*new_cylinder(char **s, int *e)
 	return (new_cy);
 }
 
-int ft_load_cylinders(t_scene *scene, char **s)
+int ft_load_cylinders(t_lst_obj **obj, char **s)
 {
 	int			e;
 	t_cylinder	*new_cy;
@@ -373,14 +380,13 @@ int ft_load_cylinders(t_scene *scene, char **s)
 	new_cy = new_cylinder(s, &e);
 	if (!new_cy)
 		return e;
-	ft_add_back_obj(&(scene->obj), new_cy,	CYLINDER, ft_get_dist());
+	ft_add_back_obj(obj, (void**) &new_cy, CYLINDER, ft_get_dist());
 	return SUCCESS;
 }
 
-void ft_free_data(char **data, t_scene *scene)
+void ft_free_data(char **data)
 {
 	int 	i;
-	void	*aux;
 
 	i = 0;
 	while (data[i])
@@ -389,17 +395,9 @@ void ft_free_data(char **data, t_scene *scene)
 		i++;
 	}
 	free(data);
-	while (scene->obj)
-	{
-		aux = scene->obj;
-		free(scene->obj->object);
-		scene->obj = scene->obj->next;
-		free(aux);
-	}
-	free(scene->obj);
 }
 
-int parse_line(char *line, t_scene *scene)
+int parse_line(char *line, t_scene **scene)
 {
 	char	**data;
 	int		error;
@@ -412,20 +410,20 @@ int parse_line(char *line, t_scene *scene)
 	if (data[0][0] == 0 || data[0][0] == 13 || data[0][0] == 10)
 		error = SUCCESS;
 	else if (!ft_strcmp("A", data[0]))
-		error = ft_load_ambient(&scene->ambient, data);
+		error = ft_load_ambient(&(*scene)->ambient, data);
 	else if (!ft_strcmp("C", data[0]))
-		error = ft_load_camera(&scene->camera, data);
+		error = ft_load_camera(&(*scene)->camera, data);
 	else if (!ft_strcmp("L", data[0]))
-		error = ft_load_light(&scene->light, data);
+		error = ft_load_light(&(*scene)->light, data);
 	else if (!ft_strcmp("sp", data[0]))
-		error = ft_load_spheres(scene, data);
+		error = ft_load_spheres(&((*scene)->obj), data);
 	else if (!ft_strcmp("pl", data[0]))
-		error = ft_load_planes(scene, data);
+		error = ft_load_planes(&((*scene)->obj), data);
 	else if (!ft_strcmp("cy", data[0]))
-		error = ft_load_cylinders(scene, data);
+		error = ft_load_cylinders(&((*scene)->obj), data);
 	else
 		error = BAD_IDENTIFIER_E;
-	ft_free_data(data, scene);
+	ft_free_data(data);
 	free(line_aux);
 	return (error);
 }
@@ -440,7 +438,7 @@ int check_file_extension(const char *filename)
 	return -1;
 }
 
-int	process_file(char *file, t_scene *scene, int *n)
+int	process_file(char *file, t_scene **scene, int *n)
 {	
 	int		fd;
 	int		error;
@@ -464,11 +462,11 @@ int	process_file(char *file, t_scene *scene, int *n)
 	close(fd);
 	if (error)
 		return (error);
-	if (!scene->ambient.declared)
+	if (!(*scene)->ambient.declared)
 		return AMBIENT_NOT_DECLARED;
-	if (!scene->camera.declared)
+	if (!(*scene)->camera.declared)
 		return CAMERA_NOT_DECLARED;
-	if (!scene->light.declared)
+	if (!(*scene)->light.declared)
 		return LIGHT_NOT_DECLARED;
 	return (SUCCESS);
 }

@@ -17,7 +17,7 @@ NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 LEAKS		=	-fsanitize=address
-W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
+W_FLAGS		=	-Wall -Wextra -Werror -g3 -Wshadow
 
 #Para Windows
 MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
