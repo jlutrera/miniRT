@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/20 18:37:09 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:51:33 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ double	ft_get_dist(void)
 
 int is_normalized(t_vec vector)
 {
-	const double epsilon = 1e-10;
-	double modulo;
     
-	modulo = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-    return fabs(modulo - 1.0) < epsilon;
+	if (vector.x > 1 || vector.x < -1)
+		return (0);
+	else if (vector.y > 1 || vector.y < -1)
+		return (0);
+	else if (vector.z > 1 || vector.z < -1)
+		return (0);
+    return (1);
 }
 
 double ft_atod(char *s)

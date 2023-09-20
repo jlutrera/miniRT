@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/20 18:43:30 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:44:30 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,14 @@ void ft_free_memory(t_scene *scene)
 {
 	t_lst_obj *aux;
 	
-	printf("voy a free: %p\n", (scene)->obj);
 	if ((scene)->obj)
 	{
-		printf("dentro free\n");
 		while (scene->obj)
 		{
 			aux = (scene)->obj;
 			free(aux->object);
 			free(aux);
 			(scene)->obj = (scene)->obj->next;
-			printf("elimino\n");
 		}	
 	}
 	free(scene);
