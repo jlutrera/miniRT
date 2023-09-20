@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/19 12:15:11 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:37:55 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@
 // 	}
 // }
 
-void ft_init(t_scene *scene)
+void	ft_init(t_scene *scene)
 {
 	scene->ambient.declared = false;
 	scene->camera.declared = false;
@@ -86,6 +86,43 @@ void ft_init(t_scene *scene)
 // 	free(scene->cylinders);
 // }
 
+void	ft_print_scene(t_scene *scene)
+{
+	t_plane *plane;
+	t_sphere *sphere;
+	t_cylinder *cylinder;
+	
+	if (!scene)
+		exit (1);
+	while (scene->obj != NULL)
+	{
+		printf("Type: %d\n", scene->obj->type);
+		if (scene->obj->type == PLANE)
+		{
+			plane = (t_plane *) scene->obj->object;
+			printf("Coordenates: %f %f %f\n", plane->coordenate.x, plane->coordenate.y, plane->coordenate.z);
+			printf("Direction: %f %f %f\n", plane->direction.x, plane->direction.y, plane->direction.z);
+			printf("Color: %d %d %d\n", plane->color.r, plane->color.g, plane->color.b);
+		}
+		else if (scene->obj->type == SPHERE)
+		{
+			sphere = (t_sphere *) scene->obj->object;
+			printf("Center: %f %f %f\n", sphere->center.x, sphere->center.y, sphere->center.z);
+			printf("Radius: %f\n", sphere->radius);
+			printf("Color: %d %d %d\n", sphere->color.r, sphere->color.g, sphere->color.b);
+		}
+		else if (scene->obj->type == CYLINDER)
+		{
+			cylinder = (t_cylinder *) scene->obj->object;
+			printf("Coordenate: %f %f %f\n", cylinder->coordenate.x, cylinder->coordenate.y, cylinder->coordenate.z);
+			printf("Direction: %f %f %f\n", cylinder->direction.x, cylinder->direction.y, cylinder->direction.z);
+			printf("Radius: %f\n", cylinder->radius);
+			printf("Height: %f\n", cylinder->height);
+			printf("Color: %d %d %d\n", cylinder->color.r, cylinder->color.g, cylinder->color.b);
+		}
+		scene->obj = scene->obj->next;
+	}
+}
 
 
 int	main(int argc, char **argv)
@@ -101,6 +138,7 @@ int	main(int argc, char **argv)
 	error = process_file(argv[1], &scene, &n);
 	if (error)
 		return ft_errormsg(error, n);
+	ft_print_scene(&scene);
 		// return ft_free_memory(&scene), ft_errormsg(error, n);
 	// printvalores(scene);
 	//process_planes(scene, argv[1]);

@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 13:38:27 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/20 16:02:29 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int ft_get_point(char *s, t_point3 *position)
 	return 0;
 }
 
-int ft_get_colour(char *s, t_color *color)
+int ft_get_color(char *s, t_color *color)
 {
 	char	**aux;
 	int		i;
@@ -142,7 +142,7 @@ int ft_load_ambient(t_ambient *ambient, char **s)
 	ambient->ratio = ft_atod(s[1]);
 	if (ambient->ratio < 0 || ambient->ratio > 1)
 		return RATIO_E;
-	if (ft_get_colour(s[2], &ambient->color) == -1)
+	if (ft_get_color(s[2], &ambient->color) == -1)
 		return COLOUR_E;
 	return SUCCESS;
 }
@@ -178,7 +178,7 @@ int ft_load_light(t_light *light, char **s)
 	light->bright = ft_atod(s[2]);
 	if (light->bright < 0 || light->bright > 1)
 		return BAD_BRIGHT_E;
-	if (ft_get_colour(s[3], &light->color) == -1)
+	if (ft_get_color(s[3], &light->color) == -1)
 		return COLOUR_E;
 	return SUCCESS;
 }
@@ -187,9 +187,6 @@ t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist)
 {
 	t_lst_obj	*new_obj;
 
-	//probablemente forzar tipo de dato segun type:
-	//if (type == SPHERE)
-	//new_obj->object = (t_sphere *) object;
 	new_obj = malloc(sizeof(t_lst_obj));
 	if (!new_obj)
 		return NULL;
@@ -257,7 +254,7 @@ t_sphere	*new_sphere(char **s, int *e)
 		*e = NEGATIVE_E;
 		return NULL;
 	}
-	if (ft_get_colour(s[3], &new_sp->color) == -1)
+	if (ft_get_color(s[3], &new_sp->color) == -1)
 	{	
 		free(new_sp);
 		*e = COLOUR_E;
@@ -303,7 +300,7 @@ t_plane	*new_plane(char **s, int *e)
 		*e = NORM_VECTOR_E;
 		return NULL;
 	}
-	if (ft_get_colour(s[3], &new_pl->color) == -1)
+	if (ft_get_color(s[3], &new_pl->color) == -1)
 	{
 		free(new_pl);
 		*e = COLOUR_E;
@@ -357,7 +354,7 @@ t_cylinder	*new_cylinder(char **s, int *e)
 		*e = NEGATIVE_E;
 		return NULL;
 	}
-	if (ft_get_colour(s[5], &new_cy->color) == -1)
+	if (ft_get_color(s[5], &new_cy->color) == -1)
 	{
 		free(new_cy);
 		*e = COLOUR_E;
