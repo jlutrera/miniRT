@@ -21,13 +21,13 @@
 
 //Windows
 # include "../mlx_linux/mlx.h"
-// # include <X11/Xlib.h>
+//# include <X11/Xlib.h>
 //Mac
 //# include <mlx.h>
 
 //Window Size for the image
 # define WIDTH   	1080
-# define ASPECT_RATIO 16.0 / 9.0
+# define ASPECT_RATIO 16/9
 # define M_PI 3.14159265358979323846
 
 //STRUCTS
@@ -36,7 +36,6 @@ typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
-
 }			t_vars;
 
 typedef struct	s_image
@@ -49,13 +48,6 @@ typedef struct	s_image
 	int		height;
 	int		width;
 } 			t_image;
-
-typedef struct 	s_data
-{
-	t_vars	vars;
-	t_image	image;
-}				t_data;
-
 
 typedef struct s_vec
 {
@@ -161,10 +153,16 @@ typedef struct s_scene
 	t_lst_obj	*obj;
 } 				t_scene;
 
+typedef struct 	s_data
+{
+	t_vars	vars;
+	t_image	image;
+}				t_data;
+
 //PROTOTYPES
-void		my_hooks(t_data *data);
+void		my_hooks(t_vars *vars);
 int			process_file(char *file, t_scene **scene, int *n);
-void		process_img(t_scene scene);
+void		process_img(t_data data, t_scene scene);
 
 //Vectors
 t_vec 		vec(double x, double y, double z);

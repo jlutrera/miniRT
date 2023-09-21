@@ -66,53 +66,34 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-void init_mlx(t_data *data)
-{
-	data->image.width = WIDTH;
 
-	//Calculo la altura de la ventana en base al aspect ratio
-	data->image.height = (int)(data->image.width / (ASPECT_RATIO));
-	if (data->image.height < 1)
-		data->image.height = 1;
-	//Se crea la ventana (screen)
-	data->vars.mlx = mlx_init();
-	data->vars.win = mlx_new_window(data->vars.mlx, data->image.width , data->image.height, "miniRT");
-	data->image.img = mlx_new_image(data->vars.mlx, data->image.width , data->image.height);
-	data->image.addr = mlx_get_data_addr(data->image.img, &data->image.bits_per_pixel, &data->image.line_length, &data->image.endian);
-}
-
-void	process_img(t_scene scene)
+void	process_img(t_data data, t_scene scene)
 {
-	t_data		data;
 	t_camera	camera;
 	t_point3	viewp_point;
 	t_vec		d;
 	t_point3	pixel_color;
 
-	init_mlx(&data);
-	(void)scene;
 	//Camera.
 		//estos datos se cargan de scene, de momento me los invento
 	camera.direction = (t_vec){0, 0, 1};
 	camera.position = (t_point3){0, 0, 0};
 	camera.fov = 90;
 		//calculo el ancho y alto del viewport
-	camera.viewp.x = 2 * tan(camera.fov / 2 * M_PI / 180);
+	camera.viewp.x = 2 * tan((camera.fov / 2) * (M_PI / 180));
 	camera.viewp.y = data.image.height * camera.viewp.x / data.image.width;
-	camera.viewp.z = 1;
+	camera.viewp.z = 1;  //por conveniencia
 
 	//Render
-	for (int y = -data.image.height / 2; y <= data.image.height/2; ++y)
+	for (int y = -data.image.height / 2; y <= data.image.height / 2; ++y)
 	{
 		for (int x = -data.image.width / 2; x <= data.image.width / 2; ++x)
 		{
 			viewp_point = (t_point3){x * camera.viewp.x / data.image.width, y * camera.viewp.y / data.image.height, camera.viewp.z};
 			d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(camera.position.x, camera.position.y, camera.position.z));
 			pixel_color = trace_ray(camera.position, d, scene);
-			my_mlx_pixel_put(&data, data.image.width / 2 + x, data.image.height/2 - y, write_color(pixel_color));
+			my_mlx_pixel_put(&data, data.image.width / 2 + x, data.image.height / 2 - y, write_color(pixel_color));
 		}
 	}
 	mlx_put_image_to_window(data.vars.mlx, data.vars.win, data.image.img, 0, 0);
-	my_hooks(&data);
-	mlx_loop(data.vars.mlx);
 }

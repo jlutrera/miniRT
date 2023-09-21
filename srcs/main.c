@@ -103,8 +103,25 @@ void	print_scene(t_scene *scene)
 	}
 }
 
+
+void init_mlx(t_data *data)
+{
+	data->image.width = WIDTH;
+
+	//Calculo la altura de la ventana en base al aspect ratio
+	data->image.height = (int)(data->image.width / (ASPECT_RATIO));
+	if (data->image.height < 1)
+		data->image.height = 1;
+	//Se crea la ventana donde representamos la imagen, canvas
+	data->vars.mlx = mlx_init();
+	data->vars.win = mlx_new_window(data->vars.mlx, data->image.width , data->image.height, "miniRT");
+	data->image.img = mlx_new_image(data->vars.mlx, data->image.width , data->image.height);
+	data->image.addr = mlx_get_data_addr(data->image.img, &data->image.bits_per_pixel, &data->image.line_length, &data->image.endian);
+}
+
 int	main(int argc, char **argv)
 {
+	t_data		data;
 	t_scene		*scene;
 	int			error;
 	int			n;
@@ -117,7 +134,10 @@ int	main(int argc, char **argv)
 	if (error)
 		return ft_errormsg(error, n);
 	print_scene(scene);
-	process_img(*scene);  //proceso la esfera
+	init_mlx(&data);
+	process_img(data, *scene);  //proceso la esfera
+	my_hooks(&data.vars);
+	mlx_loop(data.vars.mlx);
 	free_memory(scene);
 	return (SUCCESS);
 }
