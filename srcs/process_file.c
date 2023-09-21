@@ -224,20 +224,17 @@ void	ft_add_back_obj(t_lst_obj **obj, void **object, t_obj_type type,	double las
 	t_lst_obj	*aux;
 
 	new_obj = ft_init_obj(*object, type, last_dist);
-	if (new_obj) 
+	if (!new_obj)
+		return;
+	if (!(*obj))
+		*obj = new_obj;
+	else
 	{
-		if (!(*obj))
-		{
+		aux = ft_obj_last(*obj);
+		if (!aux)
 			*obj = new_obj;
-		}
 		else
-		{
-			aux = ft_obj_last(*obj);
-			if (!aux)
-				*obj = new_obj;
-			else
-				aux->next = new_obj;
-		}
+			aux->next = new_obj;
 	}
 }
 
@@ -254,21 +251,18 @@ t_sphere	*new_sphere(char **s, int *e)
 	new_sp->radius = ft_atod(s[2]) / 2;
 	if (ft_get_point(s[1], &new_sp->center) == -1)
 	{
-		free(new_sp);
 		*e = BAD_COORDINATES_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	if (new_sp->radius <= 0)
 	{
-		free(new_sp);
 		*e = NEGATIVE_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	if (ft_get_color(s[3], &new_sp->color) == -1)
 	{	
-		free(new_sp);
 		*e = COLOUR_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	return (new_sp);
 }

@@ -12,13 +12,13 @@
 
 #include "../include/miniRT.h"
 
-int		create_trgb(int t, int r, int g, int b)
+int	get_rgb(t_color c)
 {
-	return (t << 24 | r << 16 | g << 8 | b);
+	return (c.r << 16 | c.g << 8 | c.b);
 }
 
-int write_color(int t, t_color *pixel_color)
+int write_color(t_point3 pixel_color)
 {
-	return (t << 24 | (255 * pixel_color->r) << 16 |
-		(255 * pixel_color->g) << 8 | (255 * pixel_color->b));
+	return ((int)(255.999 * pixel_color.x) << 16 |
+		(int)(255.999 * pixel_color.y) << 8 | (int)(255.999 * pixel_color.z));
 }
