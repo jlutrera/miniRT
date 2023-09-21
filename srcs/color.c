@@ -19,6 +19,6 @@ int	get_rgb(t_color c)
 
 int write_color(t_point3 pixel_color)
 {
-	return ((int)(255.999 * pixel_color.x) << 16 |
-		(int)(255.999 * pixel_color.y) << 8 | (int)(255.999 * pixel_color.z));
+	return ((int)pixel_color.x << 16 |
+		(int)pixel_color.y << 8 | (int)pixel_color.z);
 }

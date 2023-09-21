@@ -1,5 +1,19 @@
 #include "../include/miniRT.h"
 
+double compute_lighting(t_scene scene, t_vec P, t_vec N)
+{
+	t_vec	L;
+	double	intensity;
+	double	n_dot_l;
+
+	intensity = scene.ambient.ratio;
+	L = vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P);
+	n_dot_l = vec_dot(N, L);
+	if (n_dot_l > 0)
+		intensity += scene.light.bright * n_dot_l / (vec_length(N) * vec_length(L));
+	return (intensity);
+}
+
 void	intersect_sphere(t_point3 origin, t_vec direction, t_sphere *sp, t_point *t)
 {
 	t_vec 	co;
@@ -31,6 +45,9 @@ t_point3	trace_ray(t_point3 origin, t_vec direction, t_scene scene)
 	t_lst_obj	*sp;
 	t_sphere	*closest_sphere;
 	double		t_closest;
+	t_vec 		P;
+	t_vec 		N;
+	double 		i;
 
 	t_closest = INFINITY;
 	sp = scene.obj;
@@ -54,7 +71,13 @@ t_point3	trace_ray(t_point3 origin, t_vec direction, t_scene scene)
 		sp = sp->next;
 	}
 	if (closest_sphere)
-		return (t_point3){closest_sphere->color.r, closest_sphere->color.g, closest_sphere->color.b};
+	{
+		P = vec_add(vec(origin.x, origin.y, origin.z), vec_mul(direction, t_closest));
+		N = vec_sub(vec(P.x, P.y, P.z), vec(closest_sphere->center.x, closest_sphere->center.y, closest_sphere->center.z));
+		N = vec_unit(N);
+		i = compute_lighting(scene, P, N);
+		return (t_point3){closest_sphere->color.r * i, closest_sphere->color.g * i, closest_sphere->color.b * i};
+	}
 	return (t_point3){0, 0, 0};
 }
 
@@ -67,33 +90,28 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 }
 
 
-void	process_img(t_data data, t_scene scene)
+void	process_img(t_data *data, t_scene *scene)
 {
-	t_camera	camera;
 	t_point3	viewp_point;
 	t_vec		d;
 	t_point3	pixel_color;
 
 	//Camera.
-		//estos datos se cargan de scene, de momento me los invento
-	camera.direction = (t_vec){0, 0, 1};
-	camera.position = (t_point3){0, 0, 0};
-	camera.fov = 90;
-		//calculo el ancho y alto del viewport
-	camera.viewp.x = 2 * tan((camera.fov / 2) * (M_PI / 180));
-	camera.viewp.y = data.image.height * camera.viewp.x / data.image.width;
-	camera.viewp.z = 1;  //por conveniencia
+	//calculo el ancho y alto del viewport
+	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
+	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
+	scene->camera.viewp.z = 1;  //por conveniencia
 
 	//Render
-	for (int y = -data.image.height / 2; y <= data.image.height / 2; ++y)
+	for (int y = -data->image.height / 2; y <= data->image.height / 2; ++y)
 	{
-		for (int x = -data.image.width / 2; x <= data.image.width / 2; ++x)
+		for (int x = -data->image.width / 2; x <= data->image.width / 2; ++x)
 		{
-			viewp_point = (t_point3){x * camera.viewp.x / data.image.width, y * camera.viewp.y / data.image.height, camera.viewp.z};
-			d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(camera.position.x, camera.position.y, camera.position.z));
-			pixel_color = trace_ray(camera.position, d, scene);
-			my_mlx_pixel_put(&data, data.image.width / 2 + x, data.image.height / 2 - y, write_color(pixel_color));
+			viewp_point = (t_point3){x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z};
+			d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
+			pixel_color = trace_ray(scene->camera.position, d, *scene);
+			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));
 		}
 	}
-	mlx_put_image_to_window(data.vars.mlx, data.vars.win, data.image.img, 0, 0);
+	mlx_put_image_to_window(data->vars.mlx, data->vars.win, data->image.img, 0, 0);
 }

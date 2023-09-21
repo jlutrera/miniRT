@@ -26,8 +26,8 @@
 //# include <mlx.h>
 
 //Window Size for the image
-# define WIDTH   	1080
-# define ASPECT_RATIO 16/9
+# define WIDTH   	1280
+# define ASPECT_RATIO 16.0 / 9.0
 # define M_PI 3.14159265358979323846
 
 //STRUCTS
@@ -162,7 +162,7 @@ typedef struct 	s_data
 //PROTOTYPES
 void		my_hooks(t_vars *vars);
 int			process_file(char *file, t_scene **scene, int *n);
-void		process_img(t_data data, t_scene scene);
+void		process_img(t_data *data, t_scene *scene);
 
 //Vectors
 t_vec 		vec(double x, double y, double z);

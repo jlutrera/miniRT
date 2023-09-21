@@ -135,7 +135,7 @@ int	main(int argc, char **argv)
 		return ft_errormsg(error, n);
 	print_scene(scene);
 	init_mlx(&data);
-	process_img(data, *scene);  //proceso la esfera
+	process_img(&data, scene);  //proceso la esfera
 	my_hooks(&data.vars);
 	mlx_loop(data.vars.mlx);
 	free_memory(scene);
