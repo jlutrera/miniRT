@@ -291,7 +291,7 @@ t_plane	*new_plane(char **s, int *e)
 		*e = MEMORY_E;		
 		return NULL;
 	}
-	if (ft_get_point(s[1], &new_pl->coordenate) == -1 ||
+	if (ft_get_point(s[1], &new_pl->coordinate) == -1 ||
 		ft_get_vector(s[2], &new_pl->direction) == -1)
 	{
 		free(new_pl);
@@ -339,7 +339,7 @@ t_cylinder	*new_cylinder(char **s, int *e)
 	}
 	new_cy->radius = ft_atod(s[3]) / 2;
 	new_cy->height = ft_atod(s[4]);
-	if (ft_get_point(s[1], &new_cy->coordenate) == -1 ||
+	if (ft_get_point(s[1], &new_cy->coordinate) == -1 ||
 		ft_get_vector(s[2], &new_cy->direction) == -1)
 	{
 		free(new_cy);

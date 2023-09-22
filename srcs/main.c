@@ -77,7 +77,7 @@ void	print_scene(t_scene *scene)
 		{
 			plane = (t_plane *) aux->object;
 			printf("id: pl\n");
-			printf("   Coordenates: (%.4f, %.4f, %.4f)\n", plane->coordenate.x, plane->coordenate.y, plane->coordenate.z);
+			printf("   Coordenates: (%.4f, %.4f, %.4f)\n", plane->coordinate.x, plane->coordinate.y, plane->coordinate.z);
 			printf("   Direction: (%.4f, %.4f, %.4f)\n", plane->direction.x, plane->direction.y, plane->direction.z);
 			printf("   Color: (%d, %d, %d)\n", plane->color.r, plane->color.g, plane->color.b);
 		}
@@ -93,7 +93,7 @@ void	print_scene(t_scene *scene)
 		{
 			cylinder = (t_cylinder *) aux->object;
 			printf("id: cy\n");
-			printf("   Coordenate: (%f, %f, %f)\n", cylinder->coordenate.x, cylinder->coordenate.y, cylinder->coordenate.z);
+			printf("   Coordenate: (%f, %f, %f)\n", cylinder->coordinate.x, cylinder->coordinate.y, cylinder->coordinate.z);
 			printf("   Direction: (%f, %f, %f)\n", cylinder->direction.x, cylinder->direction.y, cylinder->direction.z);
 			printf("   Radius: %f\n", cylinder->radius);
 			printf("   Height: %f\n", cylinder->height);
@@ -132,7 +132,10 @@ int	main(int argc, char **argv)
 	n = 0;
 	error = process_file(argv[1], &scene, &n);
 	if (error)
+	{
+		free_memory(scene);
 		return ft_errormsg(error, n);
+	}
 	print_scene(scene);
 	init_mlx(&data);
 	process_img(&data, scene);  //proceso la esfera

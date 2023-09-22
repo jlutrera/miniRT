@@ -91,14 +91,14 @@ typedef struct s_sphere
 
 typedef struct s_plane
 {
-	t_point3	coordenate;
+	t_point3	coordinate;
 	t_vec		direction;
 	t_color		color;
 } 				t_plane;
 
 typedef struct s_cylinder
 {
-	t_point3	coordenate;
+	t_point3	coordinate;
 	t_vec		direction;
 	double		radius;
 	double		height;

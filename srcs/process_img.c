@@ -50,44 +50,91 @@ void	intersect_sphere(t_point3 origin, t_vec direction, t_sphere *sp, t_point *t
 	}
 }
 
+void intersect_plane(t_ray ray, t_plane *plane, t_point *t)
+{
+    t_vec	plane_vec;
+    t_vec	OP;
+	t_vec	plane_origin;
+    double	denom;
+
+	denom = vec_dot(plane->direction, ray.dir);
+    plane_vec = vec(plane->coordinate.x, plane->coordinate.y, plane->coordinate.z);
+	plane_origin = vec(ray.origin.x, ray.origin.y, ray.origin.z);
+	OP = vec_sub(plane_vec, plane_origin);
+    if (fabs(denom) < 1e-6)
+        t->x = INFINITY;
+	else
+		t->x = vec_dot(plane->direction, OP) / denom;
+}
+
 t_point3	trace_ray(t_point3 origin, t_vec direction, t_scene scene)
 {
 	t_point		t;
-	t_lst_obj	*sp;
-	t_sphere	*closest_sphere;
+	t_lst_obj	*obj;
+	t_lst_obj	*closest_obj;
 	double		t_closest;
 	t_vec 		P;
 	t_vec 		N;
 	double 		i;
+	t_sphere	*sp;
+	t_plane		*pl;
+	//t_cylinder	*cy;
 
 	t_closest = INFINITY;
-	sp = scene.obj;
-	closest_sphere = NULL;
-	while (sp)
+	obj = scene.obj;
+	closest_obj = NULL;
+	while (obj)
 	{
-		if (sp->type == SPHERE)
+		if (obj->type == SPHERE)
 		{
-			intersect_sphere(origin, direction, (t_sphere *)sp->object, &t);
-			if (t.x > 1.0  && t.x < t_closest)
+			intersect_sphere(origin, direction, (t_sphere *)obj->object, &t);
+			if (t.x > 1.0  && t.x < INFINITY && t.x < t_closest)
 			{
 				t_closest = t.x;
-				closest_sphere = (t_sphere *)sp->object;
+				closest_obj = obj;
 			}
 			if (t.y > 1.0  && t.y < t_closest)
 			{
 				t_closest = t.y;
-				closest_sphere = (t_sphere *)sp->object;
+				closest_obj = obj;
 			}
 		}
-		sp = sp->next;
+		else if (obj->type == PLANE)
+		{
+			intersect_plane((t_ray){origin, direction}, (t_plane *)obj->object, &t);
+			if (t.x > 1.0 && t.x < INFINITY && t.x < t_closest)
+			{
+				t_closest = t.x;	
+				closest_obj = obj;
+			}
+		}
+		else if (obj->type == CYLINDER)
+		{
+			printf("intersect_cylinder()\n");
+		}
+		obj = obj->next;
 	}
-	if (closest_sphere)
+	if (closest_obj)
 	{
-		P = vec_add(vec(origin.x, origin.y, origin.z), vec_mul(direction, t_closest));
-		N = vec_sub(vec(P.x, P.y, P.z), vec(closest_sphere->center.x, closest_sphere->center.y, closest_sphere->center.z));
-		N = vec_unit(N);
-		i = compute_lighting(scene, P, N, vec_mul(direction, -1), 300);
-		return (t_point3){closest_sphere->color.r * i, closest_sphere->color.g * i, closest_sphere->color.b * i};
+		if (closest_obj->type == SPHERE)
+		{
+			sp = (t_sphere *)(closest_obj->object);
+			P = vec_add(vec(origin.x, origin.y, origin.z), vec_mul(direction, t_closest));
+			N = vec_sub(P, vec(sp->center.x, sp->center.y, sp->center.z));
+			N = vec_unit(N);
+			i = compute_lighting(scene, P, N, vec_mul(direction, -1), 300);
+			return (t_point3){sp->color.r * i, sp->color.g * i, sp->color.b * i};
+		}
+		else if (closest_obj->type == PLANE)
+		{
+			pl = (t_plane *)(closest_obj->object);
+			i = 1;  //Hay que ajustar i a la luz reflejada por el plano
+			return (t_point3){pl->color.r * i, pl->color.g * i, pl->color.b * i};
+		}
+		else if (closest_obj->type == CYLINDER)
+		{
+			printf("trace_ray() cylinder\n");
+		}
 	}
 	return (t_point3){0, 0, 0};
 }
