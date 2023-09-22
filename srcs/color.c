@@ -19,6 +19,18 @@ int	get_rgb(t_color c)
 
 int write_color(t_point3 pixel_color)
 {
+	if (pixel_color.x > 255)
+		pixel_color.x = 255;
+	if (pixel_color.y > 255)
+		pixel_color.y = 255;
+	if (pixel_color.z > 255)
+		pixel_color.z = 255;
+	if (pixel_color.x < 0)
+		pixel_color.x = 0;
+	if (pixel_color.y < 0)
+		pixel_color.y = 0;
+	if (pixel_color.z < 0)
+		pixel_color.z = 0;
 	return ((int)pixel_color.x << 16 |
 		(int)pixel_color.y << 8 | (int)pixel_color.z);
 }

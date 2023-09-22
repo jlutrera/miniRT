@@ -1,16 +1,27 @@
 #include "../include/miniRT.h"
 
-double compute_lighting(t_scene scene, t_vec P, t_vec N)
+double compute_lighting(t_scene scene, t_vec P, t_vec N, t_vec D, double s)
 {
 	t_vec	L;
+	t_vec R;
 	double	intensity;
 	double	n_dot_l;
+	double 	r_dot_v;
 
 	intensity = scene.ambient.ratio;
 	L = vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P);
+	//Diffuse light
 	n_dot_l = vec_dot(N, L);
 	if (n_dot_l > 0)
 		intensity += scene.light.bright * n_dot_l / (vec_length(N) * vec_length(L));
+	//Specular light
+	if (s > 0)
+	{
+		R = vec_sub(vec_mul(N, 2 * vec_dot(N, L)), L);
+		r_dot_v = vec_dot(R, D);
+		if (r_dot_v > 0)
+			intensity += scene.light.bright * pow(r_dot_v / (vec_length(R) * vec_length(D)), s);
+	}
 	return (intensity);
 }
 
@@ -75,7 +86,7 @@ t_point3	trace_ray(t_point3 origin, t_vec direction, t_scene scene)
 		P = vec_add(vec(origin.x, origin.y, origin.z), vec_mul(direction, t_closest));
 		N = vec_sub(vec(P.x, P.y, P.z), vec(closest_sphere->center.x, closest_sphere->center.y, closest_sphere->center.z));
 		N = vec_unit(N);
-		i = compute_lighting(scene, P, N);
+		i = compute_lighting(scene, P, N, vec_mul(direction, -1), 300);
 		return (t_point3){closest_sphere->color.r * i, closest_sphere->color.g * i, closest_sphere->color.b * i};
 	}
 	return (t_point3){0, 0, 0};
