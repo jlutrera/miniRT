@@ -20,7 +20,7 @@ LEAKS		=	-fsanitize=address
 W_FLAGS		=	-Wall -Wextra -Werror -g3 -Wshadow
 
 #Para Windows
-MLXFLAGS	= 	-Lusr/lib -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
+MLXFLAGS	= 	-Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
 
 #Para Mac
 #MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
