@@ -148,34 +148,43 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 }
 
 t_vec matrix_mul(double mat[3][3], t_vec v) {
-    return (t_vec) {
-        .x = mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z,
-        .y = mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z,
-        .z = mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z
-    };
+	return (t_vec) {
+		.x = mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z,
+		.y = mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z,
+		.z = mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z
+	};
 }
 
-t_vec rotate_vec(t_vec v, t_vec d) {
-    // Normalizar el vector director
-    d = vec_unit(d);
+t_vec rotate_vec(t_vec v, t_vec d)
+{
+	// Normalizar el vector director
+	d = vec_unit(d);
 
-    // Escoger un vector a que no sea paralelo a d
-    t_vec a = fabs(d.x) < fabs(d.y) ? (t_vec){1, 0, 0} : (t_vec){0, 1, 0};
+	t_vec	a = {0, 0, 0};
+	// Escoger un vector a que no sea paralelo a d
+	if (d.x != 0 || d.y != 0)
+	{
+		a = vec_unit(vec_cross(d, (t_vec){0, 0, 1}));
+	} 
+    else
+	{
+ 		a = vec_unit(vec_cross(d, (t_vec){0, 1, 0}));
+	}
+	// Calcular los vectores base
+	t_vec x = vec_unit(vec_cross(a, d));
+	t_vec y = vec_cross(d, x);
 
-    // Calcular los vectores base
-    t_vec x = vec_unit(vec_cross(a, d));
-    t_vec y = vec_cross(d, x);
-
-    // Construir la matriz de rotación
-    double R[3][3] = {
-        {x.x, y.x, d.x},
-        {x.y, y.y, d.y},
-        {x.z, y.z, d.z}
-    };
-
-    // Multiplicar la matriz de rotación por el vector v
-    return matrix_mul(R, v);
+	// Construir la matriz de rotación
+	double R[3][3] =
+	{
+		{x.x, y.x, d.x},
+		{x.y, y.y, d.y},
+		{x.z, y.z, d.z}
+	};
+	// Multiplicar la matriz de rotación por el vector v
+	return matrix_mul(R, v);
 }
+
 
 void	process_img(t_data *data, t_scene *scene)
 {
@@ -190,16 +199,17 @@ void	process_img(t_data *data, t_scene *scene)
 	scene->camera.viewp.z = 1;
 
 	//Render
-	for (int y = -data->image.height / 2; y <= data->image.height / 2; ++y)
+	for (int x = -data->image.height / 2; x <= data->image.height / 2; ++x)
 	{
-		for (int x = -data->image.width / 2; x <= data->image.width / 2; ++x)
+		for (int y = -data->image.width / 2; y <= data->image.width / 2; ++y)
 		{
 			viewp_point = (t_vec){x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z};
-			// d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
 			d = rotate_vec(viewp_point, scene->camera.direction);
 			pixel_color = trace_ray(scene->camera.position, vec_unit(d), *scene);
-			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));
+			my_mlx_pixel_put(data, data->image.width / 2 + y, data->image.height / 2 - x, write_color(pixel_color));
 		}
 	}
 	mlx_put_image_to_window(data->vars.mlx, data->vars.win, data->image.img, 0, 0);
 }
+
+			// d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
