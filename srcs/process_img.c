@@ -56,11 +56,16 @@ void intersect_plane(t_ray ray, t_plane *plane, t_point *t)
 	plane_origin = vec(ray.origin.x, ray.origin.y, ray.origin.z);
 	OP = vec_sub(plane_vec, plane_origin);
     if (fabs(denom) < EPSILON)
-        t->x = INFINITY;
+        *t = (t_point){INFINITY, INFINITY};
 	else
-		t->x = vec_dot(plane->direction, OP) / denom;
+		*t = (t_point){vec_dot(plane->direction, OP) / denom, vec_dot(plane->direction, OP) / denom};
 }
+/*
+void intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
+{
 
+}
+*/
 void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_closest)
 {
 	t_lst_obj	*tmp;
@@ -72,8 +77,8 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_c
 			intersect_sphere(ray, (t_sphere *)obj->object, &t);
 		else if (obj->type == PLANE)
 			intersect_plane(ray, (t_plane *)obj->object, &t);
-	//	else
-	//	   intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+		//else
+		//   intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
 		tmp = *closest_obj;
 		if ((t.x > 1.0  && t.x < *t_closest) || (t.y > 1.0  && t.y < *t_closest))
 		{
@@ -165,23 +170,17 @@ t_vec rotate_vec(t_vec v, t_vec d)
 	t_vec	a = {0, 0, 0};
 	// Escoger un vector a que no sea paralelo a d
 	if (d.x != 0 || d.y != 0)
-	{
-		a = vec_unit(vec_cross(d, (t_vec){0, 0, 1}));
-	} 
+		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
     else
-	{
- 		a = vec_unit(vec_cross(d, (t_vec){0, 1, 0}));
-	}
+ 		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
 	// Calcular los vectores base
-	t_vec x = vec_unit(vec_cross(a, d));
-	t_vec y = vec_cross(d, x);
-
+	t_vec b = vec_unit(vec_cross(a, d));
 	// Construir la matriz de rotación
 	double R[3][3] =
 	{
-		{x.x, y.x, d.x},
-		{x.y, y.y, d.y},
-		{x.z, y.z, d.z}
+		{a.x, b.x, d.x},
+		{a.y, b.y, d.y},
+		{a.z, b.z, d.z}
 	};
 	// Multiplicar la matriz de rotación por el vector v
 	return matrix_mul(R, v);
@@ -190,7 +189,7 @@ t_vec rotate_vec(t_vec v, t_vec d)
 
 void	process_img(t_data *data, t_scene *scene)
 {
-	t_vec	viewp_point;
+	t_vec		viewp_point;
 	t_vec		d;
 	t_point3	pixel_color;
 
@@ -199,19 +198,17 @@ void	process_img(t_data *data, t_scene *scene)
 	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
 	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
 	scene->camera.viewp.z = 1;
-
 	//Render
-	for (int x = -data->image.height / 2; x <= data->image.height / 2; ++x)
+	for (int y = -data->image.height / 2; y < data->image.height / 2; ++y)
 	{
-		for (int y = -data->image.width / 2; y <= data->image.width / 2; ++y)
+		for (int x = -data->image.width / 2; x < data->image.width / 2; ++x)
 		{
 			viewp_point = vec(x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
+			//d = vec_sub(viewp_point, vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
 			d = rotate_vec(viewp_point, scene->camera.direction);
-			pixel_color = trace_ray((t_ray){scene->camera.position, vec_unit(d)}, *scene);
-			my_mlx_pixel_put(data, data->image.width / 2 + y, data->image.height / 2 - x, write_color(pixel_color));
+			pixel_color = trace_ray((t_ray){scene->camera.position, d}, *scene);
+			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));
 		}
 	}
 	mlx_put_image_to_window(data->vars.mlx, data->vars.win, data->image.img, 0, 0);
 }
-
-			// d = vec_sub(vec(viewp_point.x, viewp_point.y, viewp_point.z), vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));

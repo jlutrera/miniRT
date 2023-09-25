@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/20 18:51:33 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:21:35 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ double ft_atod(char *s)
 	int		i;
 	double	value;
 	double	value2;
+	int		sign;	
 
 	aux = ft_split(s, '.');
 	i = 0;
@@ -42,6 +43,9 @@ double ft_atod(char *s)
 		i++;
 	if (i != 1 && i != 2)
 		return 0;
+	sign = 1;
+	if (ft_strcmp(aux[0], "-0") == 0)
+		sign = -1;
 	value = ft_atoi(aux[0]);
 	if (aux[1])
 		value2 = ft_atoi(aux[1]) / pow(10, ft_strlen2(aux[1]));
@@ -49,8 +53,10 @@ double ft_atod(char *s)
 	while (aux[++i])
 		free(aux[i]);
 	free(aux);
-	if (value >= 0)
+	if (value > 0)
 		return value + value2;
+	if (value == 0)
+		return value2 * sign;
 	return value - value2;
 }
 
