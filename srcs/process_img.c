@@ -12,20 +12,20 @@ double compute_lighting(t_scene scene, t_vec P, t_vec N, t_vec D, double s)
 	L = vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P);
 	//Diffuse light
 	n_dot_l = vec_dot(N, L);
-	if (n_dot_l > 0)
+	if (n_dot_l > EPSILON)
 		intensity += scene.light.bright * n_dot_l / (vec_length(N) * vec_length(L));
 	//Specular light
 	if (s > 0)
 	{
 		R = vec_sub(vec_mul(N, 2 * vec_dot(N, L)), L);
 		r_dot_v = vec_dot(R, D);
-		if (r_dot_v > 0)
+		if (r_dot_v > EPSILON)
 			intensity += scene.light.bright * pow(r_dot_v / (vec_length(R) * vec_length(D)), s);
 	}
 	return (intensity);
 }
 
-void	intersect_sphere(t_point3 origin, t_vec direction, t_sphere *sp, t_point *t)
+void	intersect_sphere(t_ray ray, t_sphere *sp, t_point *t)
 {
 	t_vec 	co;
 	double	a;
@@ -33,21 +33,15 @@ void	intersect_sphere(t_point3 origin, t_vec direction, t_sphere *sp, t_point *t
 	double	c;
 	double	discriminant;
 
-	co = vec_sub(vec(origin.x, origin.y, origin.z), vec(sp->center.x, sp->center.y, sp->center.z));
-	a = vec_dot(direction, direction);
-	b = 2 * vec_dot(co, direction);
+	co = vec_sub(vec(ray.origin.x, ray.origin.y, ray.origin.z), vec(sp->center.x, sp->center.y, sp->center.z));
+	a = vec_dot(ray.dir, ray.dir);
+	b = 2 * vec_dot(co, ray.dir);
 	c = vec_dot(co, co) - sp->radius * sp->radius;
 	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-	{
-		t->x = INFINITY;
-		t->y = INFINITY;
-	}
+	if (discriminant < EPSILON)
+		*t = (t_point){INFINITY, INFINITY};
 	else
-	{
-		t->x = (-b + sqrt(discriminant)) / (2 * a);
-		t->y = (-b - sqrt(discriminant)) / (2 * a);
-	}
+		*t = (t_point){(-b + sqrt(discriminant)) / (2 * a), (-b - sqrt(discriminant)) / (2 * a)};
 }
 
 void intersect_plane(t_ray ray, t_plane *plane, t_point *t)
@@ -61,80 +55,88 @@ void intersect_plane(t_ray ray, t_plane *plane, t_point *t)
     plane_vec = vec(plane->coordinate.x, plane->coordinate.y, plane->coordinate.z);
 	plane_origin = vec(ray.origin.x, ray.origin.y, ray.origin.z);
 	OP = vec_sub(plane_vec, plane_origin);
-    if (fabs(denom) < 1e-6)
+    if (fabs(denom) < EPSILON)
         t->x = INFINITY;
 	else
 		t->x = vec_dot(plane->direction, OP) / denom;
 }
 
-t_point3	trace_ray(t_point3 origin, t_vec direction, t_scene scene)
+void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_closest)
 {
+	t_lst_obj	*tmp;
 	t_point		t;
-	t_lst_obj	*obj;
-	t_lst_obj	*closest_obj;
-	double		t_closest;
-	t_vec 		P;
-	t_vec 		N;
-	double 		i;
-	t_sphere	*sp;
-	t_plane		*pl;
-	//t_cylinder	*cy;
 
-	t_closest = INFINITY;
-	obj = scene.obj;
-	closest_obj = NULL;
 	while (obj)
 	{
 		if (obj->type == SPHERE)
-		{
-			intersect_sphere(origin, direction, (t_sphere *)obj->object, &t);
-			if (t.x > 1.0  && t.x < INFINITY && t.x < t_closest)
-			{
-				t_closest = t.x;
-				closest_obj = obj;
-			}
-			if (t.y > 1.0  && t.y < t_closest)
-			{
-				t_closest = t.y;
-				closest_obj = obj;
-			}
-		}
+			intersect_sphere(ray, (t_sphere *)obj->object, &t);
 		else if (obj->type == PLANE)
+			intersect_plane(ray, (t_plane *)obj->object, &t);
+	//	else
+	//	   intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+		tmp = *closest_obj;
+		if ((t.x > 1.0  && t.x < *t_closest) || (t.y > 1.0  && t.y < *t_closest))
 		{
-			intersect_plane((t_ray){origin, direction}, (t_plane *)obj->object, &t);
-			if (t.x > 1.0 && t.x < INFINITY && t.x < t_closest)
-			{
-				t_closest = t.x;	
-				closest_obj = obj;
-			}
+			tmp = obj;
+			if (t.y < *t_closest)
+				*t_closest = t.y;
+			else
+				*t_closest = t.x;
 		}
-		else if (obj->type == CYLINDER)
-		{
-			// printf("intersect_cylinder()\n");
-		}
+		if (tmp != *closest_obj)
+			*closest_obj = tmp;
 		obj = obj->next;
 	}
+}
+
+t_point3	compute_sphere_light(t_sphere *sp, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(vec_sub(P, vec(sp->center.x, sp->center.y, sp->center.z)));
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){sp->color.r * i, sp->color.g * i, sp->color.b * i};
+}
+
+t_point3	compute_plane_light(t_plane *pl, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(pl->direction);
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){pl->color.r * i, pl->color.g * i, pl->color.b * i};
+}
+/*
+t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(cy->direction);
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i};
+}
+*/
+t_point3	trace_ray(t_ray ray, t_scene scene)
+{
+	t_lst_obj	*closest_obj;
+	double		t_closest;
+	t_vec 		P;
+
+	t_closest = INFINITY;
+	closest_obj = NULL;
+	get_closest(ray, scene.obj, &closest_obj, &t_closest);
 	if (closest_obj)
 	{
+		P = vec_add(vec(ray.origin.x, ray.origin.y, ray.origin.z), vec_mul(ray.dir, t_closest));
 		if (closest_obj->type == SPHERE)
-		{
-			sp = (t_sphere *)(closest_obj->object);
-			P = vec_add(vec(origin.x, origin.y, origin.z), vec_mul(direction, t_closest));
-			N = vec_sub(P, vec(sp->center.x, sp->center.y, sp->center.z));
-			N = vec_unit(N);
-			i = compute_lighting(scene, P, N, vec_mul(direction, -1), 300);
-			return (t_point3){sp->color.r * i, sp->color.g * i, sp->color.b * i};
-		}
+			return compute_sphere_light(closest_obj->object, scene, P, ray);
 		else if (closest_obj->type == PLANE)
-		{
-			pl = (t_plane *)(closest_obj->object);
-			i = 1;  //Hay que ajustar i a la luz reflejada por el plano
-			return (t_point3){pl->color.r * i, pl->color.g * i, pl->color.b * i};
-		}
-		else if (closest_obj->type == CYLINDER)
-		{
-			printf("trace_ray() cylinder\n");
-		}
+			return compute_plane_light(closest_obj->object, scene, P, ray);
+	//	else
+	//	return compute_cylinder_light(closest_obj->object, scene, P, ray);
 	}
 	return (t_point3){0, 0, 0};
 }
@@ -203,9 +205,9 @@ void	process_img(t_data *data, t_scene *scene)
 	{
 		for (int y = -data->image.width / 2; y <= data->image.width / 2; ++y)
 		{
-			viewp_point = (t_vec){x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z};
+			viewp_point = vec(x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
 			d = rotate_vec(viewp_point, scene->camera.direction);
-			pixel_color = trace_ray(scene->camera.position, vec_unit(d), *scene);
+			pixel_color = trace_ray((t_ray){scene->camera.position, vec_unit(d)}, *scene);
 			my_mlx_pixel_put(data, data->image.width / 2 + y, data->image.height / 2 - x, write_color(pixel_color));
 		}
 	}
