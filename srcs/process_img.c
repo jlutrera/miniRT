@@ -164,25 +164,16 @@ t_vec matrix_mul(double mat[3][3], t_vec v) {
 
 t_vec rotate_vec(t_vec v, t_vec d)
 {
-	// Normalizar el vector director
-	d = vec_unit(d);
+	t_vec	a;
+	t_vec	b;
 
-	t_vec	a = {0, 0, 0};
-	// Escoger un vector a que no sea paralelo a d
+	d = vec_unit(d);
 	if (d.x != 0 || d.y != 0)
 		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
     else
  		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
-	// Calcular los vectores base
-	t_vec b = vec_unit(vec_cross(a, d));
-	// Construir la matriz de rotación
-	double R[3][3] =
-	{
-		{a.x, b.x, d.x},
-		{a.y, b.y, d.y},
-		{a.z, b.z, d.z}
-	};
-	// Multiplicar la matriz de rotación por el vector v
+	b = vec_unit(vec_cross(a, d));
+	double R[3][3] = {{-a.x,  -b.x, d.x}, { a.y, -b.y, d.y}, { a.z,  b.z, d.z}};
 	return matrix_mul(R, v);
 }
 
@@ -192,23 +183,25 @@ void	process_img(t_data *data, t_scene *scene)
 	t_vec		viewp_point;
 	t_vec		d;
 	t_point3	pixel_color;
+	int			x;
+	int			y;
 
-	//Camera.
-	//calculo el ancho y alto del viewport
 	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
 	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
 	scene->camera.viewp.z = 1;
-	//Render
-	for (int y = -data->image.height / 2; y < data->image.height / 2; ++y)
+	y = -data->image.height / 2;
+	while (y < data->image.height / 2)
 	{
-		for (int x = -data->image.width / 2; x < data->image.width / 2; ++x)
+		x = -data->image.width / 2;
+		while (x < data->image.width / 2)
 		{
 			viewp_point = vec(x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
-			//d = vec_sub(viewp_point, vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
 			d = rotate_vec(viewp_point, scene->camera.direction);
 			pixel_color = trace_ray((t_ray){scene->camera.position, d}, *scene);
 			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));
+			++x;
 		}
+		++y;
 	}
 	mlx_put_image_to_window(data->vars.mlx, data->vars.win, data->image.img, 0, 0);
 }
