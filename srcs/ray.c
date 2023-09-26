@@ -34,3 +34,4 @@ t_vec	ray_ex(t_ray *ray , double t)
 	ray_expression.z = ray -> origin.z + ray -> dir.z * t ;
 	return (ray_expression); 
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/20 18:51:33 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:21:35 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ double ft_atod(char *s)
 	int		i;
 	double	value;
 	double	value2;
+	int		sign;	
 
 	aux = ft_split(s, '.');
 	i = 0;
@@ -42,6 +43,9 @@ double ft_atod(char *s)
 		i++;
 	if (i != 1 && i != 2)
 		return 0;
+	sign = 1;
+	if (ft_strcmp(aux[0], "-0") == 0)
+		sign = -1;
 	value = ft_atoi(aux[0]);
 	if (aux[1])
 		value2 = ft_atoi(aux[1]) / pow(10, ft_strlen2(aux[1]));
@@ -49,8 +53,10 @@ double ft_atod(char *s)
 	while (aux[++i])
 		free(aux[i]);
 	free(aux);
-	if (value >= 0)
+	if (value > 0)
 		return value + value2;
+	if (value == 0)
+		return value2 * sign;
 	return value - value2;
 }
 
@@ -224,20 +230,17 @@ void	ft_add_back_obj(t_lst_obj **obj, void **object, t_obj_type type,	double las
 	t_lst_obj	*aux;
 
 	new_obj = ft_init_obj(*object, type, last_dist);
-	if (new_obj) 
+	if (!new_obj)
+		return;
+	if (!(*obj))
+		*obj = new_obj;
+	else
 	{
-		if (!(*obj))
-		{
+		aux = ft_obj_last(*obj);
+		if (!aux)
 			*obj = new_obj;
-		}
 		else
-		{
-			aux = ft_obj_last(*obj);
-			if (!aux)
-				*obj = new_obj;
-			else
-				aux->next = new_obj;
-		}
+			aux->next = new_obj;
 	}
 }
 
@@ -254,21 +257,18 @@ t_sphere	*new_sphere(char **s, int *e)
 	new_sp->radius = ft_atod(s[2]) / 2;
 	if (ft_get_point(s[1], &new_sp->center) == -1)
 	{
-		free(new_sp);
 		*e = BAD_COORDINATES_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	if (new_sp->radius <= 0)
 	{
-		free(new_sp);
 		*e = NEGATIVE_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	if (ft_get_color(s[3], &new_sp->color) == -1)
 	{	
-		free(new_sp);
 		*e = COLOUR_E;
-		return NULL;
+		return free(new_sp), NULL;
 	}
 	return (new_sp);
 }
@@ -297,7 +297,7 @@ t_plane	*new_plane(char **s, int *e)
 		*e = MEMORY_E;		
 		return NULL;
 	}
-	if (ft_get_point(s[1], &new_pl->coordenate) == -1 ||
+	if (ft_get_point(s[1], &new_pl->coordinate) == -1 ||
 		ft_get_vector(s[2], &new_pl->direction) == -1)
 	{
 		free(new_pl);
@@ -345,7 +345,7 @@ t_cylinder	*new_cylinder(char **s, int *e)
 	}
 	new_cy->radius = ft_atod(s[3]) / 2;
 	new_cy->height = ft_atod(s[4]);
-	if (ft_get_point(s[1], &new_cy->coordenate) == -1 ||
+	if (ft_get_point(s[1], &new_cy->coordinate) == -1 ||
 		ft_get_vector(s[2], &new_cy->direction) == -1)
 	{
 		free(new_cy);

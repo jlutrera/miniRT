@@ -12,33 +12,33 @@
 
 #include "../include/miniRT.h"
 
-t_vec	 vec_add (t_vec *v1 , t_vec *v2) 
+t_vec	 vec_add (t_vec v1 , t_vec v2) 
 { 
 	t_vec	vec_result;
 
-	vec_result.x = v1->x + v2->x;
-	vec_result.y = v1->y + v2->y;
-	vec_result.z = v1->z + v2->z;
+	vec_result.x = v1.x + v2.x;
+	vec_result.y = v1.y + v2.y;
+	vec_result.z = v1.z + v2.z;
 	return (vec_result);
 }
 
-t_vec	 vec_sub (t_vec *v1 , t_vec *v2) 
+t_vec	 vec_sub (t_vec v1 , t_vec v2) 
 { 
 	t_vec	vec_result ;
 
-	vec_result.x = v1->x - v2->x;
-	vec_result.y = v1->y - v2->y;
-	vec_result.z = v1->z - v2->z;
+	vec_result.x = v1.x - v2.x;
+	vec_result.y = v1.y - v2.y;
+	vec_result.z = v1.z - v2.z;
 	return (vec_result);
 }
 
-t_vec	vec_mul(t_vec *v1, double t)
+t_vec	vec_mul(t_vec v, double t)
 {
 	t_vec	vec_result;
 
-	vec_result . x = v1 -> x * t ; 
-	vec_result . y = v1 -> y * t ; 
-	vec_result . z = v1 -> z * t ; 
+	vec_result . x = v.x * t ; 
+	vec_result . y = v.y * t ; 
+	vec_result . z = v.z * t ; 
 	return (vec_result) ; 
 }
 
@@ -56,7 +56,7 @@ t_vec	vec_cal(t_vec *v, double *a, int n)
 	return (vec_result);
 }
 
-t_vec vec(double x, double y, double z)
+t_vec	vec(double x, double y, double z)
 {
 	t_vec	new_vec;
 

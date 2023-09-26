@@ -14,8 +14,8 @@
 
 static int	ft_close(t_vars *vars)
 {
-	mlx_destroy_window((*vars).mlx, (*vars).win);
-	(*vars).win = NULL;
+	mlx_destroy_window(vars->mlx, vars->win);
+	vars->win = NULL;
 	exit (0);
 }
 
@@ -23,6 +23,7 @@ static int	k_event(int keycode, t_vars *vars)
 {
 	if (keycode == K_ESC)
 		ft_close(vars);
+	return (0);
 /*
 	else if (keycode == K_RIGHT)
 	//	ft_translate(10, 0, vars);
@@ -41,8 +42,8 @@ static int	k_event(int keycode, t_vars *vars)
 	else if (keycode == K_W)
 	//	ft_rotate(0.05, vars);
 */
-	return (0);
 }
+
 /*
 static int	mouse_press(int button, int x, int y, t_vars *vars)
 {
@@ -95,8 +96,8 @@ static int	mouse_move(int x, int y, t_vars *vars)
 */
 void	my_hooks(t_vars *vars)
 {
-	mlx_hook((*vars).win, 17, 1L << 17, &ft_close, vars);
-	mlx_hook((*vars).win, 2, 1L << 0, &k_event, vars);
+	mlx_hook(vars->win, 17, 1L << 17, &ft_close, vars);
+	mlx_hook(vars->win, 2, 1L << 0, &k_event, vars);
 //	mlx_hook((*vars).win, 4, 1L << 2, &mouse_press, vars);
 //	mlx_hook((*vars).win, 5, 1L << 3, &mouse_release, vars);
 //	mlx_hook((*vars).win, 6, 1L << 6, &mouse_move, vars);

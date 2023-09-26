@@ -1,132 +1,214 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   process_img.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 09:49:22 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/18 12:18:30 by adpachec         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/miniRT.h"
 
-void rotate_plane(void *mlx, void *window, double angle)
+double compute_lighting(t_scene scene, t_vec P, t_vec N, t_vec D, double s)
 {
-    double cos_angle = cos(angle);
-    double sin_angle = sin(angle);
+	t_vec	L;
+	t_vec R;
+	double	intensity;
+	double	n_dot_l;
+	double 	r_dot_v;
 
-    int center_x = WIDTH * 0.6 / 2;
-    int center_y = HEIGHT * 0.6 / 2;
-
-    for (int x = 0; x < WIDTH * 0.6; x++)
-    {
-        for (int y = 0; y < HEIGHT * 0.6; y++)
-        {
-            int new_x = (x - center_x) * cos_angle - (y - center_y) * sin_angle + center_x;
-            int new_y = (x - center_x) * sin_angle + (y - center_y) * cos_angle + center_y;
-
-            if (new_x >= 0 && new_x < WIDTH && new_y >= 0 && new_y < HEIGHT)
-            {
-                int plane_color = mlx_get_color_value(mlx, 0xFFFFFF); // Color blanco
-                mlx_pixel_put(mlx, window, new_x, new_y, plane_color);
-            }
-        }
-    }
+	intensity = scene.ambient.ratio;
+	L = vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P);
+	//Diffuse light
+	n_dot_l = vec_dot(N, L);
+	if (n_dot_l > EPSILON)
+		intensity += scene.light.bright * n_dot_l / (vec_length(N) * vec_length(L));
+	//Specular light
+	if (s > 0)
+	{
+		R = vec_sub(vec_mul(N, 2 * vec_dot(N, L)), L);
+		r_dot_v = vec_dot(R, D);
+		if (r_dot_v > EPSILON)
+			intensity += scene.light.bright * pow(r_dot_v / (vec_length(R) * vec_length(D)), s);
+	}
+	return (intensity);
 }
 
-void draw_plane(t_vars *vars)
+void	intersect_sphere(t_ray ray, t_sphere *sp, t_point *t)
 {
-    int x, y;
-    int plane_color = 0xFFFFFF; // Color blanco (formato RGB)
+	t_vec 	co;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
 
-    for (x = 0; x < WIDTH * 0.6; x++)
-    {
-        for (y = 0; y < HEIGHT * 0.6; y++)
-        {
-            mlx_pixel_put(vars->mlx, vars->win, x, y, plane_color);
-        }
-    }
+	co = vec_sub(vec(ray.origin.x, ray.origin.y, ray.origin.z), vec(sp->center.x, sp->center.y, sp->center.z));
+	a = vec_dot(ray.dir, ray.dir);
+	b = 2 * vec_dot(co, ray.dir);
+	c = vec_dot(co, co) - sp->radius * sp->radius;
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < EPSILON)
+		*t = (t_point){INFINITY, INFINITY};
+	else
+		*t = (t_point){(-b + sqrt(discriminant)) / (2 * a), (-b - sqrt(discriminant)) / (2 * a)};
 }
 
-void draw_sphere_with_highlight(t_vars *window, int x, int y, int radius, int color, float light_direction[3]) {
-    // Dividir la esfera en círculos y dibujarlos
-    for (int z = -radius; z <= radius; z++) {
-        int circle_radius = (int)sqrt(radius * radius - z * z);
-
-        for (int i = x - circle_radius; i <= x + circle_radius; i++) {
-            for (int j = y - circle_radius; j <= y + circle_radius; j++) {
-                if ((i - x) * (i - x) + (j - y) * (j - y) <= circle_radius * circle_radius) {
-                    // Calcula el vector normal
-                    float normal[3] = {i - x, j - y, z};
-
-                    // Normaliza el vector normal
-                    float length = sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
-                    normal[0] /= length;
-                    normal[1] /= length;
-                    normal[2] /= length;
-
-                    // Calcula el coseno del ángulo entre la luz y la normal
-                    float cos_angle = normal[0] * light_direction[0] + normal[1] * light_direction[1] + normal[2] * light_direction[2];
-
-                    // Ajusta la intensidad del color en función del ángulo
-                    int pixel_color = color;
-                    if (cos_angle > 0.5) {
-                        // Aumenta la intensidad del color
-                        pixel_color = 0xFFFFFF; // Color blanco brillante
-                    }
-
-                    mlx_pixel_put(window->mlx, window->win, i, j, pixel_color);
-                }
-            }
-        }
-    }
-}
-
-void draw_sphere(t_vars *window, int x, int y, int radius, int color) {
-	 int i, j;
-    // Dividir la esfera en círculos y dibujarlos
-    for (int z = -radius; z <= radius; z++) {
-        int circle_radius = (int)sqrt(radius * radius - z * z);
-    	for (i = x - circle_radius; i <= x + circle_radius; i++) {
-        	for (j = y - circle_radius; j <= y + circle_radius; j++) {
-           		if ((i - x) * (i - x) + (j - y) * (j - y) <= circle_radius * circle_radius) {
-                	mlx_pixel_put(window->mlx, window->win, i, j, color); // Color blanco
-            	}
-        	}
-    	}
-    }
-}
-
-void	process_img(t_scene scene)
+void intersect_plane(t_ray ray, t_plane *plane, t_point *t)
 {
-	t_vars	vars;
-	int		sphere_x = WIDTH / 2;
-    int		sphere_y = HEIGHT / 2;
-    int		sphere_radius = 50;
-	int		sphere_color = 0xFF00;
-    char	*name;
+    t_vec	plane_vec;
+    t_vec	OP;
+	t_vec	plane_origin;
+    double	denom;
 
-	t_point3 rayOrigin = {1, 0, 0};
-    t_point3 rayDirection = {0, -0.5, -0.5};
-	float lightDirection[3] = {0, -0.5, -0.5};
+	denom = vec_dot(plane->direction, ray.dir);
+    plane_vec = vec(plane->coordinate.x, plane->coordinate.y, plane->coordinate.z);
+	plane_origin = vec(ray.origin.x, ray.origin.y, ray.origin.z);
+	OP = vec_sub(plane_vec, plane_origin);
+    if (fabs(denom) < EPSILON)
+        *t = (t_point){INFINITY, INFINITY};
+	else
+		*t = (t_point){vec_dot(plane->direction, OP) / denom, vec_dot(plane->direction, OP) / denom};
+}
+/*
+void intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
+{
 
-    t_sphere sphere = {{0, 0, -5}, 50.0, {255,0,0}};
-    float t;
+}
+*/
+void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_closest)
+{
+	t_lst_obj	*tmp;
+	t_point		t;
 
-    if (intersectRaySphere(rayOrigin, rayDirection, sphere, &t)) {
-        printf("Intersección en t = %f\n", t);
-    } else {
-        printf("No hay intersección.\n");
-    }
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, name);
-   // draw_sphere(&vars, sphere_x, sphere_y, sphere_radius, sphere_color);
-	draw_sphere_with_highlight(&vars, sphere_x, sphere_y, sphere_radius, sphere_color, lightDirection),
-	draw_plane(&vars);
-	rotate_plane(vars.mlx, vars.win, 3.14 / 6); // Rotar 30 grados (pi/6 radianes) en sentido horario
-	
-	my_hooks(&vars);
-	mlx_loop(vars.mlx);
+	while (obj)
+	{
+		if (obj->type == SPHERE)
+			intersect_sphere(ray, (t_sphere *)obj->object, &t);
+		else if (obj->type == PLANE)
+			intersect_plane(ray, (t_plane *)obj->object, &t);
+		//else
+		//   intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+		tmp = *closest_obj;
+		if ((t.x > 1.0  && t.x < *t_closest) || (t.y > 1.0  && t.y < *t_closest))
+		{
+			tmp = obj;
+			if (t.y < *t_closest)
+				*t_closest = t.y;
+			else
+				*t_closest = t.x;
+		}
+		if (tmp != *closest_obj)
+			*closest_obj = tmp;
+		obj = obj->next;
+	}
+}
+
+t_point3	compute_sphere_light(t_sphere *sp, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(vec_sub(P, vec(sp->center.x, sp->center.y, sp->center.z)));
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){sp->color.r * i, sp->color.g * i, sp->color.b * i};
+}
+
+t_point3	compute_plane_light(t_plane *pl, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(pl->direction);
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){pl->color.r * i, pl->color.g * i, pl->color.b * i};
+}
+/*
+t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec P, t_ray ray)
+{
+	t_vec 		N;
+	double 		i;
+
+	N = vec_unit(cy->direction);
+	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1), 300);
+	return (t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i};
+}
+*/
+t_point3	trace_ray(t_ray ray, t_scene scene)
+{
+	t_lst_obj	*closest_obj;
+	double		t_closest;
+	t_vec 		P;
+
+	t_closest = INFINITY;
+	closest_obj = NULL;
+	get_closest(ray, scene.obj, &closest_obj, &t_closest);
+	if (closest_obj)
+	{
+		P = vec_add(vec(ray.origin.x, ray.origin.y, ray.origin.z), vec_mul(ray.dir, t_closest));
+		if (closest_obj->type == SPHERE)
+			return compute_sphere_light(closest_obj->object, scene, P, ray);
+		else if (closest_obj->type == PLANE)
+			return compute_plane_light(closest_obj->object, scene, P, ray);
+	//	else
+	//	return compute_cylinder_light(closest_obj->object, scene, P, ray);
+	}
+	return (t_point3){0, 0, 0};
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
+{
+	char	*dst;
+
+	dst = data->image.addr + (y * data->image.line_length + x * (data->image.bits_per_pixel / 8));
+	*(unsigned int*)dst = colour;
+}
+
+t_vec matrix_mul(double mat[3][3], t_vec v) {
+	return (t_vec) {
+		.x = mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z,
+		.y = mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z,
+		.z = mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z
+	};
+}
+
+t_vec rotate_vec(t_vec v, t_vec d)
+{
+	// Normalizar el vector director
+	d = vec_unit(d);
+
+	t_vec	a = {0, 0, 0};
+	// Escoger un vector a que no sea paralelo a d
+	if (d.x != 0 || d.y != 0)
+		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
+    else
+ 		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
+	// Calcular los vectores base
+	t_vec b = vec_unit(vec_cross(a, d));
+	// Construir la matriz de rotación
+	double R[3][3] =
+	{
+		{a.x, b.x, d.x},
+		{a.y, b.y, d.y},
+		{a.z, b.z, d.z}
+	};
+	// Multiplicar la matriz de rotación por el vector v
+	return matrix_mul(R, v);
+}
+
+
+void	process_img(t_data *data, t_scene *scene)
+{
+	t_vec		viewp_point;
+	t_vec		d;
+	t_point3	pixel_color;
+
+	//Camera.
+	//calculo el ancho y alto del viewport
+	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
+	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
+	scene->camera.viewp.z = 1;
+	//Render
+	for (int y = -data->image.height / 2; y < data->image.height / 2; ++y)
+	{
+		for (int x = -data->image.width / 2; x < data->image.width / 2; ++x)
+		{
+			viewp_point = vec(x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
+			//d = vec_sub(viewp_point, vec(scene->camera.position.x, scene->camera.position.y, scene->camera.position.z));
+			d = rotate_vec(viewp_point, scene->camera.direction);
+			pixel_color = trace_ray((t_ray){scene->camera.position, d}, *scene);
+			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));
+		}
+	}
+	mlx_put_image_to_window(data->vars.mlx, data->vars.win, data->image.img, 0, 0);
 }
