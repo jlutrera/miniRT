@@ -7,7 +7,9 @@ S_DIR		=	./srcs/
 #Files
 LIB_A		=	libft.a
 SRCS		=	$(S_DIR)process_file.c $(S_DIR)main.c $(S_DIR)vec_operations1.c $(S_DIR)vec_operations2.c \
-				$(S_DIR)ray.c $(S_DIR)print_errors.c $(S_DIR)my_hooks.c $(S_DIR)color.c $(S_DIR)process_img.c
+				$(S_DIR)ray.c $(S_DIR)print_errors.c $(S_DIR)my_hooks.c $(S_DIR)color.c $(S_DIR)process_img.c \
+				$(S_DIR)sphere.c $(S_DIR)plane.c $(S_DIR)cylinder.c $(S_DIR)light_shadow.c $(S_DIR)parser_utils.c \
+				$(S_DIR)parser_gets.c $(S_DIR)parser_loads.c $(S_DIR)parser_lists.c $(S_DIR)parser.c
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 HEADER		=	$(I_DIR)miniRT.h $(I_DIR)keycodes.h $(I_DIR)errors.h
 LIB_N		=	$(L_DIR)$(LIB_A)

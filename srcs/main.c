@@ -3,44 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/09/25 13:06:40 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:19:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
 
-void	ft_init(t_scene **scene)
-{
-	*scene = (t_scene *) malloc (sizeof(t_scene) * 1);
-	if (!(*scene))
-		exit (1);
-	(*scene)->ambient.declared = false;
-    (*scene)->camera.declared = false;
-    (*scene)->light.declared = false;
-    (*scene)->obj = NULL;
-}
-
-void free_memory(t_scene *scene)
-{
-	t_lst_obj *aux;
-	
-	if ((scene)->obj)
-	{
-		while (scene->obj)
-		{
-			aux = (scene)->obj;
-			free(aux->object);
-			free(aux);
-			(scene)->obj = (scene)->obj->next;
-		}	
-	}
-	free(scene);
-}
-
-void	print_scene(t_scene *scene)
+static void	print_scene(t_scene *scene)
 {
 	t_plane *plane;
 	t_sphere *sphere;
@@ -103,16 +75,40 @@ void	print_scene(t_scene *scene)
 	}
 }
 
+static void	ft_init(t_scene **scene)
+{
+	*scene = (t_scene *) malloc (sizeof(t_scene) * 1);
+	if (!(*scene))
+		exit (1);
+	(*scene)->ambient.declared = false;
+    (*scene)->camera.declared = false;
+    (*scene)->light.declared = false;
+    (*scene)->obj = NULL;
+}
 
-void init_mlx(t_data *data)
+static void	free_memory(t_scene *scene)
+{
+	t_lst_obj *aux;
+
+	if ((scene)->obj)
+	{
+		while (scene->obj)
+		{
+			aux = (scene)->obj;
+			free(aux->object);
+			free(aux);
+			(scene)->obj = (scene)->obj->next;
+		}	
+	}
+	free(scene);
+}
+
+static void init_mlx(t_data *data)
 {
 	data->image.width = WIDTH;
-
-	//Calculo la altura de la ventana en base al aspect ratio
 	data->image.height = (int)(data->image.width / (ASPECT_RATIO));
 	if (data->image.height < 1)
 		data->image.height = 1;
-	//Se crea la ventana donde representamos la imagen, canvas
 	data->vars.mlx = mlx_init();
 	data->vars.win = mlx_new_window(data->vars.mlx, data->image.width , data->image.height, "miniRT");
 	data->image.img = mlx_new_image(data->vars.mlx, data->image.width , data->image.height);
@@ -138,7 +134,7 @@ int	main(int argc, char **argv)
 	}
 	print_scene(scene);
 	init_mlx(&data);
-	process_img(&data, scene);  //proceso la esfera
+	process_img(&data, scene);
 	my_hooks(&data.vars);
 	mlx_loop(data.vars.mlx);
 	free_memory(scene);

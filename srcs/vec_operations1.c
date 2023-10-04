@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_operations1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:41:25 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/18 13:42:05 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/27 23:13:40 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,6 @@ t_vec	vec_mul(t_vec v, double t)
 	return (vec_result) ; 
 }
 
-t_vec	vec_cal(t_vec *v, double *a, int n)
-{
-	t_vec	vec_result;
-
-	vec_result = vec(0, 0, 0);
-	while (n--)
-	{
-		vec_result.x += v[n].x * a[n];
-		vec_result.y += v[n].y * a[n];
-		vec_result.z += v[n].z * a[n];
-	}
-	return (vec_result);
-}
-
 t_vec	vec(double x, double y, double z)
 {
 	t_vec	new_vec;
@@ -66,3 +52,20 @@ t_vec	vec(double x, double y, double z)
 	return (new_vec);
 }
 
+t_vec vec_rotate(t_vec v, t_vec d)
+{
+	t_vec	a;
+	t_vec	b;
+	t_vec   v_rotated;
+
+	d = vec_unit(d);
+	if (d.x != 0 || d.y != 0)
+		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
+    else
+ 		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
+	b = vec_unit(vec_cross(a, d));
+	v_rotated.x = -a.x * v.x - b.x * v.y + d.x * v.z;
+	v_rotated.y = a.y * v.x - b.y * v.y + d.y * v.z;
+	v_rotated.z = a.z * v.x + b.z * v.y + d.z * v.z;
+	return (v_rotated);
+}

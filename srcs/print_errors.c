@@ -12,28 +12,9 @@
 
 #include "../include/miniRT.h"
 
-int	ft_errormsg(int e, int n)
+static void	more_errormsg(int e, int n)
 {
-	ft_printf("Error\n");
-	if (e == FILE_E)
-		ft_printf("It is not possible to open the file\n");
-	else if (e == SYNTAX_E)
-		ft_printf("Correct syntax: ./miniRT <file.rt>\n");
-	else if (e == MORE_THAN_ONE_AMBIENT_E)
-		ft_printf("There is more than one Ambient element\n");
-	else if (e == MORE_THAN_ONE_CAMERA_E)
-		ft_printf("There is more than one Camera element\n");
-	else if (e == MORE_THAN_ONE_LIGHT_E)
-		ft_printf("There is more than one Light element\n");
-	else if (e == BAD_IDENTIFIER_E)
-		ft_printf("Line %i has a bad identifier. Use A, C, L, sp, pl, cy\n", n);
-	else if (e == AMBIENT_NOT_DECLARED)
-		ft_printf("The Ambient element is not declared\n");
-	else if (e == CAMERA_NOT_DECLARED)
-		ft_printf("The Camera element is not declared\n");
-	else if (e == LIGHT_NOT_DECLARED)
-		ft_printf("The Light element is not declared\n");
-	else if (e == NUM_COMPONENTS_E)
+	if (e == NUM_COMPONENTS_E)
 		ft_printf("Line %i has a bad number of components\n", n);
 	else if (e == RATIO_E)
 		ft_printf("Ratio number at line %i must be betwwen 0 and 1\n", n);
@@ -55,5 +36,28 @@ int	ft_errormsg(int e, int n)
 		ft_printf("The file must have .rt extension\n");
 	else
 		ft_printf("Unknown error\n");
-	return (e);
+}
+
+int	ft_errormsg(int e, int n)
+{
+	ft_printf("Error\n");
+	if (e == FILE_E)
+		return ft_printf("It is not possible to open the file\n"), e;
+	if (e == SYNTAX_E)
+		return ft_printf("Correct syntax: ./miniRT <file.rt>\n"), e;
+	if (e == MORE_THAN_ONE_AMBIENT_E)
+		return ft_printf("There is more than one Ambient element\n"), e;
+	if (e == MORE_THAN_ONE_CAMERA_E)
+		return ft_printf("There is more than one Camera element\n"), e;
+	if (e == MORE_THAN_ONE_LIGHT_E)
+		return ft_printf("There is more than one Light element\n"), e;
+	if (e == BAD_IDENTIFIER_E)
+		return ft_printf("Line %i has a bad identifier. Use A, C, L, sp, pl, cy\n", n), e;
+	if (e == AMBIENT_NOT_DECLARED)
+		return ft_printf("The Ambient element is not declared\n"), e;
+	if (e == CAMERA_NOT_DECLARED)
+		return ft_printf("The Camera element is not declared\n"), e;
+	if (e == LIGHT_NOT_DECLARED)
+		return ft_printf("The Light element is not declared\n"), e;
+	return more_errormsg(e, n), e;
 }
