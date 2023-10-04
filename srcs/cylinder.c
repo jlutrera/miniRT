@@ -29,14 +29,14 @@ void intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
 	t_vec OD_perp = vec_sub(OD, vec_mul(CD, vec_dot(OD, CD)));
 
 	if (vec_length(OD_perp) < EPSILON) 
-    	OD_perp = vec_unit(vec(-cy->direction.x, cy->direction.y, cy->direction.z)); // O cualquier otro vector que sea perpendicular a CD
+    	OD_perp = vec(1,0,0); // O cualquier otro vector que sea perpendicular a CD
 	
 	double a = vec_dot(OD_perp, OD_perp);
 	double b = 2 * vec_dot(OC_perp, OD_perp);
 	double c = vec_dot(OC_perp, OC_perp) - radius * radius;
 	double discriminant = b * b - 4 * a * c;
 	//No hay intersección
-	if (discriminant < 0)
+	if (discriminant < EPSILON)
 	{
 		*t = (t_point){INFINITY, INFINITY};
 		return;
@@ -84,10 +84,10 @@ t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec P, t_ray ra
 
 	h = vec_dot(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)), cy->direction);
 	if (fabs(h - cy->height) <= EPSILON || fabs(h) <= EPSILON)
-		r = cy->coordinate.z;
+		r = P.z - cy->coordinate.z;
 	else 
 		r = cy->height * h / fabs(h) + cy->coordinate.z;
-	N = vec_unit(vec( P.x - cy->coordinate.x, P.y - cy->coordinate.y, P.z - r));
+	N = vec_unit(vec( P.x - cy->coordinate.x, P.y - cy->coordinate.y, r));
 	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1));
 	i += compute_shadows(scene, P, N, vec_mul(ray.dir, -1));
 	return (t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i};

@@ -63,9 +63,9 @@ t_vec vec_rotate(t_vec v, t_vec d)
 		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
     else
  		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
-	b = vec_unit(vec_cross(a, d));
-	v_rotated.x = -a.x * v.x - b.x * v.y + d.x * v.z;
-	v_rotated.y = a.y * v.x - b.y * v.y + d.y * v.z;
+	b = vec_unit(vec_cross(d, a));
+	v_rotated.x = a.x * v.x + b.x * v.y + d.x * v.z;
+	v_rotated.y = a.y * v.x + b.y * v.y + d.y * v.z;
 	v_rotated.z = a.z * v.x + b.z * v.y + d.z * v.z;
 	return (v_rotated);
 }
