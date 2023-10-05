@@ -34,9 +34,10 @@ double ft_atod(char *s)
 	sign = 1;
 	if (aux[0][0] == '-')
 		sign = -1;
-	value = ft_atoi(aux[0]);
+	value = ft_atol(aux[0]);
+	value2 = 0;
 	if (aux[1])
-		value2 = ft_atoi(aux[1]) / pow(10, ft_strlen2(aux[1]));
+		value2 = ft_atol(aux[1]) / pow(10, ft_strlen2(aux[1]));
 	i = -1;
 	while (aux[++i])
 		free(aux[i]);

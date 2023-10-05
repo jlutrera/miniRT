@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/28 23:57:29 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:05:48 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int 		ft_load_light(t_light *light, char **s);
 t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist);
 t_lst_obj 	*ft_obj_last(t_lst_obj *obj);
 void		ft_add_back_obj(t_lst_obj **obj, void **object, t_obj_type type, double last_dist);
+double ft_atod2(char *s);
 
 #endif

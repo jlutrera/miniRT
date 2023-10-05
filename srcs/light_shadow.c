@@ -31,15 +31,15 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_c
 double compute_shadows(t_scene scene, t_vec P, t_vec N, t_vec D)
 {
 	t_vec		L;
-	t_vec		R;
+	// t_vec		R;
 	double		intensity;
 	double 		dot_v;
 	t_lst_obj	*closest_obj;
-	double		s;
+	// double		s;
 
 	closest_obj = NULL;
 	intensity = 0;
-	s = 3000;
+	// s = 3000;
 	N = vec_unit(N);
 	D = vec_unit(D);
 	L = vec_unit(vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P));
@@ -51,10 +51,10 @@ double compute_shadows(t_scene scene, t_vec P, t_vec N, t_vec D)
 		if (dot_v > EPSILON)
 			intensity -= scene.light.bright * dot_v;
 		//Specular light
-		R = vec_unit(vec_sub(vec_mul(N, 2 * dot_v), L));
-		dot_v = vec_dot(R, D);
-		if (dot_v > EPSILON)
-			intensity -= scene.light.bright * pow(dot_v, s);
+		// R = vec_unit(vec_sub(vec_mul(N, 2 * dot_v), L));
+		// dot_v = vec_dot(R, D);
+		// if (dot_v > EPSILON)
+		// 	intensity -= scene.light.bright * pow(dot_v, s);
 	}
 	return (intensity);
 }

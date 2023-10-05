@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+         #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/27 18:05:52 by jutrera-          #+#    #+#              #
-#    Updated: 2022/10/15 11:35:42 by jutrera-         ###   ########.fr        #
+#    Updated: 2023/10/05 12:13:44 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ CFLAGS		=	-Wall -Wextra -Werror -Wpedantic -fsanitize=address -O3
 I_DIR		=	include/
 O_DIR		=	obj/
 S_DIR		=	./srcs/
-SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
+SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_atol.c	\
+				./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
 				./srcs/ft_digitutils.c	./srcs/ft_isalnum.c 	 ./srcs/ft_isalpha.c \
 				./srcs/ft_isascii.c 	./srcs/ft_isdigit.c 	 ./srcs/ft_isprint.c \
 				./srcs/ft_itoa.c 		./srcs/ft_lstadd_front.c ./srcs/ft_lstclear.c \
