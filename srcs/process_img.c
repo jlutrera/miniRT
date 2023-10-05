@@ -40,7 +40,7 @@ void	process_img(t_data *data, t_scene *scene)
 
 	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
 	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
-	scene->camera.viewp.z = 1;
+	scene->camera.viewp.z = 0.75;
 y = -data->image.height / 2;
 	while (y < data->image.height / 2)
 	{
