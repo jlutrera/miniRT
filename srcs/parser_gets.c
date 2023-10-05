@@ -67,5 +67,11 @@ int ft_get_color(char *s, t_color *color)
 	color->r = values[0];
 	color->g = values[1];
 	color->b = values[2];
+	if (color->r == 0 && color->g == 0 && color->b == 0)
+	{
+		color->r = 30;
+		color->g = 30;
+		color->b = 30;
+	}
 	return 0;
 }

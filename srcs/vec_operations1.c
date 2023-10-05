@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_operations1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:41:25 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/27 23:13:40 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:23:38 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_vec vec_rotate(t_vec v, t_vec d)
 	t_vec	b;
 	t_vec   v_rotated;
 
-	d = vec_unit(d);
 	if (d.x != 0 || d.y != 0)
 		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
     else
