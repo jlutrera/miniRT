@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:41:25 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/05 11:23:38 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:43:50 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ t_vec	vec_mul(t_vec v, double t)
 {
 	t_vec	vec_result;
 
-	vec_result . x = v.x * t ; 
-	vec_result . y = v.y * t ; 
-	vec_result . z = v.z * t ; 
+	vec_result.x = v.x * t;
+	vec_result.y = v.y * t;
+	vec_result.z = v.z * t;
 	return (vec_result) ; 
 }
 

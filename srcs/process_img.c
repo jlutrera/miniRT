@@ -41,13 +41,14 @@ void	process_img(t_data *data, t_scene *scene)
 	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
 	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x / data->image.width;
 	scene->camera.viewp.z = 1;
-	y = -data->image.height / 2;
+y = -data->image.height / 2;
 	while (y < data->image.height / 2)
 	{
 		x = -data->image.width / 2;
 		while (x < data->image.width / 2)
 		{
-			viewp_point = vec(x * scene->camera.viewp.x / data->image.width, y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
+			viewp_point = vec(x * scene->camera.viewp.x / data->image.width,
+					y * scene->camera.viewp.y / data->image.height, scene->camera.viewp.z);
 			d = vec_rotate(viewp_point, scene->camera.direction);
 			pixel_color = trace_ray((t_ray){scene->camera.position, d}, *scene);
 			my_mlx_pixel_put(data, data->image.width / 2 + x, data->image.height / 2 - y, write_color(pixel_color));

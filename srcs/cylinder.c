@@ -84,14 +84,14 @@ t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec P, t_ray ra
 	cy->direction = vec_unit(cy->direction);
 	h = vec_dot(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)), cy->direction);
 	if (fabs(h - cy->height) <= EPSILON)
-		N = vec_unit(cy->direction); // Normal para la base superior
+		N = cy->direction; // Normal para la base superior
 	else if (fabs(h) <= EPSILON)
-		N = vec_unit(vec_mul(cy->direction, -1)); // Normal para la base inferior
+		N = vec_mul(cy->direction, -1); // Normal para la base inferior
 	else 
 	{
 		t_vec CP = vec_unit(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)));
 		t_vec proj = vec_mul(cy->direction, vec_dot(CP, cy->direction));
-		N = vec_unit(vec_sub(CP, proj));
+		N = (vec_sub(CP, proj));
 	}
 	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1));
 	i += compute_shadows(scene, P, N, vec_mul(ray.dir, -1));
