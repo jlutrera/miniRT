@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:55:16 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/20 18:57:03 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:08:54 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,3 @@ t_vec	ray_ex(t_ray *ray , double t)
 	ray_expression.z = ray -> origin.z + ray -> dir.z * t ;
 	return (ray_expression); 
 }
-
