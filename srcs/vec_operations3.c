@@ -1,42 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   vec_operations3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/20 13:17:41 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 17:43:44 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/10/06 18:33:31 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 19:48:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "../include/miniRT.h"
 
-char	*ft_strdup(const char *src)
+t_vec	point_to_vec(t_point3 p)
 {
-	int		i;
-	char	*dest;
+	t_vec	new_vec;
 
-	dest = (char *)malloc(ft_strlen(src) * sizeof(char) + 1);
-	if (!dest)
-		return (0);
-	i = -1;
-	while (src[++i])
-		dest[i] = src[i];
-	dest[i] = '\0';
-	return (dest);
+	new_vec.x = p.x;
+	new_vec.y = p.y;
+	new_vec.z = p.z;
+	return (new_vec);
 }
-/*
-#include <stdio.h>
-#include <stdlib.h>
 
-static size_t	ft_strlen(const char *str)
+t_point3	vec_to_point(t_vec v)
 {
-	size_t	i;
+	t_point3	p;
 
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	p.x = v.x;
+	p.y = v.y;
+	p.z = v.z;
+	return (p);
 }
-*/

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 18:54:41 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 18:56:13 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/miniRT.h"
 
 static void	ft_free_data(char **data, char	*line_aux)
 {
-	int 	i;
+	int	i;
 
 	i = -1;
 	while (data[++i])
@@ -13,9 +25,9 @@ static void	ft_free_data(char **data, char	*line_aux)
 
 static bool	bad_line(char *line_aux)
 {
-	return ft_strlen2(line_aux) > 1 &&
-		(line_aux[ft_strlen2(line_aux) - 1] == 13 ||
-		 line_aux[ft_strlen2(line_aux) - 1] == 10);
+	return (ft_strlen2(line_aux) > 1
+		&& (line_aux[ft_strlen2(line_aux) - 1] == 13
+			|| line_aux[ft_strlen2(line_aux) - 1] == 10));
 }
 
 int	parse_line(char *line, t_scene **scene)
@@ -26,7 +38,7 @@ int	parse_line(char *line, t_scene **scene)
 
 	line_aux = ft_strtrim(line, " ");
 	while (bad_line(line_aux))
-		line_aux[ft_strlen2(line_aux) - 1] = '\0';	
+		line_aux[ft_strlen2(line_aux) - 1] = '\0';
 	data = ft_split(line_aux, ' ');
 	if (data[0][0] == 0 || data[0][0] == 13 || data[0][0] == 10)
 		error = SUCCESS;
@@ -44,5 +56,5 @@ int	parse_line(char *line, t_scene **scene)
 		error = ft_load_cylinders(&((*scene)->obj), data);
 	else
 		error = BAD_IDENTIFIER_E;
-	return ft_free_data(data, line_aux), error;
+	return (ft_free_data(data, line_aux), error);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 18:51:27 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 18:54:25 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/miniRT.h"
 
 double	ft_get_dist(void)
@@ -5,19 +17,18 @@ double	ft_get_dist(void)
 	return (0.0);
 }
 
-int is_normalized(t_vec vector)
+int	is_normalized(t_vec vector)
 {
-    
 	if (vector.x > 1 || vector.x < -1)
 		return (0);
 	else if (vector.y > 1 || vector.y < -1)
 		return (0);
 	else if (vector.z > 1 || vector.z < -1)
 		return (0);
-    return (1);
+	return (1);
 }
 
-double ft_atod(char *s)
+double	ft_atod(char *s)
 {
 	char	**aux;
 	int		i;
@@ -30,7 +41,7 @@ double ft_atod(char *s)
 	while (aux[i])
 		i++;
 	if (i != 1 && i != 2)
-		return 0;
+		return (0);
 	sign = 1;
 	if (aux[0][0] == '-')
 		sign = -1;
@@ -42,16 +53,17 @@ double ft_atod(char *s)
 	while (aux[++i])
 		free(aux[i]);
 	free(aux);
-	return value + value2 * sign;
+	return (value + value2 * sign);
 }
 
-int check_comps(char **s, int n)
+int	check_comps(char **s, int n)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while (s[++i]);
+	while (s[++i])
+		;
 	if (i != n)
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }

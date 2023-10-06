@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 17:55:43 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 18:09:51 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
@@ -7,7 +19,7 @@ typedef struct s_vars
 	void	*win;
 }			t_vars;
 
-typedef struct	s_image
+typedef struct s_image
 {
 	void	*img;
 	char	*addr;
@@ -16,21 +28,21 @@ typedef struct	s_image
 	int		endian;
 	int		height;
 	int		width;
-} 			t_image;
+}				t_image;
 
 typedef struct s_vec
 {
 	double	x;
 	double	y;
 	double	z;
-}			t_vec;
+}				t_vec;
 
 typedef struct s_point3
 {
 	double	x;
 	double	y;
 	double	z;
-}			t_point3;
+}				t_point3;
 
 typedef struct s_point
 {
@@ -56,14 +68,14 @@ typedef struct s_sphere
 	t_point3	center;
 	double		radius;
 	t_color		color;
-} 				t_sphere;
+}				t_sphere;
 
 typedef struct s_plane
 {
 	t_point3	coordinate;
 	t_vec		direction;
 	t_color		color;
-} 				t_plane;
+}				t_plane;
 
 typedef struct s_cylinder
 {
@@ -72,7 +84,7 @@ typedef struct s_cylinder
 	double		radius;
 	double		height;
 	t_color		color;
-} 				t_cylinder;
+}				t_cylinder;
 
 typedef enum s_obj_type
 {
@@ -88,14 +100,14 @@ typedef struct s_lst_obj
 	double				last_dist;
 	bool				skip;
 	struct s_lst_obj	*next;
-} 				t_lst_obj;
+}				t_lst_obj;
 
 typedef struct s_ambient
 {
 	bool		declared;
 	double		ratio;
 	t_color		color;
-} 				t_ambient;
+}				t_ambient;
 
 typedef struct s_camera
 {
@@ -104,15 +116,15 @@ typedef struct s_camera
 	t_vec		direction;
 	int			fov;
 	t_point3	viewp;
-} 				t_camera;
+}				t_camera;
 
-typedef	struct s_light
+typedef struct s_light
 {
 	bool		declared;
 	t_point3	position;
 	double		bright;
 	t_color		color;
-} 				t_light;
+}				t_light;
 
 typedef struct s_scene
 {
@@ -120,9 +132,9 @@ typedef struct s_scene
 	t_camera	camera;
 	t_light		light;
 	t_lst_obj	*obj;
-} 				t_scene;
+}				t_scene;
 
-typedef struct 	s_data
+typedef struct s_data
 {
 	t_vars	vars;
 	t_image	image;
