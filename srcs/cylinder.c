@@ -20,28 +20,28 @@ double	intersect_disk(t_ray ray, t_vec center, t_vec normal, double radius)
 void intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
 {
 	t_vec OD = ray.dir;
-	t_vec CD = vec_unit(cy->direction); // Asegúrate de que este vector esté normalizado
+	t_vec CD = vec_unit(cy->direction);
 	
-	double radius = cy->radius; // Asegúrate de que este es el radio, no el diámetro
+	double radius = cy->radius;
 	
 	t_vec OC = vec_sub(vec(ray.origin.x, ray.origin.y, ray.origin.z), vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z));
 	t_vec OC_perp = vec_sub(OC, vec_mul(CD, vec_dot(OC, CD)));
 	t_vec OD_perp = vec_sub(OD, vec_mul(CD, vec_dot(OD, CD)));
 
 	if (vec_length(OD_perp) < EPSILON) 
-    	OD_perp = vec(0,0,1); // O cualquier otro vector que sea perpendicular a CD
+		OD_perp = vec(OD.y,-OD.x,OD.z); // O cualquier otro vector que sea perpendicular a CD
 	
 	double a = vec_dot(OD_perp, OD_perp);
 	double b = 2 * vec_dot(OC_perp, OD_perp);
 	double c = vec_dot(OC_perp, OC_perp) - radius * radius;
 	double discriminant = b * b - 4 * a * c;
+
 	//No hay intersección
 	if (discriminant < EPSILON)
 	{
 		*t = (t_point){INFINITY, INFINITY};
 		return;
 	}
-	
 	double sqrt_discriminant = sqrt(discriminant);
 	double t1 = (-b + sqrt_discriminant) / (2 * a);
 	double t2 = (-b - sqrt_discriminant) / (2 * a);
@@ -55,9 +55,9 @@ void intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
 	double h2 = vec_dot(vec_sub(P2, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)), CD);
 
 	//t está dentro de los límites del cilindro
-	if (h1 < 0 || h1 > cy->height)
+	if (h1 < EPSILON || h1 > cy->height)
 		t1 = INFINITY;
-	if (h2 < 0 || h2 > cy->height)
+	if (h2 < EPSILON || h2 > cy->height)
 		t2 = INFINITY;
 	
 	// Calcula las intersecciones con las bases del cilindro
@@ -80,21 +80,20 @@ t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec P, t_ray ra
 	t_vec 		N;
 	double 		i;
 	double		h;
+	t_vec		D;
 
-	cy->direction = vec_unit(cy->direction);
-	h = vec_dot(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)), cy->direction);
-	if (fabs(h - cy->height) <= EPSILON)
-		N = cy->direction; // Normal para la base superior
-	else if (fabs(h) <= EPSILON)
-		N = vec_mul(cy->direction, -1); // Normal para la base inferior
+	D = cy->direction;
+	h = vec_dot(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)), D);
+	if (fabs(h - cy->height) < EPSILON || fabs(h) < EPSILON)
+		N = vec_unit(D);
 	else 
 	{
 		t_vec CP = vec_unit(vec_sub(P, vec(cy->coordinate.x, cy->coordinate.y, cy->coordinate.z)));
-		t_vec proj = vec_mul(cy->direction, vec_dot(CP, cy->direction));
-		N = (vec_sub(CP, proj));
+		t_vec proj = vec_mul(D, vec_dot(CP, D));
+		N = vec_unit(vec_sub(CP, proj));
 	}
 	i = compute_lighting(scene, P, N, vec_mul(ray.dir, -1));
-	i += compute_shadows(scene, P, N, vec_mul(ray.dir, -1));
+	i += compute_shadows(scene, P, N, vec_mul(ray.dir, 1));
 	return (t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i};
 }
 
