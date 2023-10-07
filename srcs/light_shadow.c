@@ -42,26 +42,40 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 	}
 }
 
+static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
+{
+	t_point		t;
+
+	while (obj)
+	{
+		if (obj->type == SPHERE)
+			intersect_sphere(ray, (t_sphere *)obj->object, &t);
+		else if (obj->type == PLANE)
+			intersect_plane(ray, (t_plane *)obj->object, &t);
+		else
+			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+		if ((t.x > EPSILON && t.x < 100) || (t.y > EPSILON
+				&& t.y < 100))
+			return true;
+		obj = obj->next;
+	}
+	return false;
+}
+
 double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d)
 {
 	t_vec		l;
-	t_vec		r;
 	double		intensity;
 	double		dot_v;
-	t_lst_obj	*closest_obj;
 
-	closest_obj = NULL;
 	intensity = 0;
 	l = vec_unit(vec_sub(point_to_vec(scene.light.position), p));
-	get_closest((t_ray){vec_to_point(p), l}, scene.obj, &closest_obj,
-		&(t_point){100, INFINITY}.x);
-	if (closest_obj)
+	if (get_closest_shadow((t_ray){vec_to_point(p), l}, scene.obj))
 	{
 		dot_v = vec_dot(n, l);
 		if (dot_v > EPSILON)
 			intensity -= scene.light.bright * dot_v;
-		r = vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l));
-		dot_v = vec_dot(r, d);
+		dot_v = vec_dot(vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l)), d);
 		if (dot_v > EPSILON)
 			intensity -= scene.light.bright * pow(dot_v, 3000);
 	}

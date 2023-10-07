@@ -17,19 +17,19 @@
 # include <math.h>
 # include <limits.h>
 # include "./errors.h"
-# include "./keycodes.h"
 # include "./structs.h"
 
 //Windows
-//# include "../mlx_linux/mlx.h"
-//# include <X11/Xlib.h>
+# include "../mlx_linux/mlx.h"
+# define K_ESC   	0xFF1B
+
 //Mac
-# include <mlx.h>
+//# include <mlx.h>
+//# define K_ESC   	53
 
 //Window Size for the image
-# define WIDTH 2100
-# define ASPECT_RATIO 1.7778  //16:9
-// # define M_PI 3.14159265358979323846
+# define WIDTH 1400
+# define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
 
 //my_hooks.c
@@ -94,6 +94,8 @@ t_plane		*new_plane(char **s, int *e);
 
 //cylinder.c
 void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
+
+//cylinder2.c
 t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec p,
 				t_ray ray);
 int			ft_load_cylinders(t_lst_obj **obj, char **s);
