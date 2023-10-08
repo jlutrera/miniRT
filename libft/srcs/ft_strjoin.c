@@ -33,7 +33,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_memcpy(dest + len_s1, s2, len_s2);
 	dest[len_s1 + len_s2] = 0;
 	return (dest);
-}	
+}
 
 /*
 int main()

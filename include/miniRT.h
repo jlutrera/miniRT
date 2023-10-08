@@ -57,7 +57,7 @@ t_vec		vec_divition(t_vec v1, double t);
 
 //vec_operations3.c
 t_vec		point_to_vec(t_point3 P);
-t_point3    vec_to_point(t_vec v);
+t_point3	vec_to_point(t_vec v);
 
 //Ray.c
 t_vec		ray_ex(t_ray *ray, double t);
@@ -74,7 +74,7 @@ int			ft_errormsg(int e, int n);
 void		process_img(t_data *data, t_scene *scene);
 
 //light_shadow.c
-double		compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d);
+double		compute_shadows(t_scene scene, t_vec p, t_vec n, t_ray ray);
 double		compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d);
 void		get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 				double *t_closest);

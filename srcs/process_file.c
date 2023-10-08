@@ -48,7 +48,7 @@ static int	end_msg(int error, t_scene **scene)
 }
 
 int	process_file(char *file, t_scene **scene, int *n)
-{	
+{
 	int		fd;
 	int		error;
 	char	*line;
@@ -68,7 +68,7 @@ int	process_file(char *file, t_scene **scene, int *n)
 		free(line);
 		if (!error)
 			line = get_next_line(fd);
-	}	
+	}
 	close(fd);
 	return (end_msg(error, scene));
 }

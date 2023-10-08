@@ -35,7 +35,7 @@ static void	free_memory(t_scene *scene)
 			free(aux->object);
 			free(aux);
 			(scene)->obj = (scene)->obj->next;
-		}	
+		}
 	}
 	free(scene);
 }

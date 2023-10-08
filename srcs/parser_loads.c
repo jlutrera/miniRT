@@ -13,7 +13,7 @@
 #include "../include/miniRT.h"
 
 int	ft_load_ambient(t_ambient *ambient, char **s)
-{	
+{
 	if (ambient->declared)
 		return (MORE_THAN_ONE_AMBIENT_E);
 	if (check_comps(s, 3))

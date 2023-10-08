@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cylinder2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/08 13:38:14 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/miniRT.h"
 
 t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene,
@@ -19,7 +31,7 @@ t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene,
 		n = vec_unit(vec_sub(op, proj));
 	}
 	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i += compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, 1)));
+	i -= compute_shadows(scene, p, n, ray);
 	return ((t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i});
 }
 
