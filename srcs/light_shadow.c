@@ -27,7 +27,7 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 		else
 			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
 		tmp = *closest_obj;
-		if ((t.x > 1.0 && t.x < *t_closest) || (t.y > 1.0
+		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
 				&& t.y < *t_closest))
 		{
 			tmp = obj;
@@ -61,14 +61,12 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 	return (false);
 }
 
-double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_ray ray)
+double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d)
 {
 	t_vec		l;
 	double		intensity;
 	double		dot_v;
-	t_vec		d;
 
-	d = vec_unit(vec_mul(ray.dir, -1));
 	intensity = 0;
 	l = vec_unit(vec_sub(point_to_vec(scene.light.position), p));
 	if (get_closest_shadow((t_ray){vec_to_point(p), l}, scene.obj))
@@ -78,7 +76,7 @@ double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_ray ray)
 			intensity += scene.light.bright * dot_v;
 		dot_v = vec_dot(vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l)), d);
 		if (dot_v > EPSILON)
-			intensity += scene.light.bright * pow(dot_v, 3000);
+			intensity += scene.light.bright * pow(dot_v, SPECULAR);
 	}
 	return (intensity);
 }
@@ -98,6 +96,6 @@ double	compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d)
 	r = vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l));
 	dot_v = vec_dot(r, d);
 	if (dot_v > EPSILON)
-		intensity += scene.light.bright * pow(dot_v, 3000);
+		intensity += scene.light.bright * pow(dot_v, SPECULAR);
 	return (intensity);
 }

@@ -31,6 +31,7 @@
 # define WIDTH 1400
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
+# define SPECULAR 3000
 
 //my_hooks.c
 void		my_hooks(t_vars *vars);
@@ -74,7 +75,7 @@ int			ft_errormsg(int e, int n);
 void		process_img(t_data *data, t_scene *scene);
 
 //light_shadow.c
-double		compute_shadows(t_scene scene, t_vec p, t_vec n, t_ray ray);
+double		compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d);
 double		compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d);
 void		get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 				double *t_closest);

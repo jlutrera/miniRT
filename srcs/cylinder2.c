@@ -30,8 +30,8 @@ t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene,
 		proj = vec_mul(cy->direction, vec_dot(op, cy->direction));
 		n = vec_unit(vec_sub(op, proj));
 	}
-	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i -= compute_shadows(scene, p, n, ray);
+	i = compute_lighting(scene, p, n, vec_unit(ray.dir));
+	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
 	return ((t_point3){cy->color.r * i, cy->color.g * i, cy->color.b * i});
 }
 

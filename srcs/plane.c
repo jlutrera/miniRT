@@ -37,7 +37,7 @@ t_point3	compute_plane_light(t_plane *pl, t_scene scene, t_vec p, t_ray ray)
 
 	n = vec_unit(pl->direction);
 	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i -= compute_shadows(scene, p, n, ray);
+	i -= compute_shadows(scene, p, n, vec_unit(ray.dir));
 	return ((t_point3){pl->color.r * i, pl->color.g * i, pl->color.b * i});
 }
 

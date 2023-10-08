@@ -75,9 +75,8 @@ int	main(int argc, char **argv)
 	}
 	init_mlx(&data);
 	process_img(&data, scene);
-	printf("END RENDER\n");
 	my_hooks(&data.vars);
 	mlx_loop(data.vars.mlx);
 	free_memory(scene);
-	return (SUCCESS);
+	return (ft_printf("END RENDER\n"), SUCCESS);
 }
