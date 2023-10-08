@@ -19,13 +19,13 @@
 # include "./errors.h"
 # include "./structs.h"
 
-//Windows
-# include "../mlx_linux/mlx.h"
-# define K_ESC   	0xFF1B
-
-//Mac
-//# include <mlx.h>
-//# define K_ESC   	53
+# ifdef __APPLE__
+#  include <mlx.h>
+#  define K_ESC   	53
+# else
+#  include "../mlx_linux/mlx.h"
+#  define K_ESC   	0xFF1B
+# endif
 
 //Window Size for the image
 # define WIDTH 1400

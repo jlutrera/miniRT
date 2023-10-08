@@ -39,11 +39,11 @@ LIBFLAGS	=	-Llibft -lft
 LEAKS		=	-fsanitize=address
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic  -g3 -Wshadow
 
-#Para Windows
-MLXFLAGS	= 	-Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
-
-#Para Mac
-#MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
+ifeq ($(findstring Windows,$(shell ver)),)
+	MLXFLAG	= -Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
+else
+	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
+endif
 
 #  Colors
 CYAN		=	\033[1;36m
@@ -64,7 +64,7 @@ $(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
 
 $(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
 				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
-				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAGS) -o $(NAME)
+				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(NAME)
 				@echo "$(NAME) created successfully !"
 
 $(LIB_N)	:		
