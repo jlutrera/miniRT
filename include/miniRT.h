@@ -31,7 +31,7 @@
 # define WIDTH 1400
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
-# define SPECULAR 3000
+# define SPECULAR 5000
 
 //my_hooks.c
 void		my_hooks(t_vars *vars);

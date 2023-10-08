@@ -76,7 +76,7 @@ t_point3	compute_sphere_light(t_sphere *sp, t_scene scene,
 	double	i;
 
 	n = vec_unit(vec_sub(p, point_to_vec(sp->center)));
-	i = compute_lighting(scene, p, n, vec_unit(ray.dir));
+	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
 	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
 	return ((t_point3){sp->color.r * i, sp->color.g * i, sp->color.b * i});
 }
