@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_img.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:20:00 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/09 13:06:17 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:17:43 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ static void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 {
 	char	*dst;
 
-	dst = data->image.addr + (y * data->image.line_length
-			+ x * (data->image.bits_per_pixel / 8));
-	*(unsigned int *)dst = colour;
+	if (x >= 0 && x < data->image.width && y >= 0 && y < data->image.height)
+	{
+		dst = data->image.addr + (y * data->image.line_length
+				+ x * (data->image.bits_per_pixel / 8));
+		*(unsigned int *)dst = colour;
+	}
 }
 
 static t_point3	trace_ray(t_ray ray, t_scene scene)
