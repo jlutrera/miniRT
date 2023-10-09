@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:49:01 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 19:53:21 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:28:55 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_sphere	*new_sphere(char **s, int *e)
 {
 	t_sphere	*new_sp;
 
-	new_sp = ft_calloc(sizeof(t_sphere *), 1);
+	new_sp = ft_calloc(sizeof(t_sphere), 1);
 	if (!new_sp)
 	{
 		*e = MEMORY_E;

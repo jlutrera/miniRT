@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
+#    Updated: 2023/10/09 11:24:10 by adpachec         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Paths
 L_DIR		=	./libft/
 O_DIR		=	./obj/
@@ -36,14 +48,14 @@ LIB_N		=	$(L_DIR)$(LIB_A)
 NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
-LEAKS		=	-fsanitize=address
-W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic  -g3 -Wshadow
+# LEAKS		=	-fsanitize=address
+W_FLAGS		=	-Wall -Wextra -Werror -g3 -Wshadow
 
-ifeq ($(findstring Windows,$(shell ver)),)
+# ifeq ($(findstring Windows,$(shell ver)),)
 	MLXFLAG	= -Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
-else
-	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
-endif
+# else
+# 	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
+# endif
 
 #  Colors
 CYAN		=	\033[1;36m

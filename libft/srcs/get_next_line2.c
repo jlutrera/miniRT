@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 23:17:58 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/09 12:44:47 by adpachec         ###   ########.fr       */
+/*   Created: 2023/10/09 12:44:57 by adpachec          #+#    #+#             */
+/*   Updated: 2023/10/09 12:45:26 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,33 +78,6 @@ int	ft_init_i(int fd, char *str, int *pos_nl)
 	return (i);
 }
 
-char	*get_next_line(int fd)
-{
-	static char	*buff;
-	char		*str;
-	char		*line;
-	int			pos_nl;
-	int			i;
-
-	pos_nl = 0;
-	str = ft_init_str(fd, buff, &pos_nl);
-	if (!str || pos_nl != -1)
-		buff = NULL;
-	i = ft_init_i(fd, str, &pos_nl);
-	while (i == BUFFER_SIZE && pos_nl == -1)
-	{
-		buff = ft_strjoin2(buff, str);
-		i = read(fd, str, BUFFER_SIZE);
-		pos_nl = ft_findnl(str);
-	}
-	line = ft_read_line(buff, str, pos_nl, i);
-	buff = ft_remain_buff(str, pos_nl, i);
-	if (buff == 0 || i == -1)
-		free(buff);
-	free(str);
-	return (line);
-}
-
 char	*get_next_line2(int fd, char **buff)
 {
 	char		*str;
@@ -130,4 +103,3 @@ char	*get_next_line2(int fd, char **buff)
 	free(str);
 	return (line);
 }
-

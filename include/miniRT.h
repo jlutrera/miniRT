@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/06 19:54:32 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:11:08 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@
 # define SPECULAR 5000
 
 //my_hooks.c
-void		my_hooks(t_vars *vars);
+void		my_hooks(t_data *vars);
+void		free_memory(t_scene *scene);
 
 //process_file.c
 int			process_file(char *file, t_scene **scene, int *n);

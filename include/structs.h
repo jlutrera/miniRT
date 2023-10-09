@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:55:43 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 18:09:51 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:11:20 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct s_data
 {
 	t_vars	vars;
 	t_image	image;
+	t_scene	*scene;
 }				t_data;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/08 13:38:14 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:28:35 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_cylinder	*new_cylinder(char **s, int *e)
 {
 	t_cylinder	*new_cy;
 
-	new_cy = ft_calloc(sizeof(t_cylinder *), 1);
+	new_cy = ft_calloc(sizeof(t_cylinder), 1);
 	if (!new_cy)
 	{
 		*e = MEMORY_E;

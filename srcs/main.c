@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 18:39:45 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:12:08 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	ft_init(t_scene **scene)
 	(*scene)->obj = NULL;
 }
 
-static void	free_memory(t_scene *scene)
+void	free_memory(t_scene *scene)
 {
 	t_lst_obj	*aux;
 
@@ -32,15 +32,15 @@ static void	free_memory(t_scene *scene)
 		while (scene->obj)
 		{
 			aux = (scene)->obj;
+			(scene)->obj = (scene)->obj->next;
 			free(aux->object);
 			free(aux);
-			(scene)->obj = (scene)->obj->next;
 		}
 	}
 	free(scene);
 }
 
-static void	init_mlx(t_data *data)
+static void	init_mlx(t_data *data, t_scene *scene)
 {
 	data->image.width = WIDTH;
 	data->image.height = (int)(data->image.width / (ASPECT_RATIO));
@@ -54,6 +54,7 @@ static void	init_mlx(t_data *data)
 	data->image.addr = mlx_get_data_addr(data->image.img,
 			&data->image.bits_per_pixel, &data->image.line_length,
 			&data->image.endian);
+	data->scene = scene;
 }
 
 int	main(int argc, char **argv)
@@ -73,10 +74,10 @@ int	main(int argc, char **argv)
 		free_memory(scene);
 		return (ft_errormsg(error, n));
 	}
-	init_mlx(&data);
+	init_mlx(&data, scene);
 	process_img(&data, scene);
-	my_hooks(&data.vars);
+	ft_printf("END RENDER\n");
+	my_hooks(&data);
 	mlx_loop(data.vars.mlx);
-	free_memory(scene);
-	return (ft_printf("END RENDER\n"), SUCCESS);
+	return (SUCCESS);
 }

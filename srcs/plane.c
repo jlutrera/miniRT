@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:55:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 20:00:16 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:29:19 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_plane	*new_plane(char **s, int *e)
 {
 	t_plane	*new_pl;
 
-	new_pl = ft_calloc(sizeof(t_plane *), 1);
+	new_pl = ft_calloc(sizeof(t_plane), 1);
 	if (!new_pl)
 	{
 		*e = MEMORY_E;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/06 19:19:43 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:41:40 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ static int	end_msg(int error, t_scene **scene)
 
 int	process_file(char *file, t_scene **scene, int *n)
 {
-	int		fd;
-	int		error;
-	char	*line;
+	int			fd;
+	int			error;
+	char		*line;
+	static char	*buf;
 
 	if (check_file_extension(file) == -1)
 		return (EXTENSION_E);
@@ -59,16 +60,18 @@ int	process_file(char *file, t_scene **scene, int *n)
 	if (fd == -1)
 		return (FILE_E);
 	error = SUCCESS;
-	line = get_next_line(fd);
+	line = get_next_line2(fd, &buf);
 	while (line && !error)
 	{
 		(*n)++;
 		change_tabs_for_spaces(line);
 		error = parse_line(line, scene);
-		free(line);
+		if (line)
+			free(line);
 		if (!error)
-			line = get_next_line(fd);
+			line = get_next_line2(fd, &buf);
 	}
+	free(buf);
 	close(fd);
 	return (end_msg(error, scene));
 }

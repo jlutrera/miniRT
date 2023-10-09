@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 09:57:24 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 17:41:57 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:41:08 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ t_flags	read_flags(char *s, va_list ap);
 int		ft_zeros(t_flags flags, char c, int len);
 int		ft_spaces(t_flags flags, char c, int len);
 int		putdigit(char *s, t_flags flags, char c, int len);
+char	*get_next_line2(int fd, char **buff);
 
 #endif
