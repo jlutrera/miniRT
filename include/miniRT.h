@@ -95,13 +95,13 @@ int			ft_load_planes(t_lst_obj **obj, char **s);
 t_plane		*new_plane(char **s, int *e);
 
 //cylinder.c
-void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
-
-//cylinder2.c
 t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec p,
 				t_ray ray);
 int			ft_load_cylinders(t_lst_obj **obj, char **s);
 t_cylinder	*new_cylinder(char **s, int *e);
+
+//cylinder2.c
+void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
 
 //parser_utils.c
 double		ft_get_dist(void);

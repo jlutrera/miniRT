@@ -1,99 +1,79 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.c                                         :+:      :+:    :+:   */
+/*   cylinder2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 20:01:36 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 20:20:16 by jutrera-         ###   ########.fr       */
+/*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/09 11:28:35 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
 
-static double	intersect_disk(t_ray ray, t_vec center,
-		t_vec normal, double radius)
+t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene,
+		t_vec p, t_ray ray)
 {
-	double	denom;
-	double	t;
-	t_vec	p;
+	t_vec		n;
+	double		i;
+	t_vec		op;
+	t_point3	intensity;
 
-	denom = vec_dot(normal, ray.dir);
-	if (fabs(denom) < EPSILON)
-		return (INFINITY);
-	t = vec_dot(vec_sub(center, point_to_vec(ray.origin)), normal) / denom;
-	if (t < EPSILON)
-		return (INFINITY);
-	p = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t));
-	if (vec_length(vec_sub(p, center)) > radius)
-		return (INFINITY);
-	return (t);
+	op = vec_sub(p, point_to_vec(cy->coordinate));
+	i = vec_dot(op, cy->direction);
+	if (fabs(i - cy->height) < EPSILON)
+		n = vec_unit(cy->direction);
+	else if (fabs(i) < EPSILON)
+		n = vec_unit(vec_mul(cy->direction, -1));
+	else
+		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i)));
+	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	intensity.x = i + scene.ambient.ratio * scene.ambient.color.r / 255 ;
+	intensity.y = i + scene.ambient.ratio * scene.ambient.color.g / 255 ;
+	intensity.z = i + scene.ambient.ratio * scene.ambient.color.b / 255;
+	return ((t_point3){cy->color.r * intensity.x, cy->color.g * intensity.y,
+		cy->color.b * intensity.z});
 }
 
-static double	calc_tmin(double t1, double t2, t_cylinder *cy, t_ray ray)
+int	ft_load_cylinders(t_lst_obj **obj, char **s)
 {
-	t_vec	p1;
-	t_vec	p2;
-	double	h1;
-	double	h2;
+	int			e;
+	t_cylinder	*new_cy;
 
-	p1 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t1));
-	p2 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t2));
-	h1 = vec_dot(vec_sub(p1, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	h2 = vec_dot(vec_sub(p2, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	if (h1 < EPSILON || h1 > cy->height)
-		t1 = INFINITY;
-	if (h2 < EPSILON || h2 > cy->height)
-		t2 = INFINITY;
-	if (t2 < t1)
-		return (t2);
-	return (t1);
+	if (check_comps(s, 6))
+		return (NUM_COMPONENTS_E);
+	new_cy = new_cylinder(s, &e);
+	if (!new_cy)
+		return (e);
+	ft_add_back_obj(obj, (void **)&new_cy, CYLINDER, ft_get_dist());
+	return (SUCCESS);
 }
 
-static double	solve_equation(t_cylinder *cy, t_vec oc, t_vec od, t_ray ray)
+t_cylinder	*new_cylinder(char **s, int *e)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-	double	sqrt_discriminant;
+	t_cylinder	*new_cy;
 
-	a = vec_dot(od, od);
-	b = 2 * vec_dot(oc, od);
-	c = vec_dot(oc, oc) - cy->radius * cy->radius;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < EPSILON)
-		return (INFINITY);
-	sqrt_discriminant = sqrt(discriminant);
-	return (calc_tmin((-b + sqrt_discriminant) / (2 * a),
-			(-b - sqrt_discriminant) / (2 * a), cy, ray));
-}
-
-void	intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
-{
-	t_vec	cd;
-	t_vec	oc;
-	t_vec	od;
-	double	t_min;
-	t_point	t_base;
-
-	cd = vec_unit(cy->direction);
-	oc = vec_sub(point_to_vec(ray.origin), point_to_vec(cy->coordinate));
-	oc = vec_sub(oc, vec_mul(cd, vec_dot(oc, cd)));
-	od = vec_sub(ray.dir, vec_mul(cd, vec_dot(ray.dir, cd)));
-	if (vec_length(od) < EPSILON)
-		od = vec(ray.dir.y, -ray.dir.x, ray.dir.z);
-	t_min = solve_equation(cy, oc, od, ray);
-	t_base.x = intersect_disk(ray, point_to_vec(cy->coordinate),
-			cd, cy->radius);
-	t_base.y = intersect_disk(ray, vec_add(point_to_vec(cy->coordinate),
-				vec_mul(cd, cy->height)), cd, cy->radius);
-	if (t_base.x < t_min)
-		t_min = t_base.x;
-	if (t_base.y < t_min)
-		t_min = t_base.y;
-	*t = (t_point){t_min, INFINITY};
+	new_cy = ft_calloc(sizeof(t_cylinder), 1);
+	if (!new_cy)
+	{
+		*e = MEMORY_E;
+		return (NULL);
+	}
+	*e = SUCCESS;
+	new_cy->radius = ft_atod(s[3]) / 2;
+	new_cy->height = ft_atod(s[4]);
+	if (ft_get_point(s[1], &new_cy->coordinate) == -1
+		|| ft_get_vector(s[2], &new_cy->direction) == -1)
+		*e = BAD_COORDINATES_E;
+	else if (!is_normalized(new_cy->direction))
+		*e = NORM_VECTOR_E;
+	else if (new_cy->radius <= 0 || new_cy->height <= 0)
+		*e = NEGATIVE_E;
+	else if (ft_get_color(s[5], &new_cy->color) == -1)
+		*e = COLOUR_E;
+	if (*e == SUCCESS)
+		return (new_cy);
+	return (free(new_cy), NULL);
 }
