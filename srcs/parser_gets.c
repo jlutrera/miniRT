@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_gets.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 18:40:34 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 18:44:55 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/miniRT.h"
 
-int ft_get_vector(char *s, t_vec *direction)
+int	ft_get_vector(char *s, t_vec *direction)
 {
 	char	**aux;
 	int		i;
-	double 	values[3];
+	double	values[3];
 
 	aux = ft_split(s, ',');
 	i = -1;
@@ -19,14 +31,14 @@ int ft_get_vector(char *s, t_vec *direction)
 	direction->x = values[0];
 	direction->y = values[1];
 	direction->z = values[2];
-	return 0;
+	return (0);
 }
 
-int ft_get_point(char *s, t_point3 *position)
+int	ft_get_point(char *s, t_point3 *position)
 {
 	char	**aux;
 	int		i;
-	double 	values[3];
+	double	values[3];
 
 	aux = ft_split(s, ',');
 	i = -1;
@@ -41,10 +53,10 @@ int ft_get_point(char *s, t_point3 *position)
 	position->x = values[0];
 	position->y = values[1];
 	position->z = values[2];
-	return 0;
+	return (0);
 }
 
-int ft_get_color(char *s, t_color *color)
+int	ft_get_color(char *s, t_color *color)
 {
 	char	**aux;
 	int		i;
@@ -63,15 +75,9 @@ int ft_get_color(char *s, t_color *color)
 	}
 	free(aux);
 	if (i != 3 || error == -1)
-		return -1;
-	color->r = values[0];
-	color->g = values[1];
-	color->b = values[2];
+		return (-1);
+	*color = (t_color){values[0], values[1], values[2]};
 	if (color->r == 0 && color->g == 0 && color->b == 0)
-	{
-		color->r = 30;
-		color->g = 30;
-		color->b = 30;
-	}
-	return 0;
+		*color = (t_color){30, 30, 30};
+	return (0);
 }

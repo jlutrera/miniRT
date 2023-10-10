@@ -3,21 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+         #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/27 18:05:52 by jutrera-          #+#    #+#              #
-#    Updated: 2022/10/15 11:35:42 by jutrera-         ###   ########.fr        #
+#    Updated: 2023/10/09 12:45:58 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libft.a
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -Wpedantic -fsanitize=address -O3
+CFLAGS		=	-Wall -Wextra -Werror -Wpedantic -O3 -g
 
 I_DIR		=	include/
 O_DIR		=	obj/
 S_DIR		=	./srcs/
-SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
+SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_atol.c	\
+				./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
 				./srcs/ft_digitutils.c	./srcs/ft_isalnum.c 	 ./srcs/ft_isalpha.c \
 				./srcs/ft_isascii.c 	./srcs/ft_isdigit.c 	 ./srcs/ft_isprint.c \
 				./srcs/ft_itoa.c 		./srcs/ft_lstadd_front.c ./srcs/ft_lstclear.c \
@@ -35,7 +36,8 @@ SRCS		=	./srcs/ft_atoi.c 		./srcs/ft_bzero.c 		 ./srcs/ft_calloc.c \
 				./srcs/ft_strlen.c 		./srcs/ft_strlen2.c 	 ./srcs/ft_strmapi.c \
 				./srcs/ft_strncmp.c 	./srcs/ft_strnstr.c 	 ./srcs/ft_strrchr.c \
 				./srcs/ft_strtrim.c 	./srcs/ft_substr.c 		 ./srcs/ft_tolower.c \
-				./srcs/ft_toupper.c		./srcs/get_next_line.c	 ./srcs/get_next_line_utils.c
+				./srcs/ft_toupper.c		./srcs/get_next_line.c	 ./srcs/get_next_line_utils.c \
+				./srcs/get_next_line2.c
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 HEADER 		=	$(I_DIR)libft.h
 

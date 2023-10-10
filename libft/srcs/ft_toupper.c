@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 17:12:38 by jutrera-          #+#    #+#             */
-/*   Updated: 2022/09/18 14:31:12 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:44:15 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')
-			c -= 32;
+		c -= 32;
 	return (c);
 }
 /*

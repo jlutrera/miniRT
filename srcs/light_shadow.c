@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light_shadow.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/06 18:12:17 by jutrera-          #+#    #+#             */
+/*   Updated: 2023/10/06 18:35:49 by jutrera-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/miniRT.h"
 
-void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_closest)
+void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
+			double *t_closest)
 {
 	t_lst_obj	*tmp;
 	t_point		t;
@@ -14,7 +27,8 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_c
 		else
 			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
 		tmp = *closest_obj;
-		if ((t.x > 1.0  && t.x < *t_closest) || (t.y > 1.0  && t.y < *t_closest))
+		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
+				&& t.y < *t_closest))
 		{
 			tmp = obj;
 			if (t.y < *t_closest)
@@ -28,110 +42,60 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj, double *t_c
 	}
 }
 
-double compute_shadows(t_scene scene, t_vec P, t_vec N, t_vec D)
+static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 {
-	t_vec		L;
-	t_vec		R;
-	double		intensity;
-	double 		dot_v;
-	t_lst_obj	*closest_obj;
-	double		s;
+	t_point	t;
 
-	closest_obj = NULL;
-	intensity = 0;
-	s = 300;
-	N = vec_unit(N);
-	D = vec_unit(D);
-	L = vec_unit(vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P));
-	get_closest((t_ray){(t_point3){P.x, P.y, P.z}, vec_unit(L)}, scene.obj, &closest_obj, &(t_point){100, INFINITY}.x);
-	if (closest_obj)
+	while (obj)
 	{
-		//Diffuse light
-		dot_v = vec_dot(N, L);
+		if (obj->type == SPHERE)
+			intersect_sphere(ray, (t_sphere *)obj->object, &t);
+		else if (obj->type == PLANE)
+			intersect_plane(ray, (t_plane *)obj->object, &t);
+		else
+			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+		if ((t.x > EPSILON && t.x < 100) || (t.y > EPSILON && t.y < 100))
+			return (true);
+		obj = obj->next;
+	}
+	return (false);
+}
+
+double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d)
+{
+	t_vec		l;
+	double		intensity;
+	double		dot_v;
+
+	intensity = 0;
+	l = vec_unit(vec_sub(point_to_vec(scene.light.position), p));
+	if (get_closest_shadow((t_ray){vec_to_point(p), l}, scene.obj))
+	{
+		dot_v = vec_dot(n, l);
 		if (dot_v > EPSILON)
-			intensity -= scene.light.bright * dot_v;
-		//Specular light
-		R = vec_unit(vec_sub(vec_mul(N, 2 * dot_v), L));
-		dot_v = vec_dot(R, D);
+			intensity += scene.light.bright * dot_v;
+		dot_v = vec_dot(vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l)), d);
 		if (dot_v > EPSILON)
-			intensity -= scene.light.bright * pow(dot_v, s);
+			intensity += scene.light.bright * pow(dot_v, SPECULAR);
 	}
 	return (intensity);
 }
 
-double compute_lighting(t_scene scene, t_vec P, t_vec N, t_vec D)
+double	compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d)
 {
-	t_vec		L;
-	t_vec		R;
+	t_vec		l;
+	t_vec		r;
 	double		intensity;
-	double 		dot_v;
-	double		s;
+	double		dot_v;
 
-	s = 600;
-	N = vec_unit(N);
-	D = vec_unit(D);
 	intensity = scene.ambient.ratio;
-	L = vec_unit(vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P));
-	//Diffuse light
-	dot_v = vec_dot(N, L);
+	l = vec_unit(vec_sub(point_to_vec(scene.light.position), p));
+	dot_v = vec_dot(n, l);
 	if (dot_v > EPSILON)
 		intensity += scene.light.bright * dot_v;
-	//Specular light
-	R = vec_unit(vec_sub(vec_mul(N, 2 * dot_v), L));
-	dot_v = vec_dot(R, D);
+	r = vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l));
+	dot_v = vec_dot(r, d);
 	if (dot_v > EPSILON)
-		intensity += scene.light.bright * pow(dot_v, s);
+		intensity += scene.light.bright * pow(dot_v, SPECULAR);
 	return (intensity);
 }
-
-// double compute_shadows(t_scene scene, t_vec P, t_vec N, t_vec D)
-// {
-// 	t_vec		L;
-// 	t_vec		R;
-// 	double		intensity;
-// 	double 		dot_v;
-// 	t_lst_obj	*closest_obj;
-// 	double		s;
-
-// 	closest_obj = NULL;
-// 	intensity = 0;
-// 	s = 300;
-// 	L = vec_unit(vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P));
-// 	get_closest((t_ray){(t_point3){P.x, P.y, P.z}, vec_unit(L)}, scene.obj, &closest_obj, &(t_point){100, INFINITY}.x);
-// 	if (closest_obj)
-// 	{
-// 		//Diffuse light
-// 		dot_v = vec_dot(N, L);
-// 		if (dot_v > EPSILON)
-// 			intensity -= scene.light.bright * dot_v / (vec_length(N) * vec_length(L));
-// 		//Specular light
-// 		R = vec_unit(vec_sub(vec_mul(N, 2 * vec_dot(N, L)), L));
-// 		dot_v = vec_dot(R, D);
-// 		if (dot_v > EPSILON)
-// 			intensity -= scene.light.bright * pow(dot_v / (vec_length(R) * vec_length(D)), s);
-// 	}
-// 	return (intensity);
-// }
-
-// double compute_lighting(t_scene scene, t_vec P, t_vec N, t_vec D)
-// {
-// 	t_vec		L;
-// 	t_vec		R;
-// 	double		intensity;
-// 	double 		dot_v;
-// 	double		s;
-
-// 	s = 300;
-// 	intensity = scene.ambient.ratio;
-// 	L = vec_unit(vec_sub(vec(scene.light.position.x, scene.light.position.y, scene.light.position.z), P));
-// 	//Diffuse light
-// 	dot_v = vec_dot(N, L);
-// 	if (dot_v > EPSILON)
-// 		intensity += scene.light.bright * dot_v / (vec_length(N) * vec_length(L));
-// 	//Specular light
-// 	R = vec_unit(vec_sub(vec_mul(N, 2 * vec_dot(N, L)), L));
-// 	dot_v = vec_dot(R, D);
-// 	if (dot_v > EPSILON)
-// 		intensity += scene.light.bright * pow(dot_v / (vec_length(R) * vec_length(D)), s);
-// 	return (intensity);
-// }

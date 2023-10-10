@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 17:12:38 by jutrera-          #+#    #+#             */
-/*   Updated: 2022/09/18 14:30:41 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:44:11 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_tolower(int c)
 {
 	if (c >= 'A' && c <= 'Z')
-			c += 32;
+		c += 32;
 	return (c);
 }
 /*

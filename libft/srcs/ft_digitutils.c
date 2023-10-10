@@ -36,7 +36,7 @@ int	ft_zeros(t_flags flags, char c, int len)
 	{
 		zeros = flags.width - len - (c != 0) - trush(c, flags);
 		zeros *= (zeros >= 0);
-	}	
+	}
 	else
 		zeros = flags.prec - len;
 	i = 0;
@@ -96,7 +96,7 @@ int	putdigit(char *s, t_flags flags, char c, int len)
 		i += ft_spaces(flags, c, len);
 	}
 	else
-	{		
+	{
 		i += ft_spaces(flags, c, len);
 		if (c)
 			i += ft_putchar(c);

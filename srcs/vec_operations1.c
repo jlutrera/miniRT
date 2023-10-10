@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   vec_operations1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:41:25 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/05 11:43:50 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:45:53 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
 
-t_vec	 vec_add (t_vec v1 , t_vec v2) 
-{ 
+t_vec	vec_add(t_vec v1, t_vec v2)
+{
 	t_vec	vec_result;
 
 	vec_result.x = v1.x + v2.x;
@@ -22,8 +22,8 @@ t_vec	 vec_add (t_vec v1 , t_vec v2)
 	return (vec_result);
 }
 
-t_vec	 vec_sub (t_vec v1 , t_vec v2) 
-{ 
+t_vec	vec_sub(t_vec v1, t_vec v2)
+{
 	t_vec	vec_result ;
 
 	vec_result.x = v1.x - v2.x;
@@ -39,7 +39,7 @@ t_vec	vec_mul(t_vec v, double t)
 	vec_result.x = v.x * t;
 	vec_result.y = v.y * t;
 	vec_result.z = v.z * t;
-	return (vec_result) ; 
+	return (vec_result);
 }
 
 t_vec	vec(double x, double y, double z)
@@ -52,16 +52,16 @@ t_vec	vec(double x, double y, double z)
 	return (new_vec);
 }
 
-t_vec vec_rotate(t_vec v, t_vec d)
+t_vec	vec_rotate(t_vec v, t_vec d)
 {
 	t_vec	a;
 	t_vec	b;
-	t_vec   v_rotated;
+	t_vec	v_rotated;
 
 	if (d.x != 0 || d.y != 0)
 		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
-    else
- 		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
+	else
+		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
 	b = vec_unit(vec_cross(d, a));
 	v_rotated.x = a.x * v.x + b.x * v.y + d.x * v.z;
 	v_rotated.y = a.y * v.x + b.y * v.y + d.y * v.z;

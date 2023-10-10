@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 16:43:08 by jutrera-          #+#    #+#             */
-/*   Updated: 2022/09/27 18:44:23 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:43:49 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_memcpy(dest + len_s1, s2, len_s2);
 	dest[len_s1 + len_s2] = 0;
 	return (dest);
-}	
+}
 
 /*
 int main()

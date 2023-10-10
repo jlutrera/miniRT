@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 17:29:17 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/01/28 17:29:17 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:23:48 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../include/libft.h"
 
 char	*ft_strjoin2(char *s1, char *s2)

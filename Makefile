@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
+#    Updated: 2023/10/09 19:21:16 by jutrera-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Paths
 L_DIR		=	./libft/
 O_DIR		=	./obj/
@@ -6,26 +18,44 @@ S_DIR		=	./srcs/
 
 #Files
 LIB_A		=	libft.a
-SRCS		=	$(S_DIR)process_file.c $(S_DIR)main.c $(S_DIR)vec_operations1.c $(S_DIR)vec_operations2.c \
-				$(S_DIR)ray.c $(S_DIR)print_errors.c $(S_DIR)my_hooks.c $(S_DIR)color.c $(S_DIR)process_img.c \
-				$(S_DIR)sphere.c $(S_DIR)plane.c $(S_DIR)cylinder.c $(S_DIR)light_shadow.c $(S_DIR)parser_utils.c \
-				$(S_DIR)parser_gets.c $(S_DIR)parser_loads.c $(S_DIR)parser_lists.c $(S_DIR)parser.c
+SRCS		=	$(S_DIR)main.c \
+				$(S_DIR)process_file.c \
+				$(S_DIR)vec_operations1.c \
+				$(S_DIR)vec_operations2.c \
+				$(S_DIR)vec_operations3.c \
+				$(S_DIR)ray.c \
+				$(S_DIR)print_errors.c \
+				$(S_DIR)my_hooks.c \
+				$(S_DIR)color.c \
+				$(S_DIR)process_img.c \
+				$(S_DIR)sphere.c \
+				$(S_DIR)plane.c \
+				$(S_DIR)cylinder.c \
+				$(S_DIR)cylinder2.c \
+				$(S_DIR)light_shadow.c \
+				$(S_DIR)parser.c \
+				$(S_DIR)parser_utils.c \
+				$(S_DIR)parser_gets.c \
+				$(S_DIR)parser_loads.c \
+				$(S_DIR)parser_lists.c
+
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
-HEADER		=	$(I_DIR)miniRT.h $(I_DIR)keycodes.h $(I_DIR)errors.h
+HEADER		=	$(I_DIR)miniRT.h \
+				$(I_DIR)errors.h
 LIB_N		=	$(L_DIR)$(LIB_A)
 
 # Constant strings
 NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
-LEAKS		=	-fsanitize=address
-W_FLAGS		=	-Wall -Wextra -Werror -g3 -Wshadow
+W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
+#LEAKS		=	-fsanitize=address
 
-#Para Windows
-MLXFLAGS	= 	-Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
-
-#Para Mac
-#MLXFLAGS	=	-lmlx -framework OpenGL -framework AppKit
+ifeq ($(shell uname -s), Darwin)
+	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
+else
+	MLXFLAG	= -Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
+endif
 
 #  Colors
 CYAN		=	\033[1;36m
@@ -46,7 +76,7 @@ $(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
 
 $(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
 				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
-				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAGS) -o $(NAME)
+				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(NAME)
 				@echo "$(NAME) created successfully !"
 
 $(LIB_N)	:		

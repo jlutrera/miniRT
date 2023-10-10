@@ -6,13 +6,13 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:55:16 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/28 18:08:54 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:43:11 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
 
-t_ray ray(t_point3 origin, t_vec dir)
+t_ray	ray(t_point3 origin, t_vec dir)
 {
 	t_ray	new_ray;
 
@@ -25,12 +25,12 @@ t_ray ray(t_point3 origin, t_vec dir)
 	return (new_ray);
 }
 
-t_vec	ray_ex(t_ray *ray , double t)
+t_vec	ray_ex(t_ray *ray, double t)
 {
 	t_vec	ray_expression;
 
 	ray_expression.x = ray -> origin.x + ray -> dir.x * t ;
 	ray_expression.y = ray -> origin.y + ray -> dir.y * t ;
 	ray_expression.z = ray -> origin.z + ray -> dir.z * t ;
-	return (ray_expression); 
+	return (ray_expression);
 }

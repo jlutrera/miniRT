@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:34:23 by adpachec          #+#    #+#             */
-/*   Updated: 2023/09/19 11:59:27 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/06 18:59:28 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,23 @@ int	ft_errormsg(int e, int n)
 {
 	ft_printf("Error\n");
 	if (e == FILE_E)
-		return ft_printf("It is not possible to open the file\n"), e;
+		return (ft_printf("It is not possible to open the file\n"), e);
 	if (e == SYNTAX_E)
-		return ft_printf("Correct syntax: ./miniRT <file.rt>\n"), e;
+		return (ft_printf("Correct syntax: ./miniRT <file.rt>\n"), e);
 	if (e == MORE_THAN_ONE_AMBIENT_E)
-		return ft_printf("There is more than one Ambient element\n"), e;
+		return (ft_printf("There is more than one Ambient element\n"), e);
 	if (e == MORE_THAN_ONE_CAMERA_E)
-		return ft_printf("There is more than one Camera element\n"), e;
+		return (ft_printf("There is more than one Camera element\n"), e);
 	if (e == MORE_THAN_ONE_LIGHT_E)
-		return ft_printf("There is more than one Light element\n"), e;
+		return (ft_printf("There is more than one Light element\n"), e);
 	if (e == BAD_IDENTIFIER_E)
-		return ft_printf("Line %i has a bad identifier. Use A, C, L, sp, pl, cy\n", n), e;
+		return (ft_printf("Line %i has a bad identifier.", n),
+			ft_printf(" Use A, C, L, sp, pl, cy\n"), e);
 	if (e == AMBIENT_NOT_DECLARED)
-		return ft_printf("The Ambient element is not declared\n"), e;
+		return (ft_printf("The Ambient element is not declared\n"), e);
 	if (e == CAMERA_NOT_DECLARED)
-		return ft_printf("The Camera element is not declared\n"), e;
+		return (ft_printf("The Camera element is not declared\n"), e);
 	if (e == LIGHT_NOT_DECLARED)
-		return ft_printf("The Light element is not declared\n"), e;
-	return more_errormsg(e, n), e;
+		return (ft_printf("The Light element is not declared\n"), e);
+	return (more_errormsg(e, n), e);
 }

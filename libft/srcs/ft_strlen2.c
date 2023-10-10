@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 17:28:35 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/01/28 17:28:35 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:21:33 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	ft_strlen2(char *s)
 		return (0);
 	i = 0;
 	while (s[i] != '\0')
-			i++;
+		i++;
 	return (i);
 }
