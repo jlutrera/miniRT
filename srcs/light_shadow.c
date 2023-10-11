@@ -88,7 +88,7 @@ double	compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d)
 	double		intensity;
 	double		dot_v;
 
-	intensity = scene.ambient.ratio;
+	intensity = 0;
 	l = vec_unit(vec_sub(point_to_vec(scene.light.position), p));
 	dot_v = vec_dot(n, l);
 	if (dot_v > EPSILON)
