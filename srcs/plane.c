@@ -30,20 +30,25 @@ void	intersect_plane(t_ray ray, t_plane *plane, t_point *t)
 			/ denom, vec_dot(plane->direction, op) / denom};
 }
 
-t_point3	compute_plane_light(t_plane *pl, t_scene scene, t_vec p, t_ray ray)
+t_point3	compute_plane_colour_light(t_plane *pl, t_scene scene,
+		t_vec p, t_ray ray)
 {
 	t_vec		n;
-	double		i;
+	t_point3	i;
 	t_point3	intensity;
+	double		shadow;
 
 	n = vec_unit(pl->direction);
-	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	intensity.x = i + scene.ambient.ratio * scene.ambient.color.r / 255 ;
-	intensity.y = i + scene.ambient.ratio * scene.ambient.color.g / 255 ;
-	intensity.z = i + scene.ambient.ratio * scene.ambient.color.b / 255;
-	return ((t_point3){pl->color.r * intensity.x, pl->color.g * intensity.y,
-		pl->color.b * intensity.z});
+	i = compute_colour_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	shadow = compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	intensity.x = i.x - shadow + scene.ambient.ratio
+		* scene.ambient.color.r / 255 ;
+	intensity.y = i.y - shadow + scene.ambient.ratio
+		* scene.ambient.color.g / 255 ;
+	intensity.z = i.z - shadow + scene.ambient.ratio
+		* scene.ambient.color.b / 255;
+	return ((t_point3){fmax(10, intensity.x * pl->color.r), fmax(10,
+			intensity.y * pl->color.g), fmax(10, intensity.z * pl->color.b)});
 }
 
 t_plane	*new_plane(char **s, int *e)

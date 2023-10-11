@@ -49,7 +49,7 @@ NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
-#LEAKS		=	-fsanitize=address
+LEAKS		=	-fsanitize=address
 
 ifeq ($(shell uname -s), Darwin)
 	MLXFLAG = -lmlx -framework OpenGL -framework AppKit

@@ -37,11 +37,14 @@ static t_point3	trace_ray(t_ray ray, t_scene scene)
 	{
 		p = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t_closest));
 		if (closest_obj->type == SPHERE)
-			return (compute_sphere_light(closest_obj->object, scene, p, ray));
+			return (compute_sphere_colour_light(closest_obj->object,
+					scene, p, ray));
 		else if (closest_obj->type == PLANE)
-			return (compute_plane_light(closest_obj->object, scene, p, ray));
+			return (compute_plane_colour_light(closest_obj->object,
+					scene, p, ray));
 		else
-			return (compute_cylinder_light(closest_obj->object, scene, p, ray));
+			return (compute_cylinder_colour_light(closest_obj->object,
+					scene, p, ray));
 	}
 	return ((t_point3){0, 0, 0});
 }

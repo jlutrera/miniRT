@@ -120,17 +120,18 @@ typedef struct s_camera
 
 typedef struct s_light
 {
-	bool		declared;
-	t_point3	position;
-	double		bright;
-	t_color		color;
+	bool			declared;
+	t_point3		position;
+	double			bright;
+	t_color			color;
+	struct s_light	*next;	
 }				t_light;
 
 typedef struct s_scene
 {
 	t_ambient	ambient;
 	t_camera	camera;
-	t_light		light;
+	t_light		*light;
 	t_lst_obj	*obj;
 }				t_scene;
 

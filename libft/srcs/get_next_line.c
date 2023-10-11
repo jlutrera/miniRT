@@ -104,30 +104,3 @@ char	*get_next_line(int fd)
 	free(str);
 	return (line);
 }
-
-char	*get_next_line2(int fd, char **buff)
-{
-	char		*str;
-	char		*line;
-	int			pos_nl;
-	int			i;
-
-	pos_nl = 0;
-	str = ft_init_str(fd, *buff, &pos_nl);
-	if (!str || pos_nl != -1)
-		*buff = NULL;
-	i = ft_init_i(fd, str, &pos_nl);
-	while (i == BUFFER_SIZE && pos_nl == -1)
-	{
-		*buff = ft_strjoin2(*buff, str);
-		i = read(fd, str, BUFFER_SIZE);
-		pos_nl = ft_findnl(str);
-	}
-	line = ft_read_line(*buff, str, pos_nl, i);
-	*buff = ft_remain_buff(str, pos_nl, i);
-	if (*buff == 0 || i == -1)
-		free(*buff);
-	free(str);
-	return (line);
-}
-
