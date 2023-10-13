@@ -42,8 +42,11 @@ static t_point3	trace_ray(t_ray ray, t_scene scene)
 		else if (closest_obj->type == PLANE)
 			return (compute_plane_colour_light(closest_obj->object,
 					scene, p, ray));
-		else
+		else if (closest_obj->type == CYLINDER)
 			return (compute_cylinder_colour_light(closest_obj->object,
+					scene, p, ray));
+		else 
+			return (compute_triangle_colour_light(closest_obj->object,
 					scene, p, ray));
 	}
 	return ((t_point3){0, 0, 0});
@@ -63,10 +66,10 @@ void	process_img(t_data *data, t_scene *scene)
 	t_point3	pixel_color;
 	t_point		p;
 
+	scene->camera.viewp.z = 1;
 	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
 	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x
 		/ data->image.width;
-	scene->camera.viewp.z = 0.75;
 	p.y = -data->image.height / 2 - 1;
 	while (++p.y < data->image.height / 2)
 	{

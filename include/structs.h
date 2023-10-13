@@ -86,11 +86,20 @@ typedef struct s_cylinder
 	t_color		color;
 }				t_cylinder;
 
+typedef struct s_triangle
+{
+	t_point3	p1;
+	t_point3	p2;
+	t_point3	p3;
+	t_color		color;
+}				t_triangle;
+
 typedef enum s_obj_type
 {
 	PLANE,
 	SPHERE,
 	CYLINDER,
+	TRIANGLE
 }			t_obj_type;
 
 typedef struct s_lst_obj

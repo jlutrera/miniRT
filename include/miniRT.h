@@ -104,6 +104,13 @@ t_cylinder	*new_cylinder(char **s, int *e);
 //cylinder2.c
 void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
 
+//triangle.c
+void		intersect_triangle(t_ray ray, t_triangle *tr, t_point *t);
+t_point3	compute_triangle_colour_light(t_triangle *tr, t_scene scene,
+				t_vec p, t_ray ray);
+int			ft_load_triangles(t_lst_obj **obj, char **s);
+t_triangle	*new_triangle(char **s, int *e);
+
 //parser_utils.c
 double		ft_get_dist(void);
 int			is_normalized(t_vec vector);
