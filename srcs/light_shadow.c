@@ -65,7 +65,7 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 	return (false);
 }
 
-double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d)
+double	compute_shadows(t_scene scene, t_vec p, t_vec n)
 {
 	t_vec		l;
 	double		intensity;
@@ -82,9 +82,6 @@ double	compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d)
 			dot_v = vec_dot(n, l);
 			if (dot_v > EPSILON)
 				intensity += light->bright * dot_v;
-			dot_v = vec_dot(vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l)), d);
-			if (dot_v > EPSILON)
-				intensity += light->bright * pow(dot_v, SPECULAR);
 		}
 		light = light->next;
 	}
@@ -101,10 +98,9 @@ t_point3	calc_int(t_point3 p, double d, t_color c)
 	return (i);
 }
 
-t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n, t_vec d)
+t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n)
 {
 	t_vec		l;
-	t_vec		r;
 	t_point3	intensity;
 	double		dot_v;
 	t_light		*light;
@@ -115,10 +111,6 @@ t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n, t_vec d)
 	{
 		l = vec_unit(vec_sub(point_to_vec(light->position), p));
 		dot_v = vec_dot(n, l) * light->bright / 255;
-		if (dot_v > EPSILON)
-			intensity = calc_int(intensity, dot_v, light->color);
-		r = vec_unit(vec_sub(vec_mul(n, 2 * dot_v), l));
-		dot_v = pow(vec_dot(r, d), SPECULAR) * light->bright / 255;
 		if (dot_v > EPSILON)
 			intensity = calc_int(intensity, dot_v, light->color);
 		light = light->next;

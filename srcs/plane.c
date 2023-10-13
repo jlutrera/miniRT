@@ -31,7 +31,7 @@ void	intersect_plane(t_ray ray, t_plane *plane, t_point *t)
 }
 
 t_point3	compute_plane_colour_light(t_plane *pl, t_scene scene,
-		t_vec p, t_ray ray)
+		t_vec p)
 {
 	t_vec		n;
 	t_point3	i;
@@ -39,8 +39,8 @@ t_point3	compute_plane_colour_light(t_plane *pl, t_scene scene,
 	double		shadow;
 
 	n = vec_unit(pl->direction);
-	i = compute_colour_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	shadow = compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	i = compute_colour_lighting(scene, p, n);
+	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow + scene.ambient.ratio
 		* scene.ambient.color.r / 255 ;
 	intensity.y = i.y - shadow + scene.ambient.ratio

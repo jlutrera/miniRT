@@ -13,7 +13,7 @@
 #include "../include/miniRT.h"
 
 t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene,
-		t_vec p, t_ray ray)
+		t_vec p)
 {
 	t_vec		n;
 	t_point3	i;
@@ -29,8 +29,8 @@ t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene,
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
 		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), shadow)));
-	i = compute_colour_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	shadow = compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
+	i = compute_colour_lighting(scene, p, n);
+	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow + scene.ambient.ratio
 		* scene.ambient.color.r / 255 ;
 	intensity.y = i.y - shadow + scene.ambient.ratio
