@@ -21,22 +21,19 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 	while (obj)
 	{
 		if (obj->type == SPHERE)
-			intersect_sphere(ray, (t_sphere *)obj->object, &t);
+			intersect_sp(ray, (t_sphere *)obj->object, &t);
 		else if (obj->type == PLANE)
-			intersect_plane(ray, (t_plane *)obj->object, &t);
+			intersect_pl(ray, (t_plane *)obj->object, &t);
 		else if (obj->type == CYLINDER)
-			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+			intersect_cy(ray, (t_cylinder *)obj->object, &t);
 		else
-			intersect_triangle(ray, (t_triangle *)obj->object, &t);
+			intersect_tr(ray, (t_triangle *)obj->object, &t);
 		tmp = *closest_obj;
 		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
 				&& t.y < *t_closest))
 		{
 			tmp = obj;
-			if (t.y < *t_closest)
-				*t_closest = t.y;
-			else
-				*t_closest = t.x;
+			*t_closest = fmin(fmin(t.x, t.y), *t_closest);
 		}
 		if (tmp != *closest_obj)
 			*closest_obj = tmp;
@@ -51,13 +48,13 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 	while (obj)
 	{
 		if (obj->type == SPHERE)
-			intersect_sphere(ray, (t_sphere *)obj->object, &t);
+			intersect_sp(ray, (t_sphere *)obj->object, &t);
 		else if (obj->type == PLANE)
-			intersect_plane(ray, (t_plane *)obj->object, &t);
+			intersect_pl(ray, (t_plane *)obj->object, &t);
 		else if (obj->type == CYLINDER)
-			intersect_cylinder(ray, (t_cylinder *)obj->object, &t);
+			intersect_cy(ray, (t_cylinder *)obj->object, &t);
 		else
-			intersect_triangle(ray, (t_triangle *)obj->object, &t);
+			intersect_tr(ray, (t_triangle *)obj->object, &t);
 		if ((t.x > EPSILON && t.x < 100) || (t.y > EPSILON && t.y < 100))
 			return (true);
 		obj = obj->next;

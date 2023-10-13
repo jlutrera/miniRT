@@ -72,7 +72,7 @@ static double	solve_equation(t_cylinder *cy, t_vec oc, t_vec od, t_ray ray)
 			(-b - sqrt_discriminant) / (2 * a), cy, ray));
 }
 
-void	intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t)
+void	intersect_cy(t_ray ray, t_cylinder *cy, t_point *t)
 {
 	t_vec	cd;
 	t_vec	oc;

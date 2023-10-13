@@ -81,30 +81,30 @@ void		get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 				double *t_closest);
 
 //sphere.c
-void		intersect_sphere(t_ray ray, t_sphere *sp, t_point *t);
-t_point3	compute_sphere_colour_light(t_sphere *sp, t_scene scene, t_vec p);
-t_sphere	*new_sphere(char **s, int *e);
-int			ft_load_spheres(t_lst_obj **obj, char **s);
+void		intersect_sp(t_ray ray, t_sphere *sp, t_point *t);
+t_point3	compute_sp_colour_light(t_sphere *sp, t_scene scene, t_vec p);
+t_sphere	*new_sp(char **s, int *e);
+int			ft_load_sp(t_lst_obj **obj, char **s);
 
 //plane.c
-void		intersect_plane(t_ray ray, t_plane *plane, t_point *t);
-t_point3	compute_plane_colour_light(t_plane *pl, t_scene scene, t_vec p);
-int			ft_load_planes(t_lst_obj **obj, char **s);
-t_plane		*new_plane(char **s, int *e);
+void		intersect_pl(t_ray ray, t_plane *plane, t_point *t);
+t_point3	compute_pl_colour_light(t_plane *pl, t_scene scene, t_vec p);
+int			ft_load_pl(t_lst_obj **obj, char **s);
+t_plane		*new_pl(char **s, int *e);
 
 //cylinder.c
-t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene, t_vec p);
-int			ft_load_cylinders(t_lst_obj **obj, char **s);
-t_cylinder	*new_cylinder(char **s, int *e);
+t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p);
+int			ft_load_cy(t_lst_obj **obj, char **s);
+t_cylinder	*new_cy(char **s, int *e);
 
 //cylinder2.c
-void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
+void		intersect_cy(t_ray ray, t_cylinder *cy, t_point *t);
 
 //triangle.c
-void		intersect_triangle(t_ray ray, t_triangle *tr, t_point *t);
-t_point3	compute_triangle_colour_light(t_triangle *tr, t_scene scene, t_vec p);
-int			ft_load_triangles(t_lst_obj **obj, char **s);
-t_triangle	*new_triangle(char **s, int *e);
+void		intersect_tr(t_ray ray, t_triangle *tr, t_point *t);
+t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p);
+int			ft_load_tr(t_lst_obj **obj, char **s);
+t_triangle	*new_tr(char **s, int *e);
 
 //parser_utils.c
 double		ft_get_dist(void);

@@ -12,44 +12,44 @@
 
 #include "../include/miniRT.h"
 
-int	ft_load_spheres(t_lst_obj **obj, char **s)
+int	ft_load_sp(t_lst_obj **obj, char **s)
 {
 	int			e;
-	t_sphere	*new_sp;
+	t_sphere	*new_sphere;
 
 	if (check_comps(s, 4))
 		return (NUM_COMPONENTS_E);
-	new_sp = new_sphere(s, &e);
-	if (!new_sp)
+	new_sphere = new_sp(s, &e);
+	if (!new_sphere)
 		return (e);
-	ft_add_back_obj(obj, (void **)&new_sp, SPHERE, ft_get_dist());
+	ft_add_back_obj(obj, (void **)&new_sphere, SPHERE, ft_get_dist());
 	return (SUCCESS);
 }
 
-t_sphere	*new_sphere(char **s, int *e)
+t_sphere	*new_sp(char **s, int *e)
 {
-	t_sphere	*new_sp;
+	t_sphere	*new_sphere;
 
-	new_sp = ft_calloc(sizeof(t_sphere), 1);
-	if (!new_sp)
+	new_sphere = ft_calloc(sizeof(t_sphere), 1);
+	if (!new_sphere)
 	{
 		*e = MEMORY_E;
 		return (NULL);
 	}
-	new_sp->radius = ft_atod(s[2]) / 2;
+	new_sphere->radius = ft_atod(s[2]) / 2;
 	*e = SUCCESS;
-	if (ft_get_point(s[1], &new_sp->center) == -1)
+	if (ft_get_point(s[1], &new_sphere->center) == -1)
 		*e = BAD_COORDINATES_E;
-	else if (new_sp->radius <= 0)
+	else if (new_sphere->radius <= 0)
 		*e = NEGATIVE_E;
-	else if (ft_get_color(s[3], &new_sp->color) == -1)
+	else if (ft_get_color(s[3], &new_sphere->color) == -1)
 		*e = COLOUR_E;
 	if (*e == SUCCESS)
-		return (new_sp);
-	return (free(new_sp), NULL);
+		return (new_sphere);
+	return (free(new_sphere), NULL);
 }
 
-void	intersect_sphere(t_ray ray, t_sphere *sp, t_point *t)
+void	intersect_sp(t_ray ray, t_sphere *sp, t_point *t)
 {
 	t_vec	co;
 	double	a;
@@ -69,8 +69,7 @@ void	intersect_sphere(t_ray ray, t_sphere *sp, t_point *t)
 			/ (2 * a), (-b - sqrt(discriminant)) / (2 * a)};
 }
 
-t_point3	compute_sphere_colour_light(t_sphere *sp, t_scene scene,
-		t_vec p)
+t_point3	compute_sp_colour_light(t_sphere *sp, t_scene scene, t_vec p)
 {
 	t_vec		n;
 	t_point3	i;

@@ -31,7 +31,7 @@ static void	more_errormsg(int e, int n)
 	else if (e == MEMORY_E)
 		ft_printf("Memory error\n");
 	else if (e == NEGATIVE_E)
-		ft_printf("Negative number at line %i\n", n);
+		ft_printf("Bad number at line %i\n", n);
 	else if (e == EXTENSION_E)
 		ft_printf("The file must have .rt extension\n");
 	else
@@ -49,8 +49,6 @@ int	ft_errormsg(int e, int n)
 		return (ft_printf("There is more than one Ambient element\n"), e);
 	if (e == MORE_THAN_ONE_CAMERA_E)
 		return (ft_printf("There is more than one Camera element\n"), e);
-	if (e == MORE_THAN_ONE_LIGHT_E)
-		return (ft_printf("There is more than one Light element\n"), e);
 	if (e == BAD_IDENTIFIER_E)
 		return (ft_printf("Line %i has a bad identifier.", n),
 			ft_printf(" Use A, C, L, sp, pl, cy\n"), e);

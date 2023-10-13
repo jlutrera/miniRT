@@ -59,16 +59,11 @@ t_vec	vec_rotate(t_vec v, t_vec d)
 	t_vec	z_axis;
 	t_vec	rotated;
 
-	
 	z_axis = vec_unit(d);
-
-	if (d.y == 1 || d.y == -1)
-	{
-		if (d.y == 1)
-			x_axis = (t_vec){-1, 0, 0};
-		else
-			x_axis = (t_vec){1, 0, 0};
-	}
+	if (d.y == 1)
+		x_axis = (t_vec){-1, 0, 0};
+	else if (d.y == -1)
+		x_axis = (t_vec){1, 0, 0};
 	else
 		x_axis = vec_unit(vec_cross((t_vec){0, 1, 0}, z_axis));
 	y_axis = vec_unit(vec_cross(z_axis, x_axis));

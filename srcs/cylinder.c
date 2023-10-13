@@ -12,8 +12,7 @@
 
 #include "../include/miniRT.h"
 
-t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene,
-		t_vec p)
+t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 {
 	t_vec		n;
 	t_point3	i;
@@ -41,43 +40,43 @@ t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene,
 			intensity.y * cy->color.g), fmax(10, intensity.z * cy->color.b)});
 }
 
-int	ft_load_cylinders(t_lst_obj **obj, char **s)
+int	ft_load_cy(t_lst_obj **obj, char **s)
 {
 	int			e;
-	t_cylinder	*new_cy;
+	t_cylinder	*new_cylinder;
 
 	if (check_comps(s, 6))
 		return (NUM_COMPONENTS_E);
-	new_cy = new_cylinder(s, &e);
-	if (!new_cy)
+	new_cylinder = new_cy(s, &e);
+	if (!new_cylinder)
 		return (e);
-	ft_add_back_obj(obj, (void **)&new_cy, CYLINDER, ft_get_dist());
+	ft_add_back_obj(obj, (void **)&new_cylinder, CYLINDER, ft_get_dist());
 	return (SUCCESS);
 }
 
-t_cylinder	*new_cylinder(char **s, int *e)
+t_cylinder	*new_cy(char **s, int *e)
 {
-	t_cylinder	*new_cy;
+	t_cylinder	*new_cylinder;
 
-	new_cy = ft_calloc(sizeof(t_cylinder), 1);
-	if (!new_cy)
+	new_cylinder = ft_calloc(sizeof(t_cylinder), 1);
+	if (!new_cylinder)
 	{
 		*e = MEMORY_E;
 		return (NULL);
 	}
 	*e = SUCCESS;
-	new_cy->radius = ft_atod(s[3]) / 2;
-	new_cy->height = ft_atod(s[4]);
-	if (ft_get_point(s[1], &new_cy->coordinate) == -1
-		|| ft_get_vector(s[2], &new_cy->direction) == -1)
+	new_cylinder->radius = ft_atod(s[3]) / 2;
+	new_cylinder->height = ft_atod(s[4]);
+	if (ft_get_point(s[1], &new_cylinder->coordinate) == -1
+		|| ft_get_vector(s[2], &new_cylinder->direction) == -1)
 		*e = BAD_COORDINATES_E;
-	else if (!is_normalized(new_cy->direction))
+	else if (!is_normalized(new_cylinder->direction))
 		*e = NORM_VECTOR_E;
-	else if (new_cy->radius <= 0 || new_cy->height <= 0)
+	else if (new_cylinder->radius <= 0 || new_cylinder->height <= 0)
 		*e = NEGATIVE_E;
-	else if (ft_get_color(s[5], &new_cy->color) == -1)
+	else if (ft_get_color(s[5], &new_cylinder->color) == -1)
 		*e = COLOUR_E;
 	if (*e == SUCCESS)
-		return (new_cy);
-	return (free(new_cy), NULL);
+		return (new_cylinder);
+	return (free(new_cylinder), NULL);
 }

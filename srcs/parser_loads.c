@@ -37,7 +37,7 @@ int	ft_load_camera(t_camera *camera, char **s)
 	if (ft_get_point(s[1], &camera->position) == -1)
 		return (BAD_COORDINATES_E);
 	camera->fov = ft_atoi(s[3]);
-	if (camera->fov < 0 || camera->fov > 180)
+	if (camera->fov <= 0 || camera->fov >= 180)
 		return (FOV_E);
 	if (ft_get_vector(s[2], &camera->direction) == -1)
 		return (BAD_COORDINATES_E);
