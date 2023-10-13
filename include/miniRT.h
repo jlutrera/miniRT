@@ -31,7 +31,6 @@
 # define WIDTH 1080
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
-# define SPECULAR 5000
 
 //my_hooks.c
 void		my_hooks(t_data *vars);
@@ -76,32 +75,36 @@ int			ft_errormsg(int e, int n);
 void		process_img(t_data *data, t_scene *scene);
 
 //light_shadow.c
-double		compute_shadows(t_scene scene, t_vec p, t_vec n, t_vec d);
-double		compute_lighting(t_scene scene, t_vec p, t_vec n, t_vec d);
+double		compute_shadows(t_scene scene, t_vec p, t_vec n);
+t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n);
 void		get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 				double *t_closest);
 
-//Sphere.c
+//sphere.c
 void		intersect_sphere(t_ray ray, t_sphere *sp, t_point *t);
-t_point3	compute_sphere_light(t_sphere *sp, t_scene scene, t_vec p,
-				t_ray ray);
+t_point3	compute_sphere_colour_light(t_sphere *sp, t_scene scene, t_vec p);
 t_sphere	*new_sphere(char **s, int *e);
 int			ft_load_spheres(t_lst_obj **obj, char **s);
 
 //plane.c
 void		intersect_plane(t_ray ray, t_plane *plane, t_point *t);
-t_point3	compute_plane_light(t_plane *pl, t_scene scene, t_vec p, t_ray ray);
+t_point3	compute_plane_colour_light(t_plane *pl, t_scene scene, t_vec p);
 int			ft_load_planes(t_lst_obj **obj, char **s);
 t_plane		*new_plane(char **s, int *e);
 
 //cylinder.c
-t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene, t_vec p,
-				t_ray ray);
+t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene, t_vec p);
 int			ft_load_cylinders(t_lst_obj **obj, char **s);
 t_cylinder	*new_cylinder(char **s, int *e);
 
 //cylinder2.c
 void		intersect_cylinder(t_ray ray, t_cylinder *cy, t_point *t);
+
+//triangle.c
+void		intersect_triangle(t_ray ray, t_triangle *tr, t_point *t);
+t_point3	compute_triangle_colour_light(t_triangle *tr, t_scene scene, t_vec p);
+int			ft_load_triangles(t_lst_obj **obj, char **s);
+t_triangle	*new_triangle(char **s, int *e);
 
 //parser_utils.c
 double		ft_get_dist(void);
@@ -117,7 +120,7 @@ int			ft_get_color(char *s, t_color *color);
 //parser_loads.c
 int			ft_load_ambient(t_ambient *ambient, char **s);
 int			ft_load_camera(t_camera *camera, char **s);
-int			ft_load_light(t_light *light, char **s);
+int			ft_load_light(t_light **light, char **s);
 
 //parser_lists.c
 t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist);

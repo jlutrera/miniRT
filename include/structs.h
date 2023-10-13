@@ -86,11 +86,20 @@ typedef struct s_cylinder
 	t_color		color;
 }				t_cylinder;
 
+typedef struct s_triangle
+{
+	t_point3	p1;
+	t_point3	p2;
+	t_point3	p3;
+	t_color		color;
+}				t_triangle;
+
 typedef enum s_obj_type
 {
 	PLANE,
 	SPHERE,
 	CYLINDER,
+	TRIANGLE
 }			t_obj_type;
 
 typedef struct s_lst_obj
@@ -120,17 +129,18 @@ typedef struct s_camera
 
 typedef struct s_light
 {
-	bool		declared;
-	t_point3	position;
-	double		bright;
-	t_color		color;
+	bool			declared;
+	t_point3		position;
+	double			bright;
+	t_color			color;
+	struct s_light	*next;	
 }				t_light;
 
 typedef struct s_scene
 {
 	t_ambient	ambient;
 	t_camera	camera;
-	t_light		light;
+	t_light		*light;
 	t_lst_obj	*obj;
 }				t_scene;
 

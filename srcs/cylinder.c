@@ -12,29 +12,33 @@
 
 #include "../include/miniRT.h"
 
-t_point3	compute_cylinder_light(t_cylinder *cy, t_scene scene,
-		t_vec p, t_ray ray)
+t_point3	compute_cylinder_colour_light(t_cylinder *cy, t_scene scene,
+		t_vec p)
 {
 	t_vec		n;
-	double		i;
+	t_point3	i;
 	t_vec		op;
 	t_point3	intensity;
+	double		shadow;
 
 	op = vec_sub(p, point_to_vec(cy->coordinate));
-	i = vec_dot(op, cy->direction);
-	if (fabs(i - cy->height) < EPSILON)
+	shadow = vec_dot(op, cy->direction);
+	if (fabs(shadow - cy->height) < EPSILON)
 		n = vec_unit(cy->direction);
-	else if (fabs(i) < EPSILON)
+	else if (fabs(shadow) < EPSILON)
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
-		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i)));
-	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	intensity.x = i + scene.ambient.ratio * scene.ambient.color.r / 255 ;
-	intensity.y = i + scene.ambient.ratio * scene.ambient.color.g / 255 ;
-	intensity.z = i + scene.ambient.ratio * scene.ambient.color.b / 255;
-	return ((t_point3){cy->color.r * intensity.x, cy->color.g * intensity.y,
-		cy->color.b * intensity.z});
+		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), shadow)));
+	i = compute_colour_lighting(scene, p, n);
+	shadow = compute_shadows(scene, p, n);
+	intensity.x = i.x - shadow + scene.ambient.ratio
+		* scene.ambient.color.r / 255 ;
+	intensity.y = i.y - shadow + scene.ambient.ratio
+		* scene.ambient.color.g / 255 ;
+	intensity.z = i.z - shadow + scene.ambient.ratio
+		* scene.ambient.color.b / 255;
+	return ((t_point3){fmax(10, intensity.x * cy->color.r), fmax(10,
+			intensity.y * cy->color.g), fmax(10, intensity.z * cy->color.b)});
 }
 
 int	ft_load_cylinders(t_lst_obj **obj, char **s)

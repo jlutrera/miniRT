@@ -19,22 +19,32 @@ static void	ft_init(t_scene **scene)
 		exit (1);
 	(*scene)->ambient.declared = false;
 	(*scene)->camera.declared = false;
-	(*scene)->light.declared = false;
+	(*scene)->light = NULL;
 	(*scene)->obj = NULL;
 }
 
 void	free_memory(t_scene *scene)
 {
 	t_lst_obj	*aux;
+	t_light		*light;
 
-	if ((scene)->obj)
+	if (scene->obj)
 	{
 		while (scene->obj)
 		{
-			aux = (scene)->obj;
-			(scene)->obj = (scene)->obj->next;
+			aux = scene->obj;
+			scene->obj = scene->obj->next;
 			free(aux->object);
 			free(aux);
+		}
+	}
+	if (scene->light)
+	{
+		while (scene->light)
+		{
+			light = scene->light;
+			scene->light = scene->light->next;
+			free(light);
 		}
 	}
 	free(scene);
@@ -69,7 +79,7 @@ int	main(int argc, char **argv)
 	int			error;
 	int			n;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (argc != 2)
 		return (ft_errormsg(SYNTAX_E, 0));
 	if (WIDTH <= 0)

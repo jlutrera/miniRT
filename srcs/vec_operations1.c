@@ -54,17 +54,26 @@ t_vec	vec(double x, double y, double z)
 
 t_vec	vec_rotate(t_vec v, t_vec d)
 {
-	t_vec	a;
-	t_vec	b;
-	t_vec	v_rotated;
+	t_vec	x_axis;
+	t_vec	y_axis;
+	t_vec	z_axis;
+	t_vec	rotated;
 
-	if (d.x != 0 || d.y != 0)
-		a = vec_unit(vec_cross((t_vec){0, 0, 1}, d));
+	
+	z_axis = vec_unit(d);
+
+	if (d.y == 1 || d.y == -1)
+	{
+		if (d.y == 1)
+			x_axis = (t_vec){-1, 0, 0};
+		else
+			x_axis = (t_vec){1, 0, 0};
+	}
 	else
-		a = vec_unit(vec_cross((t_vec){0, 1, 0}, d));
-	b = vec_unit(vec_cross(d, a));
-	v_rotated.x = a.x * v.x + b.x * v.y + d.x * v.z;
-	v_rotated.y = a.y * v.x + b.y * v.y + d.y * v.z;
-	v_rotated.z = a.z * v.x + b.z * v.y + d.z * v.z;
-	return (v_rotated);
+		x_axis = vec_unit(vec_cross((t_vec){0, 1, 0}, z_axis));
+	y_axis = vec_unit(vec_cross(z_axis, x_axis));
+	rotated.x = v.x * x_axis.x + v.y * y_axis.x + v.z * z_axis.x;
+	rotated.y = v.x * x_axis.y + v.y * y_axis.y + v.z * z_axis.y;
+	rotated.z = v.x * x_axis.z + v.y * y_axis.z + v.z * z_axis.z;
+	return (rotated);
 }

@@ -69,19 +69,23 @@ void	intersect_sphere(t_ray ray, t_sphere *sp, t_point *t)
 			/ (2 * a), (-b - sqrt(discriminant)) / (2 * a)};
 }
 
-t_point3	compute_sphere_light(t_sphere *sp, t_scene scene,
-		t_vec p, t_ray ray)
+t_point3	compute_sphere_colour_light(t_sphere *sp, t_scene scene,
+		t_vec p)
 {
 	t_vec		n;
-	double		i;
+	t_point3	i;
+	double		shadow;
 	t_point3	intensity;
 
 	n = vec_unit(vec_sub(p, point_to_vec(sp->center)));
-	i = compute_lighting(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	i -= compute_shadows(scene, p, n, vec_unit(vec_mul(ray.dir, -1)));
-	intensity.x = i + scene.ambient.ratio * scene.ambient.color.r / 255 ;
-	intensity.y = i + scene.ambient.ratio * scene.ambient.color.g / 255 ;
-	intensity.z = i + scene.ambient.ratio * scene.ambient.color.b / 255;
-	return ((t_point3){intensity.x * sp->color.r, intensity.y * sp->color.g,
-		intensity.z * sp->color.b});
+	i = compute_colour_lighting(scene, p, n);
+	shadow = compute_shadows(scene, p, n);
+	intensity.x = i.x - shadow + scene.ambient.ratio
+		* scene.ambient.color.r / 255;
+	intensity.y = i.y - shadow + scene.ambient.ratio
+		* scene.ambient.color.g / 255;
+	intensity.z = i.z - shadow + scene.ambient.ratio
+		* scene.ambient.color.b / 255;
+	return ((t_point3){fmax(10, intensity.x * sp->color.r), fmax(10,
+			intensity.y * sp->color.g), fmax(10, intensity.z * sp->color.b)});
 }

@@ -25,6 +25,8 @@ t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist)
 		new_obj->object = (t_plane *) object;
 	else if (type == CYLINDER)
 		new_obj->object = (t_cylinder *) object;
+	else
+		new_obj->object = (t_triangle *) object;
 	new_obj->type = type;
 	new_obj->last_dist = last_dist;
 	new_obj->skip = 0;

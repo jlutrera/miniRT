@@ -32,6 +32,7 @@ SRCS		=	$(S_DIR)main.c \
 				$(S_DIR)plane.c \
 				$(S_DIR)cylinder.c \
 				$(S_DIR)cylinder2.c \
+				$(S_DIR)triangle.c \
 				$(S_DIR)light_shadow.c \
 				$(S_DIR)parser.c \
 				$(S_DIR)parser_utils.c \
@@ -49,7 +50,7 @@ NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
-#LEAKS		=	-fsanitize=address
+LEAKS		=	-fsanitize=address
 
 ifeq ($(shell uname -s), Darwin)
 	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
