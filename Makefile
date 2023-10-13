@@ -14,7 +14,9 @@
 L_DIR		=	./libft/
 O_DIR		=	./obj/
 I_DIR		=	./include/
-S_DIR		=	./srcs/
+S_DIR		=	./mandatory/
+BO_DIR		=	./obj_bonus/
+BS_DIR		=	./bonus/
 
 #Files
 LIB_A		=	libft.a
@@ -39,13 +41,37 @@ SRCS		=	$(S_DIR)main.c \
 				$(S_DIR)parser_loads.c \
 				$(S_DIR)parser_lists.c
 
+B_SRCS		=	$(S_DIR)process_file.c \
+				$(S_DIR)vec_operations1.c \
+				$(S_DIR)vec_operations2.c \
+				$(S_DIR)vec_operations3.c \
+				$(S_DIR)ray.c \
+				$(S_DIR)print_errors.c \
+				$(S_DIR)my_hooks.c \
+				$(S_DIR)color.c \
+				$(S_DIR)cylinder2.c \
+				$(S_DIR)parser_utils.c \
+				$(S_DIR)parser_gets.c \
+				$(BS_DIR)main_bonus.c \
+				$(BS_DIR)process_img_bonus.c \
+				$(BS_DIR)parser_bonus.c \
+				$(BS_DIR)parser_loads_bonus.c \
+				$(BS_DIR)parser_lists_bonus.c \
+				$(BS_DIR)triangle_bonus.c \
+				$(BS_DIR)light_shadow_bonus.c \
+				$(BS_DIR)sphere_bonus.c \
+				$(BS_DIR)plane_bonus.c \
+				$(BS_DIR)cylinder_bonus.c
+
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
-HEADER		=	$(I_DIR)miniRT.h \
-				$(I_DIR)errors.h
+B_OBJS		=	$(patsubst $(BS_DIR)%, $(BO_DIR)%, $(B_SRCS:.c=.o))
+HEADER		=	$(I_DIR)miniRT.h
+B_HEADER	=	$(I_DIR)miniRT_bonus.h
 LIB_N		=	$(L_DIR)$(LIB_A)
 
 # Constant strings
 NAME		=	miniRT
+B_NAME		=	miniRT_bonus
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
@@ -65,12 +91,19 @@ RESET		=	\033[0m
 
 # Rules
 all			:	$(NAME)
+bonus		:	$(B_NAME)
 
 $(O_DIR)	:
 				@echo "Creating program $(YELLOW)$(NAME)$(RESET)"
 				@mkdir -p $(O_DIR)
+$(BO_DIR)	:
+				@echo "Creating bonus program $(YELLOW)$(B_NAME)$(RESET)"
+				@mkdir -p $(BO_DIR)
 
 $(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
+				@echo "$(GRAY)Compiling $@ ! $(RESET)"
+				@$(CC) $(W_FLAGS) -c $< -o $@
+$(BO_DIR)%.o:	$(BS_DIR)%.c $(B_HEADER)
 				@echo "$(GRAY)Compiling $@ ! $(RESET)"
 				@$(CC) $(W_FLAGS) -c $< -o $@
 
@@ -78,7 +111,10 @@ $(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
 				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
 				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(NAME)
 				@echo "$(NAME) created successfully !"
-
+$(B_NAME) 	:	$(LIB_N) $(BO_DIR) $(B_OBJS)
+				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
+				@$(CC) $(B_OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(B_NAME)
+				@echo "$(B_NAME) created successfully !"
 $(LIB_N)	:		
 				@echo "Creating library $(YELLOW) $(LIB_A) $(RESET)"
 				@$(MAKE) --no-print-directory -C $(L_DIR)
@@ -86,13 +122,15 @@ $(LIB_N)	:
 clean		:	
 				@$(MAKE) --no-print-directory clean -C $(L_DIR) 
 				@$(RM) $(O_DIR)
+				@$(RM) $(BO_DIR)
 				@echo "$(CYAN)Deleted all the object files$(RESET)"
 
 fclean		:	clean
 				@$(MAKE) --no-print-directory fclean -C $(L_DIR)
 				@$(RM) $(NAME)
+				@$(RM) $(B_NAME)
 				@echo "$(CYAN)Deleted all the exec files$(RESET)"
 
 re			:	fclean all
-
-.PHONY		:	all clean fclean re
+re_bonus	:	fclean bonus
+.PHONY		:	all clean fclean re bonus re_bonus

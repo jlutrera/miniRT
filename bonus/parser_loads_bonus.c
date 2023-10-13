@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 int	ft_load_ambient(t_ambient *ambient, char **s)
 {

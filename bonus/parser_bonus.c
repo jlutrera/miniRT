@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 static void	ft_free_data(char **data)
 {

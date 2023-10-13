@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist)
 {

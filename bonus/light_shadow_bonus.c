@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 			double *t_closest)
@@ -101,6 +101,7 @@ t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n)
 	t_point3	intensity;
 	double		dot_v;
 	t_light		*light;
+	t_vec		r;
 
 	intensity = (t_point3){0, 0, 0};
 	light = scene.light;
@@ -110,6 +111,11 @@ t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n)
 		dot_v = vec_dot(n, l) * light->bright / 255;
 		if (dot_v > EPSILON)
 			intensity = calc_int(intensity, dot_v, light->color);
+		r = vec_sub(vec_mul(n, 2 * vec_dot(n, l)), l);
+		dot_v = vec_dot(r, vec_mul(scene.camera.direction, -1));
+		if (dot_v > EPSILON)
+			intensity = calc_int(intensity, light->bright * pow(dot_v / (vec_length(r)
+				* vec_length(scene.camera.direction)), SPECULAR), light->color);
 		light = light->next;
 	}
 	return (intensity);

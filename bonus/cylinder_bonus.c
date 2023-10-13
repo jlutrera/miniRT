@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 {

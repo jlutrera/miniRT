@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 static bool	point_is_inside_tr(t_triangle *tr, t_vec p, t_vec n)
 {

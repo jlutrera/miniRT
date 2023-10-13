@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 static void	ft_init(t_scene **scene)
 {
@@ -38,15 +38,13 @@ void	free_memory(t_scene *scene)
 			free(aux);
 		}
 	}
-	if (scene->light)
+	while (scene->light)
 	{
-		while (scene->light)
-		{
-			light = scene->light;
-			scene->light = scene->light->next;
-			free(light);
-		}
+		light = scene->light;
+		scene->light = scene->light->next;
+		free(light);
 	}
+	free(scene->light);
 	free(scene);
 }
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "../include/miniRT_bonus.h"
 
 void	intersect_pl(t_ray ray, t_plane *plane, t_point *t)
 {
