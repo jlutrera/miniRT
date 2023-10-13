@@ -49,6 +49,8 @@ int	ft_errormsg(int e, int n)
 		return (ft_printf("There is more than one Ambient element\n"), e);
 	if (e == MORE_THAN_ONE_CAMERA_E)
 		return (ft_printf("There is more than one Camera element\n"), e);
+	if (e == MORE_THAN_ONE_LIGHT_E)
+		return (ft_printf("There is more than one Light element\n"), e);
 	if (e == BAD_IDENTIFIER_E)
 		return (ft_printf("Line %i has a bad identifier.", n),
 			ft_printf(" Use A, C, L, sp, pl, cy\n"), e);

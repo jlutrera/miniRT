@@ -46,46 +46,19 @@ int	ft_load_camera(t_camera *camera, char **s)
 	return (SUCCESS);
 }
 
-t_light	*new_light(char **s, int *e)
+int	ft_load_light(t_light *light, char **s)
 {
-	t_light	*new_l;
-
-	new_l = ft_calloc(sizeof(t_light), 1);
-	if (!new_l)
-	{
-		*e = MEMORY_E;
-		return (NULL);
-	}
-	*e = SUCCESS;
-	if (ft_get_point(s[1], &new_l->position) == -1)
-		*e = BAD_COORDINATES_E;
-	new_l->bright = ft_atod(s[2]);
-	if (new_l->bright < 0 || new_l->bright > 1)
-		*e = BAD_BRIGHT_E;
-	if (ft_get_color(s[3], &new_l->color) == -1)
-		*e = COLOUR_E;
-	new_l->next = NULL;
-	if (*e == SUCCESS)
-		return (new_l);
-	return (free(new_l), NULL);
-}
-
-int	ft_load_light(t_light **light, char **s)
-{
-	int		e;
-	t_light	*new_l;
-	t_light	*aux;
-
+	if (light->declared)
+		return (MORE_THAN_ONE_LIGHT_E);
+	light->declared = true;
 	if (check_comps(s, 4))
 		return (NUM_COMPONENTS_E);
-	new_l = new_light(s, &e);
-	if (!new_l)
-		return (e);
-	if (!light || !*light)
-		return (*light = new_l, SUCCESS);
-	aux = *light;
-	while (aux->next != NULL)
-		aux = aux->next;
-	aux->next = new_l;
+	if (ft_get_point(s[1], &light->position) == -1)
+		return (BAD_COORDINATES_E);
+	light->bright = ft_atod(s[2]);
+	if (light->bright < 0 || light->bright > 1)
+		return (BAD_BRIGHT_E);
+	if (ft_get_color(s[3], &light->color) == -1)
+		return (COLOUR_E);
 	return (SUCCESS);
 }

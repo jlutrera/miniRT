@@ -76,35 +76,29 @@ void		process_img(t_data *data, t_scene *scene);
 
 //light_shadow.c
 double		compute_shadows(t_scene scene, t_vec p, t_vec n);
-t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n);
+t_point3	compute_lighting(t_scene scene, t_vec p, t_vec n);
 void		get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 				double *t_closest);
 
 //sphere.c
 void		intersect_sp(t_ray ray, t_sphere *sp, t_point *t);
-t_point3	compute_sp_colour_light(t_sphere *sp, t_scene scene, t_vec p);
+t_point3	compute_sp_light(t_sphere *sp, t_scene scene, t_vec p);
 t_sphere	*new_sp(char **s, int *e);
 int			ft_load_sp(t_lst_obj **obj, char **s);
 
 //plane.c
 void		intersect_pl(t_ray ray, t_plane *plane, t_point *t);
-t_point3	compute_pl_colour_light(t_plane *pl, t_scene scene, t_vec p);
+t_point3	compute_pl_light(t_plane *pl, t_scene scene, t_vec p);
 int			ft_load_pl(t_lst_obj **obj, char **s);
 t_plane		*new_pl(char **s, int *e);
 
 //cylinder.c
-t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p);
+t_point3	compute_cy_light(t_cylinder *cy, t_scene scene, t_vec p);
 int			ft_load_cy(t_lst_obj **obj, char **s);
 t_cylinder	*new_cy(char **s, int *e);
 
 //cylinder2.c
 void		intersect_cy(t_ray ray, t_cylinder *cy, t_point *t);
-
-//triangle.c
-void		intersect_tr(t_ray ray, t_triangle *tr, t_point *t);
-t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p);
-int			ft_load_tr(t_lst_obj **obj, char **s);
-t_triangle	*new_tr(char **s, int *e);
 
 //parser_utils.c
 double		ft_get_dist(void);
@@ -120,7 +114,7 @@ int			ft_get_color(char *s, t_color *color);
 //parser_loads.c
 int			ft_load_ambient(t_ambient *ambient, char **s);
 int			ft_load_camera(t_camera *camera, char **s);
-int			ft_load_light(t_light **light, char **s);
+int			ft_load_light(t_light *light, char **s);
 
 //parser_lists.c
 t_lst_obj	*ft_init_obj(void *object, t_obj_type type, double last_dist);

@@ -18,6 +18,7 @@
 # define SYNTAX_E 					1
 # define MORE_THAN_ONE_AMBIENT_E 	2
 # define MORE_THAN_ONE_CAMERA_E 	3
+# define MORE_THAN_ONE_LIGHT_E 		4
 # define BAD_IDENTIFIER_E 			5
 # define AMBIENT_NOT_DECLARED		6
 # define CAMERA_NOT_DECLARED		7

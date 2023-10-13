@@ -42,7 +42,7 @@ static int	end_msg(int error, t_scene **scene)
 		return (AMBIENT_NOT_DECLARED);
 	if (!(*scene)->camera.declared)
 		return (CAMERA_NOT_DECLARED);
-	if (!(*scene)->light)
+	if (!(*scene)->light.declared)
 		return (LIGHT_NOT_DECLARED);
 	return (SUCCESS);
 }

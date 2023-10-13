@@ -19,14 +19,13 @@ static void	ft_init(t_scene **scene)
 		exit (1);
 	(*scene)->ambient.declared = false;
 	(*scene)->camera.declared = false;
-	(*scene)->light = NULL;
+	(*scene)->light.declared = false;
 	(*scene)->obj = NULL;
 }
 
 void	free_memory(t_scene *scene)
 {
 	t_lst_obj	*aux;
-	t_light		*light;
 
 	if (scene->obj)
 	{
@@ -36,15 +35,6 @@ void	free_memory(t_scene *scene)
 			scene->obj = scene->obj->next;
 			free(aux->object);
 			free(aux);
-		}
-	}
-	if (scene->light)
-	{
-		while (scene->light)
-		{
-			light = scene->light;
-			scene->light = scene->light->next;
-			free(light);
 		}
 	}
 	free(scene);

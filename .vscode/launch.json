@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/jl_ut/Documents/GitHub/miniRT/srcs",
-      "program": "c:/Users/jl_ut/Documents/GitHub/miniRT/srcs/build/Debug/outDebug",
+      "cwd": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/srcs",
+      "program": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/srcs/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
