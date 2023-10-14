@@ -68,16 +68,16 @@ t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p)
 {
 	t_vec		n;
 	t_point3	i;
-	double		shadow;
+	t_point3	shadow;
 	t_point3	intensity;
 
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
-	intensity.x = i.x - shadow + scene.ambient.ratio
+	intensity.x = i.x - shadow.x + scene.ambient.ratio
 		* scene.ambient.color.r / 255;
-	intensity.y = i.y - shadow + scene.ambient.ratio
+	intensity.y = i.y - shadow.y + scene.ambient.ratio
 		* scene.ambient.color.g / 255;
-	intensity.z = i.z - shadow + scene.ambient.ratio
+	intensity.z = i.z - shadow.z + scene.ambient.ratio
 		* scene.ambient.color.b / 255;
 	return ((t_point3){fmax(10, intensity.x * tr->color.r), fmax(10,
 			intensity.y * tr->color.g), fmax(10, intensity.z * tr->color.b)});

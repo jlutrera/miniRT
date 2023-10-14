@@ -18,23 +18,23 @@ t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 	t_point3	i;
 	t_vec		op;
 	t_point3	intensity;
-	double		shadow;
+	t_point3	shadow;
 
 	op = vec_sub(p, point_to_vec(cy->coordinate));
-	shadow = vec_dot(op, cy->direction);
-	if (fabs(shadow - cy->height) < EPSILON)
+	i.x = vec_dot(op, cy->direction);
+	if (fabs(i.x - cy->height) < EPSILON)
 		n = vec_unit(cy->direction);
-	else if (fabs(shadow) < EPSILON)
+	else if (fabs(i.x) < EPSILON)
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
-		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), shadow)));
+		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i.x)));
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
-	intensity.x = i.x - shadow + scene.ambient.ratio
+	intensity.x = i.x - shadow.x + scene.ambient.ratio
 		* scene.ambient.color.r / 255 ;
-	intensity.y = i.y - shadow + scene.ambient.ratio
+	intensity.y = i.y - shadow.y + scene.ambient.ratio
 		* scene.ambient.color.g / 255 ;
-	intensity.z = i.z - shadow + scene.ambient.ratio
+	intensity.z = i.z - shadow.z + scene.ambient.ratio
 		* scene.ambient.color.b / 255;
 	return ((t_point3){fmax(10, intensity.x * cy->color.r), fmax(10,
 			intensity.y * cy->color.g), fmax(10, intensity.z * cy->color.b)});

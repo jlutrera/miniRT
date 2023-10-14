@@ -12,33 +12,14 @@
 
 #include "../include/miniRT_bonus.h"
 
-void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
-			double *t_closest)
+static t_point3	calc_int(t_point3 p, double d, t_color c)
 {
-	t_lst_obj	*tmp;
-	t_point		t;
+	t_point3	i;
 
-	while (obj)
-	{
-		if (obj->type == SPHERE)
-			intersect_sp(ray, (t_sphere *)obj->object, &t);
-		else if (obj->type == PLANE)
-			intersect_pl(ray, (t_plane *)obj->object, &t);
-		else if (obj->type == CYLINDER)
-			intersect_cy(ray, (t_cylinder *)obj->object, &t);
-		else
-			intersect_tr(ray, (t_triangle *)obj->object, &t);
-		tmp = *closest_obj;
-		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
-				&& t.y < *t_closest))
-		{
-			tmp = obj;
-			*t_closest = fmin(fmin(t.x, t.y), *t_closest);
-		}
-		if (tmp != *closest_obj)
-			*closest_obj = tmp;
-		obj = obj->next;
-	}
+	i.x = p.x + d * c.r / 255;
+	i.y = p.y + d * c.g / 255;
+	i.z = p.z + d * c.b / 255;
+	return (i);
 }
 
 static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
@@ -62,60 +43,68 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 	return (false);
 }
 
-double	compute_shadows(t_scene scene, t_vec p, t_vec n)
+static t_point3	compute_int(t_vec n, t_vec l, t_light *light, t_camera camera)
 {
-	t_vec		l;
-	double		intensity;
 	double		dot_v;
-	t_light		*light;
+	t_vec		r;
+	t_point3	intensity;
+	double		coef;
 
-	intensity = 0;
-	light = scene.light;
-	while (light)
+	intensity = (t_point3){0, 0, 0};
+	dot_v = vec_dot(n, l) * light->bright;
+	if (dot_v > EPSILON)
+		intensity = calc_int(intensity, dot_v, light->color);
+	r = vec_sub(vec_mul(n, 2 * vec_dot(n, l)), l);
+	dot_v = vec_dot(r, vec_mul(camera.direction, -1));
+	if (dot_v > EPSILON)
 	{
-		l = vec_unit(vec_sub(point_to_vec(light->position), p));
-		if (get_closest_shadow((t_ray){vec_to_point(p), l}, scene.obj))
-		{
-			dot_v = vec_dot(n, l);
-			if (dot_v > EPSILON)
-				intensity += light->bright * dot_v;
-		}
-		light = light->next;
+		coef = light->bright * pow(dot_v / (vec_length(r)
+					* vec_length(camera.direction)), SPECULAR);
+		intensity = calc_int(intensity, coef, light->color);
 	}
 	return (intensity);
 }
 
-t_point3	calc_int(t_point3 p, double d, t_color c)
-{
-	t_point3	i;
-
-	i.x = p.x + d * c.r;
-	i.y = p.y + d * c.g;
-	i.z = p.z + d * c.b;
-	return (i);
-}
-
-t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n)
+t_point3	compute_shadows(t_scene scene, t_vec p, t_vec n)
 {
 	t_vec		l;
 	t_point3	intensity;
-	double		dot_v;
+	t_point3	tmp;
 	t_light		*light;
-	t_vec		r;
 
 	intensity = (t_point3){0, 0, 0};
 	light = scene.light;
 	while (light)
 	{
 		l = vec_unit(vec_sub(point_to_vec(light->position), p));
-		dot_v = vec_dot(n, l) * light->bright / 255;
-		if (dot_v > EPSILON)
-			intensity = calc_int(intensity, dot_v, light->color);
-		r = vec_sub(vec_mul(n, 2 * vec_dot(n, l)), l);
-		dot_v = vec_dot(r, vec_mul(scene.camera.direction, -1));
-		if (dot_v > EPSILON)
-			intensity = calc_int(intensity, light->bright * pow(dot_v / (vec_length(r)
-				* vec_length(scene.camera.direction)), SPECULAR), light->color);
+		if (get_closest_shadow((t_ray){vec_to_point(p), l}, scene.obj))
+		{
+			tmp = compute_int(n, l, light, scene.camera);
+			intensity.x += tmp.x;
+			intensity.y += tmp.y;
+			intensity.z += tmp.z;
+		}
+		light = light->next;
+	}
+	return (intensity);
+}
+
+t_point3	compute_colour_lighting(t_scene scene, t_vec p, t_vec n)
+{
+	t_vec		l;
+	t_point3	intensity;
+	t_point3	tmp;
+	t_light		*light;
+
+	intensity = (t_point3){0, 0, 0};
+	light = scene.light;
+	while (light)
+	{
+		l = vec_unit(vec_sub(point_to_vec(light->position), p));
+		tmp = compute_int(n, l, light, scene.camera);
+		intensity.x += tmp.x;
+		intensity.y += tmp.y;
+		intensity.z += tmp.z;
 		light = light->next;
 	}
 	return (intensity);

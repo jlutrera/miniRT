@@ -12,6 +12,35 @@
 
 #include "../include/miniRT_bonus.h"
 
+static void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
+			double *t_closest)
+{
+	t_lst_obj	*tmp;
+	t_point		t;
+
+	while (obj)
+	{
+		if (obj->type == SPHERE)
+			intersect_sp(ray, (t_sphere *)obj->object, &t);
+		else if (obj->type == PLANE)
+			intersect_pl(ray, (t_plane *)obj->object, &t);
+		else if (obj->type == CYLINDER)
+			intersect_cy(ray, (t_cylinder *)obj->object, &t);
+		else
+			intersect_tr(ray, (t_triangle *)obj->object, &t);
+		tmp = *closest_obj;
+		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
+				&& t.y < *t_closest))
+		{
+			tmp = obj;
+			*t_closest = fmin(fmin(t.x, t.y), *t_closest);
+		}
+		if (tmp != *closest_obj)
+			*closest_obj = tmp;
+		obj = obj->next;
+	}
+}
+
 static void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 {
 	char	*dst;
