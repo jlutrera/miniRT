@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT_bonus.h"
+#include "../include/miniRT.h"
 
 t_vec	vec_add(t_vec v1, t_vec v2)
 {

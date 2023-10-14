@@ -41,27 +41,27 @@ SRCS		=	$(S_DIR)main.c \
 				$(S_DIR)parser_loads.c \
 				$(S_DIR)parser_lists.c
 
-B_SRCS		=	$(S_DIR)process_file.c \
-				$(S_DIR)vec_operations1.c \
-				$(S_DIR)vec_operations2.c \
-				$(S_DIR)vec_operations3.c \
-				$(S_DIR)ray.c \
-				$(S_DIR)print_errors.c \
-				$(S_DIR)my_hooks.c \
-				$(S_DIR)color.c \
-				$(S_DIR)cylinder2.c \
-				$(S_DIR)parser_utils.c \
-				$(S_DIR)parser_gets.c \
-				$(BS_DIR)main_bonus.c \
-				$(BS_DIR)process_img_bonus.c \
-				$(BS_DIR)parser_bonus.c \
-				$(BS_DIR)parser_loads_bonus.c \
-				$(BS_DIR)parser_lists_bonus.c \
-				$(BS_DIR)triangle_bonus.c \
-				$(BS_DIR)light_shadow_bonus.c \
-				$(BS_DIR)sphere_bonus.c \
-				$(BS_DIR)plane_bonus.c \
-				$(BS_DIR)cylinder_bonus.c
+B_SRCS		=	$(BS_DIR)vec_operations1.c \
+				$(BS_DIR)vec_operations2.c \
+				$(BS_DIR)vec_operations3.c \
+				$(BS_DIR)ray.c \
+				$(BS_DIR)print_errors.c \
+				$(BS_DIR)my_hooks.c \
+				$(BS_DIR)color.c \
+				$(BS_DIR)cylinder2.c \
+				$(BS_DIR)parser_utils.c \
+				$(BS_DIR)parser_gets.c \
+				$(BS_DIR)process_file.c \
+				$(BS_DIR)main.c \
+				$(BS_DIR)process_img.c \
+				$(BS_DIR)parser.c \
+				$(BS_DIR)parser_loads.c \
+				$(BS_DIR)parser_lists.c \
+				$(BS_DIR)triangle.c \
+				$(BS_DIR)light_shadow.c \
+				$(BS_DIR)sphere.c \
+				$(BS_DIR)plane.c \
+				$(BS_DIR)cylinder.c
 
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 B_OBJS		=	$(patsubst $(BS_DIR)%, $(BO_DIR)%, $(B_SRCS:.c=.o))
@@ -120,7 +120,7 @@ $(LIB_N)	:
 				@$(MAKE) --no-print-directory -C $(L_DIR)
 
 clean		:	
-				@$(MAKE) --no-print-directory clean -C $(L_DIR) 
+			 	@$(MAKE) --no-print-directory clean -C $(L_DIR) 
 				@$(RM) $(O_DIR)
 				@$(RM) $(BO_DIR)
 				@echo "$(CYAN)Deleted all the object files$(RESET)"

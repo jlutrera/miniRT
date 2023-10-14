@@ -37,7 +37,7 @@
 void		my_hooks(t_data *vars);
 void		free_memory(t_scene *scene);
 
-//process_file.c
+//process_file_bonus.c
 int			process_file(char *file, t_scene **scene, int *n);
 
 //parser_bonus.c

@@ -129,7 +129,6 @@ typedef struct s_camera
 
 typedef struct s_light
 {
-	bool			declared;
 	t_point3		position;
 	double			bright;
 	t_color			color;

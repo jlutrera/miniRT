@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/mandatory",
-      "program": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/mandatory/build/Debug/outDebug",
+      "cwd": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/bonus",
+      "program": "c:/Users/jl_ut/Documents/GitHub/C4_miniRT/bonus/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
