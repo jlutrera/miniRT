@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+         #
+#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
-#    Updated: 2023/10/09 19:21:16 by jutrera-         ###   ########.fr        #
+#    Updated: 2023/10/15 21:15:19 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,29 +41,29 @@ SRCS		=	$(S_DIR)main.c \
 				$(S_DIR)parser_loads.c \
 				$(S_DIR)parser_lists.c
 
-B_SRCS		=	$(BS_DIR)vec_operations1.c \
-				$(BS_DIR)vec_operations2.c \
-				$(BS_DIR)vec_operations3.c \
-				$(BS_DIR)ray.c \
-				$(BS_DIR)print_errors.c \
-				$(BS_DIR)my_hooks.c \
-				$(BS_DIR)color.c \
-				$(BS_DIR)cylinder2.c \
-				$(BS_DIR)parser_utils.c \
-				$(BS_DIR)parser_gets.c \
-				$(BS_DIR)process_file.c \
-				$(BS_DIR)main.c \
-				$(BS_DIR)process_img.c \
-				$(BS_DIR)parser.c \
-				$(BS_DIR)parser_loads.c \
-				$(BS_DIR)parser_lists.c \
-				$(BS_DIR)triangle.c \
-				$(BS_DIR)light_shadow.c \
-				$(BS_DIR)sphere.c \
-				$(BS_DIR)plane.c \
-				$(BS_DIR)cylinder.c \
-				$(BS_DIR)cone.c \
-				$(BS_DIR)cone2.c
+B_SRCS		=	$(BS_DIR)vec_operations1_bonus.c \
+				$(BS_DIR)vec_operations2_bonus.c \
+				$(BS_DIR)vec_operations3_bonus.c \
+				$(BS_DIR)ray_bonus.c \
+				$(BS_DIR)print_errors_bonus.c \
+				$(BS_DIR)my_hooks_bonus.c \
+				$(BS_DIR)color_bonus.c \
+				$(BS_DIR)cylinder2_bonus.c \
+				$(BS_DIR)parser_utils_bonus.c \
+				$(BS_DIR)parser_gets_bonus.c \
+				$(BS_DIR)process_file_bonus.c \
+				$(BS_DIR)main_bonus.c \
+				$(BS_DIR)process_img_bonus.c \
+				$(BS_DIR)parser_bonus.c \
+				$(BS_DIR)parser_loads_bonus.c \
+				$(BS_DIR)parser_lists_bonus.c \
+				$(BS_DIR)triangle_bonus.c \
+				$(BS_DIR)light_shadow_bonus.c \
+				$(BS_DIR)sphere_bonus.c \
+				$(BS_DIR)plane_bonus.c \
+				$(BS_DIR)cylinder_bonus.c \
+				$(BS_DIR)cone_bonus.c \
+				$(BS_DIR)cone2_bonus.c
 
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 B_OBJS		=	$(patsubst $(BS_DIR)%, $(BO_DIR)%, $(B_SRCS:.c=.o))
@@ -73,7 +73,7 @@ LIB_N		=	$(L_DIR)$(LIB_A)
 
 # Constant strings
 NAME		=	miniRT
-B_NAME		=	miniRT_bonus
+B_NAME		=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
