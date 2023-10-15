@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 13:38:21 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:11:27 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 
 	op = vec_sub(p, point_to_vec(co->coordinate));
 	i.x = vec_dot(op, co->direction);
-	i.y = atan2(co->radius, co->height);
+	i.y = cos(atan2(co->radius, co->height));
 	if (fabs(i.x) <= EPSILON)
 		n = vec_unit(vec_mul(co->direction, -1));
 	else
-		n = vec_mul(vec_sub(op, vec_mul(vec_unit(co->direction),
-						i.x)), 1 / cos(i.y));
+	{
+		n = vec_unit(vec_sub(op, vec_mul(vec_unit(co->direction), i.x)));
+		n = (t_vec){n.x / i.y, n.y / i.y, co->coordinate.z + i.x};
+	}
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow.x + scene.ambient.ratio

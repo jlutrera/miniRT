@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:44:31 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 13:44:31 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/15 16:32:10 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,90 +33,65 @@ static double	intersect_disk(t_ray ray, t_vec center,
 
 static double	calc_tmin(double t1, double t2, t_cone *co, t_ray ray)
 {
-	t_vec	p1;
-	t_vec	p2;
-	double	h1;
-	double	h2;
+	double	t_min;
+	t_vec	p;
+	double	h;
 
-	p1 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t1));
-	p2 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t2));
-	h1 = vec_dot(vec_sub(p1, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	h2 = vec_dot(vec_sub(p2, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	if (h1 < EPSILON || h1 > cy->height)
+	if (t1 < 0)
 		t1 = INFINITY;
-	if (h2 < EPSILON || h2 > cy->height)
+	if (t2 < 0)
 		t2 = INFINITY;
-	if (t2 < t1)
-		return (t2);
-	return (t1);
+	if (t1 < t2)
+		t_min = t1;
+	else
+		t_min = t2;
+	if (t_min != INFINITY)
+	{
+		p = vec_add(point_to_vec(ray.origin),
+				vec_mul(vec_unit(ray.dir), t_min));
+		h = vec_dot(vec_sub(p, point_to_vec(co->coordinate)),
+				vec_unit(co->direction));
+		if (h < EPSILON || h - co->height > EPSILON)
+			t_min = INFINITY;
+	}
+	return (t_min);
 }
 
-static double	solve_equation(t_cylinder *cy, t_vec oc, t_vec od, t_ray ray)
+static double	solve_equation(t_cone *co, t_vec r, t_vec vo, t_ray ray)
 {
 	double	a;
 	double	b;
 	double	c;
-	double	discriminant;
-	double	sqrt_discriminant;
+	double	x;
+	t_vec	d;
 
-	a = vec_dot(od, od);
-	b = 2 * vec_dot(oc, od);
-	c = vec_dot(oc, oc) - cy->radius * cy->radius;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < EPSILON)
+	d = vec_unit(co->direction);
+	x = atan2(co->radius, co->height);
+	a = vec_dot(r, d) * vec_dot(r, d) - cos(x) * cos(x);
+	b = -2 * vec_dot(vo, d) * vec_dot(d, r) + 2 * vec_dot(vo, r)
+		* cos(x) * cos(x);
+	c = vec_dot(vo, d) * vec_dot(vo, d) - vec_dot(vo, vo)
+		* cos(x) * cos(x);
+	x = b * b - 4 * a * c;
+	if (x < EPSILON)
 		return (INFINITY);
-	sqrt_discriminant = sqrt(discriminant);
-	return (calc_tmin((-b + sqrt_discriminant) / (2 * a),
-			(-b - sqrt_discriminant) / (2 * a), cy, ray));
+	x = sqrt(x);
+	return (calc_tmin((-b + x) / (2 * a), (-b - x) / (2 * a), co, ray));
 }
 
 void	intersect_co(t_ray ray, t_cone *co, t_point *t)
 {
-	t_vec	d;
-	t_vec	r;
-	double	alfa;
 	double	t_base;
 	double	t_min;
-	double	r_dot_d;
-	double	vo_dot_r;
+	t_vec	vertex;
+	t_vec	vo;
 
-	d = vec_unit(co->direction);
-	r = vec_unit(ray.dir);
-	alfa = atan2(co->radius, co->height);
-	t_vec vertex = vec_add(point_to_vec(co->coordinate), vec_mul(d, co->height));
-	t_vec vo = vec_sub(vertex, point_to_vec(ray.origin));
-	double vo_dot_d = vec_dot(vo, d);
-	r_dot_d = vec_dot(r, d);
-	vo_dot_r = vec_dot(vo, r);
-	t_min = INFINITY;
-	double a = r_dot_d * r_dot_d - cos(alfa) * cos(alfa);
-	double b = -2 * vo_dot_d * r_dot_d + 2 * vo_dot_r * cos(alfa) * cos(alfa);
-	double c = vo_dot_d * vo_dot_d - vec_dot(vo, vo) * cos(alfa) * cos(alfa);
-	double discriminant = b * b - 4 *a * c;
-	if (discriminant >= EPSILON)
-	{
-		double sqrt_discriminant = sqrt(discriminant);
-		t->x = (-b + sqrt_discriminant) / (2 * a);
-		t->y = (-b - sqrt_discriminant) / (2 * a);
-		if (t->x < 0)
-			t->x = INFINITY;
-		if (t->y < 0)
-			t->y = INFINITY;
-		if (t->x < t->y)
-			t_min = t->x;
-		else
-			t_min = t->y;
-	}
-	if (t_min != INFINITY)
-	{
-		t_vec p = vec_add(point_to_vec(ray.origin), vec_mul(r, t_min));
-		double h = vec_dot(vec_sub(p, point_to_vec(co->coordinate)), d);
-		if (h < EPSILON || h - co->height > EPSILON)
-			t_min = INFINITY;
-	}
-	t_base = intersect_disk(ray, point_to_vec(co->coordinate), d, co->radius);
+	vertex = vec_add(point_to_vec(co->coordinate),
+			vec_mul(vec_unit(co->direction), co->height));
+	vo = vec_sub(vertex, point_to_vec(ray.origin));
+	t_min = solve_equation(co, vec_unit(ray.dir), vo, ray);
+	t_base = intersect_disk(ray, point_to_vec(co->coordinate),
+			vec_unit(co->direction), co->radius);
 	if (t_base < t_min)
 		t_min = t_base;
 	*t = (t_point){t_min, t_min};

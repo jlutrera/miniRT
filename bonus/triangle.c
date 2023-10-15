@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:30:48 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/13 14:30:48 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:23:10 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p)
 	t_point3	shadow;
 	t_point3	intensity;
 
+	n = vec_cross(vec_sub(point_to_vec(tr->p2), point_to_vec(tr->p1)),
+			vec_sub(point_to_vec(tr->p3), point_to_vec(tr->p1)));
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow.x + scene.ambient.ratio
