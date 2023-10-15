@@ -41,7 +41,10 @@ double	ft_atod(char *s)
 	while (aux[i])
 		i++;
 	if (i != 1 && i != 2)
+	{
+		ft_free(aux);
 		return (0);
+	}
 	sign = 1;
 	if (aux[0][0] == '-')
 		sign = -1;
@@ -49,10 +52,7 @@ double	ft_atod(char *s)
 	value2 = 0;
 	if (aux[1])
 		value2 = ft_atol(aux[1]) / pow(10, ft_strlen2(aux[1]));
-	i = -1;
-	while (aux[++i])
-		free(aux[i]);
-	free(aux);
+	ft_free(aux);
 	return (value + value2 * sign);
 }
 

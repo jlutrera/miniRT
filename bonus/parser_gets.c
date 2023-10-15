@@ -12,6 +12,16 @@
 
 #include "../include/miniRT_bonus.h"
 
+void	ft_free(char **aux)
+{
+	int	i;
+
+	i = -1;
+	while (aux[++i])
+		free(aux[i]);
+	free(aux);
+}
+
 int	ft_get_vector(char *s, t_vec *direction)
 {
 	char	**aux;
@@ -21,11 +31,8 @@ int	ft_get_vector(char *s, t_vec *direction)
 	aux = ft_split(s, ',');
 	i = -1;
 	while (aux[++i])
-	{
 		values[i] = ft_atod(aux[i]);
-		free(aux[i]);
-	}
-	free(aux);
+	ft_free(aux);
 	if (i != 3)
 		return (-1);
 	direction->x = values[0];
@@ -43,11 +50,8 @@ int	ft_get_point(char *s, t_point3 *position)
 	aux = ft_split(s, ',');
 	i = -1;
 	while (aux[++i])
-	{
 		values[i] = ft_atod(aux[i]);
-		free(aux[i]);
-	}
-	free(aux);
+	ft_free(aux);
 	if (i != 3)
 		return (-1);
 	position->x = values[0];
@@ -71,9 +75,8 @@ int	ft_get_color(char *s, t_color *color)
 		values[i] = ft_atoi(aux[i]);
 		if (values[i] < 0 || values[i] > 255)
 			error = -1;
-		free(aux[i]);
 	}
-	free(aux);
+	ft_free(aux);
 	if (i != 3 || error == -1)
 		return (-1);
 	*color = (t_color){values[0], values[1], values[2]};

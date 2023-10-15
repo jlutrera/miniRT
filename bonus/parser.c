@@ -70,6 +70,8 @@ int	parse_line(char *line, t_scene **scene)
 		error = ft_load_cy(&((*scene)->obj), data);
 	else if (!ft_strcmp("tr", data[0]))
 		error = ft_load_tr(&((*scene)->obj), data);
+	else if (!ft_strcmp("co", data[0]))
+		error = ft_load_co(&((*scene)->obj), data);
 	else
 		error = BAD_IDENTIFIER_E;
 	return (ft_free_data(data), error);

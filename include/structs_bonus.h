@@ -86,6 +86,15 @@ typedef struct s_cylinder
 	t_color		color;
 }				t_cylinder;
 
+typedef struct s_cone
+{
+	t_point3	coordinate;
+	t_vec		direction;
+	double		radius;
+	double		height;
+	t_color		color;
+}				t_cone;
+
 typedef struct s_triangle
 {
 	t_point3	p1;
@@ -99,7 +108,8 @@ typedef enum s_obj_type
 	PLANE,
 	SPHERE,
 	CYLINDER,
-	TRIANGLE
+	TRIANGLE,
+	CONE
 }			t_obj_type;
 
 typedef struct s_lst_obj

@@ -15,7 +15,6 @@
 static void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 			double *t_closest)
 {
-	t_lst_obj	*tmp;
 	t_point		t;
 
 	while (obj)
@@ -26,17 +25,16 @@ static void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 			intersect_pl(ray, (t_plane *)obj->object, &t);
 		else if (obj->type == CYLINDER)
 			intersect_cy(ray, (t_cylinder *)obj->object, &t);
-		else
+		else if (obj->type == TRIANGLE)
 			intersect_tr(ray, (t_triangle *)obj->object, &t);
-		tmp = *closest_obj;
+		else
+			intersect_co(ray, (t_cone *)obj->object, &t);
 		if ((t.x > EPSILON && t.x < *t_closest) || (t.y > EPSILON
 				&& t.y < *t_closest))
 		{
-			tmp = obj;
+			*closest_obj = obj;
 			*t_closest = fmin(fmin(t.x, t.y), *t_closest);
 		}
-		if (tmp != *closest_obj)
-			*closest_obj = tmp;
 		obj = obj->next;
 	}
 }
@@ -71,8 +69,10 @@ static t_point3	trace_ray(t_ray ray, t_scene scene)
 			return (compute_pl_colour_light(closest_obj->object, scene, p));
 		else if (closest_obj->type == CYLINDER)
 			return (compute_cy_colour_light(closest_obj->object, scene, p));
-		else
+		else if (closest_obj->type == TRIANGLE)
 			return (compute_tr_colour_light(closest_obj->object, scene, p));
+		else
+			return (compute_co_colour_light(closest_obj->object, scene, p));
 	}
 	return ((t_point3){0, 0, 0});
 }

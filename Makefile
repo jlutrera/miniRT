@@ -61,7 +61,9 @@ B_SRCS		=	$(BS_DIR)vec_operations1.c \
 				$(BS_DIR)light_shadow.c \
 				$(BS_DIR)sphere.c \
 				$(BS_DIR)plane.c \
-				$(BS_DIR)cylinder.c
+				$(BS_DIR)cylinder.c \
+				$(BS_DIR)cone.c \
+				$(BS_DIR)cone2.c
 
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 B_OBJS		=	$(patsubst $(BS_DIR)%, $(BO_DIR)%, $(B_SRCS:.c=.o))

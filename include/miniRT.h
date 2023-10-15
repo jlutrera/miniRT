@@ -110,6 +110,7 @@ int			check_comps(char **s, int n);
 int			ft_get_vector(char *s, t_vec *direction);
 int			ft_get_point(char *s, t_point3 *position);
 int			ft_get_color(char *s, t_color *color);
+void		ft_free(char **aux);
 
 //parser_loads.c
 int			ft_load_ambient(t_ambient *ambient, char **s);

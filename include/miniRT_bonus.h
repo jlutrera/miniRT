@@ -31,7 +31,7 @@
 # define WIDTH 1080
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
-# define SPECULAR 8000
+# define SPECULAR 1000
 
 //my_hooks.c
 void		my_hooks(t_data *vars);
@@ -105,6 +105,14 @@ t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p);
 int			ft_load_tr(t_lst_obj **obj, char **s);
 t_triangle	*new_tr(char **s, int *e);
 
+//cone2.c
+void		intersect_co(t_ray ray, t_cone *co, t_point *t);
+
+//cone.c
+t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p);
+int			ft_load_co(t_lst_obj **obj, char **s);
+t_cone		*new_co(char **s, int *e);
+
 //parser_utils.c
 double		ft_get_dist(void);
 int			is_normalized(t_vec vector);
@@ -115,6 +123,7 @@ int			check_comps(char **s, int n);
 int			ft_get_vector(char *s, t_vec *direction);
 int			ft_get_point(char *s, t_point3 *position);
 int			ft_get_color(char *s, t_color *color);
+void		ft_free(char **aux);
 
 //parser_loads.c
 int			ft_load_ambient(t_ambient *ambient, char **s);
