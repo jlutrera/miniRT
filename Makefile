@@ -6,16 +6,17 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
-#    Updated: 2023/10/15 21:15:19 by adpachec         ###   ########.fr        #
+#    Updated: 2023/10/16 10:12:11 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+MAKEFLAGS += --no-print-directory
 
 # Paths
 L_DIR		=	./libft/
 O_DIR		=	./obj/
 I_DIR		=	./include/
 S_DIR		=	./mandatory/
-BO_DIR		=	./obj_bonus/
 BS_DIR		=	./bonus/
 
 #Files
@@ -66,23 +67,31 @@ B_SRCS		=	$(BS_DIR)vec_operations1_bonus.c \
 				$(BS_DIR)cone2_bonus.c
 
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
-B_OBJS		=	$(patsubst $(BS_DIR)%, $(BO_DIR)%, $(B_SRCS:.c=.o))
+B_OBJS		=	$(patsubst $(BS_DIR)%, $(O_DIR)%, $(B_SRCS:.c=.o))
 HEADER		=	$(I_DIR)miniRT.h
 B_HEADER	=	$(I_DIR)miniRT_bonus.h
 LIB_N		=	$(L_DIR)$(LIB_A)
 
 # Constant strings
-NAME		=	miniRT
-B_NAME		=	miniRT
+EXE_NAME	=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
-LEAKS		=	-fsanitize=address
+# LEAKS		=	-fsanitize=address
 
 ifeq ($(shell uname -s), Darwin)
 	MLXFLAG = -lmlx -framework OpenGL -framework AppKit
 else
 	MLXFLAG	= -Lusr/lib -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -Imlx_linux
+endif
+
+ifdef WITH_BONUS
+OBJ_FILES = $(B_OBJS)
+FLAG_FILE = .bonus_flag
+S_DIR = ./bonus/
+else
+OBJ_FILES = $(OBJS)
+FLAG_FILE = .normal_flag
 endif
 
 #  Colors
@@ -92,31 +101,28 @@ GRAY		=	\033[2;37m
 RESET		=	\033[0m
 
 # Rules
-all			:	$(NAME)
-bonus		:	$(B_NAME)
+all			:	$(EXE_NAME)
+
+bonus		:	
+				@$(MAKE) WITH_BONUS=1 all
 
 $(O_DIR)	:
-				@echo "Creating program $(YELLOW)$(NAME)$(RESET)"
+				@echo "Creating program $(YELLOW)$(EXE_NAME)$(RESET)"
 				@mkdir -p $(O_DIR)
-$(BO_DIR)	:
-				@echo "Creating bonus program $(YELLOW)$(B_NAME)$(RESET)"
-				@mkdir -p $(BO_DIR)
 
 $(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
 				@echo "$(GRAY)Compiling $@ ! $(RESET)"
 				@$(CC) $(W_FLAGS) -c $< -o $@
-$(BO_DIR)%.o:	$(BS_DIR)%.c $(B_HEADER)
-				@echo "$(GRAY)Compiling $@ ! $(RESET)"
-				@$(CC) $(W_FLAGS) -c $< -o $@
 
-$(NAME) 	:	$(LIB_N) $(O_DIR) $(OBJS)
+$(EXE_NAME) :	$(LIB_N) $(O_DIR) $(OBJ_FILES) $(FLAG_FILE)
 				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
-				@$(CC) $(OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(NAME)
-				@echo "$(NAME) created successfully !"
-$(B_NAME) 	:	$(LIB_N) $(BO_DIR) $(B_OBJS)
-				@echo "$(YELLOW)Linking object files ! ... $(RESET)\c"
-				@$(CC) $(B_OBJS) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(B_NAME)
-				@echo "$(B_NAME) created successfully !"
+				@$(CC) $(OBJ_FILES) $(LEAKS) $(LIBFLAGS) $(MLXFLAG) -o $(EXE_NAME)
+				@echo "$(EXE_NAME) created successfully !"
+
+$(FLAG_FILE):
+				@$(RM) .normal_flag .bonus_flag
+				@touch $(FLAG_FILE)
+
 $(LIB_N)	:		
 				@echo "Creating library $(YELLOW) $(LIB_A) $(RESET)"
 				@$(MAKE) --no-print-directory -C $(L_DIR)
