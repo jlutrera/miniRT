@@ -6,11 +6,28 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:52:08 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/16 10:42:10 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
+
+static t_vec	compute_cone_normal(t_cone *co, t_vec p)
+{
+	t_vec	V;	
+	t_vec	P_minus_V;
+	double	height;
+	t_vec	proj;
+	t_vec	base;
+
+	V = point_to_vec(co->coordinate);
+	P_minus_V = vec_sub(p, V);
+	height = vec_dot(P_minus_V, vec_unit(co->direction));
+	proj = vec_mul(vec_unit(co->direction), height);
+	base = vec_add(V, proj);
+	height = co->radius / sin(atan(co->radius / co->height));
+	return vec_unit(vec_mul(vec_unit(vec_sub(p, base)), height));
+}
 
 t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 {
@@ -23,13 +40,7 @@ t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 	op = vec_sub(p, point_to_vec(co->coordinate));
 	i.x = vec_dot(op, co->direction);
 	i.y = cos(atan2(co->radius, co->height));
-	if (fabs(i.x) <= EPSILON)
-		n = vec_unit(vec_mul(co->direction, -1));
-	else
-	{
-		n = vec_unit(vec_sub(op, vec_mul(vec_unit(co->direction), i.x)));
-		n = (t_vec){n.x / i.y, n.y / i.y, co->coordinate.z + i.x};
-	}
+	n = compute_cone_normal(co, p);
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow.x + scene.ambient.ratio

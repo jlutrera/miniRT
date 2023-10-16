@@ -398,3 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 miniRT
+.DS_store
+.git
+*.o
+*.a
+a.out.dSYM

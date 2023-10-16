@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
-#    Updated: 2023/10/16 10:12:11 by adpachec         ###   ########.fr        #
+#    Updated: 2023/10/16 10:44:42 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -135,8 +135,8 @@ clean		:
 
 fclean		:	clean
 				@$(MAKE) --no-print-directory fclean -C $(L_DIR)
-				@$(RM) $(NAME)
-				@$(RM) $(B_NAME)
+				@$(RM) .normal_flag .bonus_flag
+				@$(RM) $(EXE_NAME)
 				@echo "$(CYAN)Deleted all the exec files$(RESET)"
 
 re			:	fclean all
