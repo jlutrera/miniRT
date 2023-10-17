@@ -1,46 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cone_bonus.c                                       :+:      :+:    :+:   */
+/*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/16 11:01:29 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:11:27 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
 
-static t_vec	compute_cone_normal(t_cone *co, t_vec p)
+t_vec	calc_normal(t_cone *co, t_vec cp)
 {
-	t_vec	V;	
-	t_vec	P_minus_V;
-	double	height;
-	t_vec	proj;
-	t_vec	base;
+	t_vec	d;
+	double	alfa;
+	t_vec	ca;
+	t_vec	ap;
+	t_vec	v;
 
-	V = point_to_vec(co->coordinate);
-	P_minus_V = vec_sub(p, V);
-	height = vec_dot(P_minus_V, vec_unit(co->direction));
-	proj = vec_mul(vec_unit(co->direction), height);
-	base = vec_add(V, proj);
-	height = co->radius / sin(atan(co->radius / co->height));
-	return vec_unit(vec_mul(vec_unit(vec_sub(p, base)), height));
+	d = vec_unit(co->direction);
+	alfa = atan2(co->radius, co->height);
+	ca = vec_mul(d, vec_dot(cp, d));
+	ap = vec_sub(cp, ca);
+	v = vec_cross(d, ap);
+	return (vec_unit(vec_sub(vec_mul(ap, cos(alfa)), vec_mul(v, sin(alfa)))));
 }
 
 t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 {
 	t_vec		n;
 	t_point3	i;
-	t_vec		op;
 	t_point3	intensity;
 	t_point3	shadow;
+	t_vec		cp;
 
-	op = vec_sub(p, point_to_vec(co->coordinate));
-	i.x = vec_dot(op, co->direction);
-	i.y = cos(atan2(co->radius, co->height));
-	n = compute_cone_normal(co, p);
+	cp = vec_sub(p, point_to_vec(co->coordinate));
+	if (fabs(vec_length(cp) - co->radius) < EPSILON)
+		n = vec_mul(vec_unit(co->direction), -1);
+	else
+		n = calc_normal(co, cp);
 	i = compute_colour_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow.x + scene.ambient.ratio
