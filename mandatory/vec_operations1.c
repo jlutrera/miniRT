@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_operations1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:41:25 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/06 19:45:53 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:52:35 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,19 @@ t_vec	vec(double x, double y, double z)
 	new_vec.z = z;
 	return (new_vec);
 }
+
+/**
+ * @brief Rotates a vector based on a given direction.
+ * 
+ * This function rotates the input vector `v` based on the direction vector `d`.
+ * It first determines the coordinate system defined by the direction vector and
+ * then applies the rotation to the input vector using this coordinate system.
+ * 
+ * @param v The vector to be rotated.
+ * @param d The direction vector defining the rotation.
+ * 
+ * @return The rotated vector.
+ */
 
 t_vec	vec_rotate(t_vec v, t_vec d)
 {

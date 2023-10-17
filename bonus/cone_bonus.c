@@ -1,16 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cone.c                                             :+:      :+:    :+:   */
+/*   cone_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:11:27 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:53:36 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
+
+/**
+ * @brief Calculate the normal vector of a cone at a given point.
+ * 
+ * This function computes the normal vector of a cone at a point `cp` on its surface.
+ * The normal is determined based on the cone's direction and its geometric properties.
+ * 
+ * @param co Pointer to the cone structure.
+ * @param cp Point on the cone's surface.
+ * 
+ * @return The normal vector at point `cp` on the cone.
+ */
 
 t_vec	calc_normal(t_cone *co, t_vec cp)
 {
@@ -27,6 +39,19 @@ t_vec	calc_normal(t_cone *co, t_vec cp)
 	v = vec_cross(d, ap);
 	return (vec_unit(vec_sub(vec_mul(ap, cos(alfa)), vec_mul(v, sin(alfa)))));
 }
+
+/**
+ * @brief Compute the color of a cone under lighting conditions.
+ * 
+ * This function calculates the color of a cone at a point `p` considering the scene's
+ * lighting conditions. It takes into account ambient, diffuse, and shadow effects.
+ * 
+ * @param co Pointer to the cone structure.
+ * @param scene The scene containing lighting and other objects.
+ * @param p Point on the cone's surface.
+ * 
+ * @return The computed color at point `p` on the cone.
+ */
 
 t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 {
@@ -53,6 +78,18 @@ t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 			intensity.y * co->color.g), fmax(10, intensity.z * co->color.b)});
 }
 
+/**
+ * @brief Load a cone object from a string array and add it to the objects list.
+ * 
+ * This function parses the string array `s` to extract cone properties and then
+ * adds the cone to the list of objects in the scene.
+ * 
+ * @param obj Pointer to the list of objects in the scene.
+ * @param s String array containing cone properties.
+ * 
+ * @return SUCCESS if the cone is loaded successfully, otherwise an error code.
+ */
+
 int	ft_load_co(t_lst_obj **obj, char **s)
 {
 	int		e;
@@ -66,6 +103,19 @@ int	ft_load_co(t_lst_obj **obj, char **s)
 	ft_add_back_obj(obj, (void **)&new_cone, CONE, ft_get_dist());
 	return (SUCCESS);
 }
+
+/**
+ * @brief Create a new cone object from a string array.
+ * 
+ * This function parses the string array `s` to extract cone properties and then
+ * creates a new cone object. It performs various checks to ensure the validity
+ * of the provided data.
+ * 
+ * @param s String array containing cone properties.
+ * @param e Pointer to an integer to store error codes.
+ * 
+ * @return Pointer to the newly created cone if successful, otherwise NULL.
+ */
 
 t_cone	*new_co(char **s, int *e)
 {

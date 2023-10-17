@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/09 19:23:41 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:44:15 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ static int	end_msg(int error, t_scene **scene)
 		return (LIGHT_NOT_DECLARED);
 	return (SUCCESS);
 }
+
+/**
+ * @brief Processes the input file to populate the scene structure.
+ * 
+ * This function reads the provided file line by line, parsing each line to
+ * populate the scene structure. It checks for the correct file extension,
+ * reads the file, and processes each line to extract scene information.
+ * 
+ * @param file The path to the input file.
+ * @param scene A double pointer to the scene structure to be populated.
+ * @param n A pointer to an integer that counts the number of processed lines.
+ * 
+ * @return An error code indicating the success or failure of the operation.
+ *         Returns SUCCESS if the file is processed without errors.
+ */
 
 int	process_file(char *file, t_scene **scene, int *n)
 {

@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:49:01 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:54:40 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:58:47 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,21 @@ void	intersect_sp(t_ray ray, t_sphere *sp, t_point *t)
 		*t = (t_point){(-b + sqrt(discriminant))
 			/ (2 * a), (-b - sqrt(discriminant)) / (2 * a)};
 }
+
+/**
+ * @brief Compute the color of a point on a sphere under lighting conditions.
+ * 
+ * This function calculates the color of a point on a sphere based on the scene's
+ * lighting conditions. It takes into account the ambient light, the direct light
+ * from light sources, and shadows cast by other objects. The resulting color is
+ * a combination of the sphere's inherent color and the lighting conditions.
+ * 
+ * @param sp Pointer to the sphere object.
+ * @param scene The scene containing objects, lights, and other relevant data.
+ * @param p The point on the sphere for which the color is being computed.
+ * 
+ * @return The computed color of the point on the sphere.
+ */
 
 t_point3	compute_sp_colour_light(t_sphere *sp, t_scene scene, t_vec p)
 {

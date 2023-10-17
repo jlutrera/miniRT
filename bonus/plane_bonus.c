@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:55:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:54:04 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:57:14 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@ void	intersect_pl(t_ray ray, t_plane *plane, t_point *t)
 	else
 		*t = (t_point){num / denom, num / denom};
 }
+
+/**
+ * @brief Compute the color lighting for a point on a plane.
+ * 
+ * This function calculates the color lighting for a point on a plane based on 
+ * the lighting conditions in the scene. It considers the effects of each light 
+ * source in the scene on the point, the shadows cast by other objects, and the 
+ * ambient lighting. The result is then multiplied by the color of the plane to 
+ * get the final color of the point.
+ * 
+ * @param pl Pointer to the plane structure containing its properties.
+ * @param scene The scene containing lighting, ambient conditions, and other information.
+ * @param p The point on the plane for which the color lighting is to be computed.
+ * 
+ * @return The computed color lighting for the point on the plane.
+ */
 
 t_point3	compute_pl_colour_light(t_plane *pl, t_scene scene, t_vec p)
 {

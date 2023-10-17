@@ -6,11 +6,21 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:30:48 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:54:46 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:59:47 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
+
+/**
+ * @brief Checks if a point lies inside a triangle.
+ * 
+ * @param tr Pointer to the triangle.
+ * @param p Point to be checked.
+ * @param n Normal vector of the triangle.
+ * 
+ * @return true if the point is inside the triangle, false otherwise.
+ */
 
 static bool	point_is_inside_tr(t_triangle *tr, t_vec p, t_vec n)
 {
@@ -35,6 +45,17 @@ static bool	point_is_inside_tr(t_triangle *tr, t_vec p, t_vec n)
 		return (false);
 	return (true);
 }
+
+/**
+ * @brief Checks if a ray intersects with a triangle.
+ * 
+ * If there's an intersection, it calculates the intersection point and checks 
+ * if this point lies inside the triangle.
+ * 
+ * @param ray The ray to check.
+ * @param tr Pointer to the triangle.
+ * @param t Pointer to store the intersection point.
+ */
 
 void	intersect_tr(t_ray ray, t_triangle *tr, t_point *t)
 {
@@ -64,6 +85,16 @@ void	intersect_tr(t_ray ray, t_triangle *tr, t_point *t)
 		*t = (t_point){INFINITY, INFINITY};
 }
 
+/**
+ * @brief Compute the color of a point on a triangle under lighting conditions.
+ * 
+ * @param tr Pointer to the triangle.
+ * @param scene The scene containing objects, lights, and other relevant data.
+ * @param p The point on the triangle for which the color is being computed.
+ * 
+ * @return The computed color of the point on the triangle.
+ */
+
 t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p)
 {
 	t_vec		n;
@@ -84,6 +115,15 @@ t_point3	compute_tr_colour_light(t_triangle *tr, t_scene scene, t_vec p)
 	return ((t_point3){fmax(10, intensity.x * tr->color.r), fmax(10,
 			intensity.y * tr->color.g), fmax(10, intensity.z * tr->color.b)});
 }
+
+/**
+ * @brief Creates a new triangle object from the given string parameters.
+ * 
+ * @param s String parameters containing triangle data.
+ * @param e Pointer to store the error code.
+ * 
+ * @return Pointer to the new triangle object, or NULL if there's an error.
+ */
 
 t_triangle	*new_tr(char **s, int *e)
 {

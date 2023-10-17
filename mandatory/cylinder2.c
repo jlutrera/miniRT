@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.c                                         :+:      :+:    :+:   */
+/*   cylinder2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 20:01:36 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 20:20:16 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:50:20 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
+
+/**
+ * @brief Determines the intersection point between a ray and a disk.
+ * 
+ * This function calculates the intersection point of a ray with a disk.
+ * The disk is defined by its center, normal, and radius.
+ * 
+ * @param ray The ray to check for intersection.
+ * @param center The center of the disk.
+ * @param normal The normal of the disk.
+ * @param radius The radius of the disk.
+ * 
+ * @return The distance from the ray's origin to the intersection point, or INFINITY if no intersection.
+ */
 
 static double	intersect_disk(t_ray ray, t_vec center,
 		t_vec normal, double radius)
@@ -30,6 +44,20 @@ static double	intersect_disk(t_ray ray, t_vec center,
 		return (INFINITY);
 	return (t);
 }
+
+/**
+ * @brief Calculates the minimum intersection distance for a cylinder.
+ * 
+ * This function determines the closest intersection point of a ray with a cylinder.
+ * It checks both the sides and the caps of the cylinder.
+ * 
+ * @param t1 The intersection distance for one side of the cylinder.
+ * @param t2 The intersection distance for the other side of the cylinder.
+ * @param cy The cylinder object.
+ * @param ray The ray to check for intersection.
+ * 
+ * @return The minimum intersection distance, or INFINITY if no intersection.
+ */
 
 static double	calc_tmin(double t1, double t2, t_cylinder *cy, t_ray ray)
 {
@@ -53,6 +81,20 @@ static double	calc_tmin(double t1, double t2, t_cylinder *cy, t_ray ray)
 	return (t1);
 }
 
+/**
+ * @brief Solves the quadratic equation for ray-cylinder intersection.
+ * 
+ * This function calculates the intersection points of a ray with a cylinder using
+ * the quadratic formula. It then determines the closest intersection point.
+ * 
+ * @param cy The cylinder object.
+ * @param oc The vector from the cylinder's base to the ray's origin.
+ * @param od The direction of the ray, adjusted for the cylinder's orientation.
+ * @param ray The ray to check for intersection.
+ * 
+ * @return The closest intersection distance, or INFINITY if no intersection.
+ */
+
 static double	solve_equation(t_cylinder *cy, t_vec oc, t_vec od, t_ray ray)
 {
 	double	a;
@@ -71,6 +113,17 @@ static double	solve_equation(t_cylinder *cy, t_vec oc, t_vec od, t_ray ray)
 	return (calc_tmin((-b + sqrt_discriminant) / (2 * a),
 			(-b - sqrt_discriminant) / (2 * a), cy, ray));
 }
+
+/**
+ * @brief Determines the intersection points of a ray with a cylinder.
+ * 
+ * This function calculates the intersection points of a ray with a cylinder.
+ * It checks both the sides and the caps (bases) of the cylinder.
+ * 
+ * @param ray The ray to check for intersection.
+ * @param cy The cylinder object.
+ * @param t Pointer to a structure that will store the intersection distances.
+ */
 
 void	intersect_cy(t_ray ray, t_cylinder *cy, t_point *t)
 {
