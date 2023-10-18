@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:53:36 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:41:48 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 /**
  * @brief Calculate the normal vector of a cone at a given point.
  * 
- * This function computes the normal vector of a cone at a point `cp` on its surface.
- * The normal is determined based on the cone's direction and its geometric properties.
+ * This function computes the normal vector of a cone at a point `cp` on its
+ * surface.
+ * The normal is determined based on the cone's direction and its geometric
+ * properties.
  * 
  * @param co Pointer to the cone structure.
  * @param cp Point on the cone's surface.
@@ -43,8 +45,9 @@ t_vec	calc_normal(t_cone *co, t_vec cp)
 /**
  * @brief Compute the color of a cone under lighting conditions.
  * 
- * This function calculates the color of a cone at a point `p` considering the scene's
- * lighting conditions. It takes into account ambient, diffuse, and shadow effects.
+ * This function calculates the color of a cone at a point `p` considering
+ * the scene's lighting conditions. It takes into account ambient, diffuse,
+ * and shadow effects.
  * 
  * @param co Pointer to the cone structure.
  * @param scene The scene containing lighting and other objects.

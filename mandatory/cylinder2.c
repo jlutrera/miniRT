@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 20:01:36 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:50:20 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:39:32 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
  * @param normal The normal of the disk.
  * @param radius The radius of the disk.
  * 
- * @return The distance from the ray's origin to the intersection point, or INFINITY if no intersection.
+ * @return The distance from the ray's origin to the intersection point, or
+ * INFINITY if no intersection.
  */
 
 static double	intersect_disk(t_ray ray, t_vec center,
@@ -48,7 +49,8 @@ static double	intersect_disk(t_ray ray, t_vec center,
 /**
  * @brief Calculates the minimum intersection distance for a cylinder.
  * 
- * This function determines the closest intersection point of a ray with a cylinder.
+ * This function determines the closest intersection point of a ray with a
+ * cylinder.
  * It checks both the sides and the caps of the cylinder.
  * 
  * @param t1 The intersection distance for one side of the cylinder.
@@ -84,7 +86,8 @@ static double	calc_tmin(double t1, double t2, t_cylinder *cy, t_ray ray)
 /**
  * @brief Solves the quadratic equation for ray-cylinder intersection.
  * 
- * This function calculates the intersection points of a ray with a cylinder using
+ * This function calculates the intersection points of a ray with a cylinder
+ * using
  * the quadratic formula. It then determines the closest intersection point.
  * 
  * @param cy The cylinder object.

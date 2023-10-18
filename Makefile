@@ -6,7 +6,7 @@
 #    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
-#    Updated: 2023/10/16 10:44:42 by adpachec         ###   ########.fr        #
+#    Updated: 2023/10/18 18:53:10 by adpachec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,8 +68,8 @@ B_SRCS		=	$(BS_DIR)vec_operations1_bonus.c \
 
 OBJS		=	$(patsubst $(S_DIR)%, $(O_DIR)%, $(SRCS:.c=.o))
 B_OBJS		=	$(patsubst $(BS_DIR)%, $(O_DIR)%, $(B_SRCS:.c=.o))
-HEADER		=	$(I_DIR)miniRT.h
-B_HEADER	=	$(I_DIR)miniRT_bonus.h
+HEADER		=	$(I_DIR)miniRT.h $(I_DIR)structs.h $(I_DIR)errors.h 
+B_HEADER	=	$(I_DIR)miniRT_bonus.h $(I_DIR)structs_bonus.h $(I_DIR)errors.h 
 LIB_N		=	$(L_DIR)$(LIB_A)
 
 # Constant strings
@@ -89,9 +89,11 @@ ifdef WITH_BONUS
 OBJ_FILES = $(B_OBJS)
 FLAG_FILE = .bonus_flag
 S_DIR = ./bonus/
+INCL = $(B_HEADER)
 else
 OBJ_FILES = $(OBJS)
 FLAG_FILE = .normal_flag
+INCL = $(HEADER)
 endif
 
 #  Colors
@@ -110,7 +112,7 @@ $(O_DIR)	:
 				@echo "Creating program $(YELLOW)$(EXE_NAME)$(RESET)"
 				@mkdir -p $(O_DIR)
 
-$(O_DIR)%.o	:	$(S_DIR)%.c $(HEADER)
+$(O_DIR)%.o	:	$(S_DIR)%.c $(INCL)
 				@echo "$(GRAY)Compiling $@ ! $(RESET)"
 				@$(CC) $(W_FLAGS) -c $< -o $@
 

@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:12:17 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:56:21 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:43:12 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 }
 
 /**
- * @brief Compute the intensity of light at a point based on its normal and the light direction.
+ * @brief Compute the intensity of light at a point based on its normal and
+ * the light direction.
  * 
- * This function calculates the intensity of light at a point on a surface based on
- * the direction of the light, the normal at the point, and the properties of the light.
+ * This function calculates the intensity of light at a point on a surface
+ * based on the direction of the light, the normal at the point, and the
+ * properties of the light.
  * It considers both diffuse and specular lighting effects.
  * 
  * @param n Normal vector at the point.
@@ -83,12 +85,14 @@ static t_point3	compute_int(t_vec n, t_vec l, t_light *light, t_camera camera)
 /**
  * @brief Compute the shadow intensity at a point.
  * 
- * This function calculates the shadow intensity at a point on a surface based on
- * the lighting conditions in the scene. It checks if the point is in shadow for 
- * each light source in the scene and accumulates the shadow intensity.
+ * This function calculates the shadow intensity at a point on a surface
+ * based on the lighting conditions in the scene. It checks if the point
+ * is in shadow for each light source in the scene and accumulates the shadow
+ * intensity.
  * 
  * @param scene The scene containing lighting and other information.
- * @param p The point on the surface for which the shadow intensity is to be computed.
+ * @param p The point on the surface for which the shadow intensity is to
+ * be computed.
  * @param n Normal vector at the point.
  * 
  * @return The computed shadow intensity at the point.
@@ -122,11 +126,12 @@ t_point3	compute_shadows(t_scene scene, t_vec p, t_vec n)
  * @brief Compute the color lighting at a point.
  * 
  * This function calculates the color lighting at a point on a surface based on
- * the lighting conditions in the scene. It considers the effects of each light 
+ * the lighting conditions in the scene. It considers the effects of each light
  * source in the scene on the point.
  * 
  * @param scene The scene containing lighting and other information.
- * @param p The point on the surface for which the color lighting is to be computed.
+ * @param p The point on the surface for which the color lighting is to be
+ * computed.
  * @param n Normal vector at the point.
  * 
  * @return The computed color lighting at the point.

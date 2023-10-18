@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:12:17 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:47:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:39:56 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 /**
  * @brief Determines the closest object that a ray intersects with.
  * 
- * This function iterates over all objects in the scene and checks for intersections
- * with the provided ray. It updates the closest object and the intersection distance
+ * This function iterates over all objects in the scene and checks for
+ * intersections
+ * with the provided ray. It updates the closest object and the intersection
+ * distance
  * if a closer intersection is found.
  * 
  * @param ray The ray to check intersections for.
  * @param obj The list of objects in the scene.
  * @param closest_obj The closest intersected object (updated by the function).
- * @param t_closest The distance to the closest intersection (updated by the function).
+ * @param t_closest The distance to the closest intersection (updated by the
+ * function).
  */
 
 void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
@@ -53,15 +56,19 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 }
 
 /**
- * @brief Checks if a ray intersects with any object in the scene within a certain distance.
+ * @brief Checks if a ray intersects with any object in the scene within a
+ * certain distance.
  * 
- * This function is used to determine if a point is in shadow. It checks if there's any
+ * This function is used to determine if a point is in shadow. It checks if
+ * there's any
  * object between the point and the light source.
  * 
- * @param ray The ray originating from the point and pointing towards the light.
+ * @param ray The ray originating from the point and pointing towards the
+ * light.
  * @param obj The list of objects in the scene.
  * 
- * @return true if there's an intersection within the specified distance, false otherwise.
+ * @return true if there's an intersection within the specified distance,
+ * false otherwise.
  */
 
 static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)

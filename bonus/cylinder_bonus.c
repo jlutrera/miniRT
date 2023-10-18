@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:55:25 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:42:23 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
  * 
  * @param cy Pointer to the cylinder structure.
  * @param scene The scene containing lighting and other information.
- * @param p The point on the cylinder's surface for which the color is to be computed.
+ * @param p The point on the cylinder's surface for which the color is to be
+ * computed.
  * 
  * @return The computed color of the point on the cylinder.
  */

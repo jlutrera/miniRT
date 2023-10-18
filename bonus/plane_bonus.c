@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:55:04 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:57:14 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:43:24 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void	intersect_pl(t_ray ray, t_plane *plane, t_point *t)
  * get the final color of the point.
  * 
  * @param pl Pointer to the plane structure containing its properties.
- * @param scene The scene containing lighting, ambient conditions, and other information.
- * @param p The point on the plane for which the color lighting is to be computed.
+ * @param scene The scene containing lighting, ambient conditions, and other
+ * information.
+ * @param p The point on the plane for which the color lighting is to be
+ * computed.
  * 
  * @return The computed color lighting for the point on the plane.
  */

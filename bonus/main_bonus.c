@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:52:52 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:00:28 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ void	free_memory(t_scene *scene)
 static void	init_mlx(t_data *data, t_scene *scene)
 {
 	data->image.width = WIDTH;
+	if (WIDTH < 100)
+		data->image.width = 100;
+	else if (WIDTH > 2500)
+		data->image.width = 2500;
 	data->image.height = floor(data->image.width / (ASPECT_RATIO));
 	if (data->image.height < 1)
 		data->image.height = 1;
@@ -65,11 +69,6 @@ static void	init_mlx(t_data *data, t_scene *scene)
 	data->scene = scene;
 }
 
-void	ft_leaks(void)
-{
-	system("leaks miniRT");
-}
-
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -77,7 +76,6 @@ int	main(int argc, char **argv)
 	int			error;
 	int			n;
 
-	//atexit(ft_leaks);
 	if (argc != 2)
 		return (ft_errormsg(SYNTAX_E, 0));
 	if (WIDTH <= 0)

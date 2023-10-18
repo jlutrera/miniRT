@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:54:41 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/06 18:56:13 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:23:32 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static char	**load_data(char *line)
 	while (bad_line(line_aux))
 		line_aux[ft_strlen2(line_aux) - 1] = '\0';
 	data = ft_split(line_aux, ' ');
+	if (!data)
+		return (NULL);
 	free(line_aux);
 	return (data);
 }
@@ -54,6 +56,8 @@ int	parse_line(char *line, t_scene **scene)
 	int		error;
 
 	data = load_data(line);
+	if (!data)
+		return (MEMORY_E);
 	if (data_is_empty(data))
 		error = SUCCESS;
 	else if (!ft_strcmp("A", data[0]))

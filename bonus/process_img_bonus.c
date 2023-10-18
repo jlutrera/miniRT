@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:20:00 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:57:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:44:03 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ static void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 /**
  * @brief Trace a ray through the scene to determine its color.
  * 
- * This function sends a ray into the scene and determines the color of the pixel
- * that the ray intersects based on the objects in the scene. It checks for intersections
- * with all objects and calculates the color based on the closest object it hits.
+ * This function sends a ray into the scene and determines the color of the
+ * pixel
+ * that the ray intersects based on the objects in the scene. It checks for
+ * intersections with all objects and calculates the color based on the closest
+ * object it hits.
  * 
  * @param ray The ray being sent into the scene.
  * @param scene The scene containing objects, lights, and other relevant data.
@@ -101,11 +103,14 @@ static t_vec	init_viewport(t_point p, t_camera camera, t_image image)
  * @brief Process the image by tracing rays for each pixel.
  * 
  * This function processes the entire image by sending a ray through each pixel
- * and determining its color based on the scene's objects and lighting conditions.
+ * and determining its color based on the scene's objects and lighting
+ * conditions.
  * It then draws the computed color to the corresponding pixel in the image.
  * 
- * @param data Pointer to the data structure containing image and other relevant data.
- * @param scene Pointer to the scene containing objects, lights, and other relevant data.
+ * @param data Pointer to the data structure containing image and other relevant
+ * data.
+ * @param scene Pointer to the scene containing objects, lights, and other
+ * relevant data.
  */
 
 void	process_img(t_data *data, t_scene *scene)

@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:44:31 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:54:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:42:18 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 /**
  * @brief Calculate the intersection point of a ray with a disk.
  * 
- * This function computes the intersection of a ray with a disk defined by its center,
- * normal, and radius. If there's no intersection, it returns INFINITY.
+ * This function computes the intersection of a ray with a disk defined by
+ * its center, normal, and radius. If there's no intersection, it returns
+ * INFINITY.
  * 
  * @param ray The ray to be checked for intersection.
  * @param center The center of the disk.
@@ -96,7 +97,8 @@ static double	calc_tmin(double t1, double t2, t_cone *co, t_ray ray)
  * @param v Vector from the ray's origin to the cone's vertex.
  * @param ray The intersecting ray.
  * 
- * @return The closest intersection point's t-value, or INFINITY if no intersection.
+ * @return The closest intersection point's t-value, or INFINITY if no
+ * intersection.
  */
 
 static double	solve_equation(t_cone *co, t_vec r, t_vec v, t_ray ray)
@@ -124,9 +126,9 @@ static double	solve_equation(t_cone *co, t_vec r, t_vec v, t_ray ray)
 /**
  * @brief Determine the intersection of a ray with a cone.
  * 
- * This function calculates the intersection point of a ray with a cone. It considers
- * both the conical surface and the base of the cone. If there's no intersection,
- * it sets the t-value to INFINITY.
+ * This function calculates the intersection point of a ray with a cone. It
+ * considers both the conical surface and the base of the cone. If there's
+ * no intersection, it sets the t-value to INFINITY.
  * 
  * @param ray The ray to be checked for intersection.
  * @param co Pointer to the cone structure.
