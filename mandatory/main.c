@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/18 18:44:35 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:23:03 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void	init_mlx(t_data *data, t_scene *scene)
 	data->image.height = floor(data->image.width / (ASPECT_RATIO));
 	if (data->image.height < 1)
 		data->image.height = 1;
-	scene = 0;
 	data->vars.mlx = mlx_init();
 	if (!data->vars.mlx)
 		exit (1);
