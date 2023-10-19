@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_img_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:20:00 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:57:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:13:04 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

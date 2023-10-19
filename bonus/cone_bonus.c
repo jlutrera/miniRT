@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:38:21 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:53:36 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:37:04 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,16 @@
 
 t_vec	calc_normal(t_cone *co, t_vec cp)
 {
-	t_vec	d;
-	double	alfa;
-	t_vec	ca;
-	t_vec	ap;
 	t_vec	v;
+	double	m;
+	double	k;
+	t_vec	n;
 
-	d = vec_unit(co->direction);
-	alfa = atan2(co->radius, co->height);
-	ca = vec_mul(d, vec_dot(cp, d));
-	ap = vec_sub(cp, ca);
-	v = vec_cross(d, ap);
-	return (vec_unit(vec_sub(vec_mul(ap, cos(alfa)), vec_mul(v, sin(alfa)))));
+	v = vec_unit(vec_mul(co->direction, -1));
+	m = co->radius * co->radius / (2 * co->height);
+	k = 1 + pow(co->radius / co->height, 2);
+	n = vec_unit(vec_sub(cp, vec_mul(v, m * k)));
+	return (n);
 }
 
 /**
@@ -62,7 +60,9 @@ t_point3	compute_co_colour_light(t_cone *co, t_scene scene, t_vec p)
 	t_vec		cp;
 
 	cp = vec_sub(p, point_to_vec(co->coordinate));
-	if (fabs(vec_length(cp) - co->radius) < EPSILON)
+	if (fabs(vec_dot(cp, vec_unit(co->direction)) - co->height) < EPSILON)
+		n = vec_unit(co->direction);
+	else if (fabs(vec_dot(cp, co->direction)) < EPSILON)
 		n = vec_mul(vec_unit(co->direction), -1);
 	else
 		n = calc_normal(co, cp);
