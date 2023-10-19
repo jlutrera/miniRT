@@ -6,58 +6,32 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:44:31 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/19 11:38:36 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:57:21 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
 
-/**
- * @brief Calculate the intersection point of a ray with a disk.
- * 
- * This function computes the intersection of a ray with a disk defined by its center,
- * normal, and radius. If there's no intersection, it returns INFINITY.
- * 
- * @param ray The ray to be checked for intersection.
- * @param center The center of the disk.
- * @param normal The normal vector of the disk.
- * @param radius The radius of the disk.
- * 
- * @return The intersection point's t-value, or INFINITY if no intersection.
- */
-
 static double	intersect_disk(t_ray ray, t_vec center,
 		t_vec normal, double radius)
 {
 	double	denom;
+	double	num;
 	double	t;
 	t_vec	p;
 
 	denom = vec_dot(normal, ray.dir);
-	if (fabs(denom) < EPSILON)
+	if (fabs(denom) <= EPSILON)
 		return (INFINITY);
-	t = vec_dot(vec_sub(center, point_to_vec(ray.origin)), normal) / denom;
+	num = vec_dot(normal, vec_sub(center, point_to_vec(ray.origin)));
+	t = num / denom;
 	if (t < EPSILON)
 		return (INFINITY);
 	p = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t));
-	if (vec_length(vec_sub(p, center)) - radius > EPSILON)
+	if (vec_length(vec_sub(p, center)) - radius >= EPSILON)
 		return (INFINITY);
 	return (t);
 }
-
-/**
- * @brief Calculate the minimum t-value for a ray-cone intersection.
- * 
- * This function determines the closest intersection point of a ray with a cone.
- * It checks if the intersection is within the bounds of the cone's height.
- * 
- * @param t1 The first potential intersection point's t-value.
- * @param t2 The second potential intersection point's t-value.
- * @param co Pointer to the cone structure.
- * @param ray The intersecting ray.
- * 
- * @return The minimum t-value if the intersection is valid, otherwise INFINITY.
- */
 
 static double	calc_tmin(double t1, double t2, t_cone *co, t_ray ray)
 {
@@ -84,21 +58,6 @@ static double	calc_tmin(double t1, double t2, t_cone *co, t_ray ray)
 	return (t_min);
 }
 
-/**
- * @brief Solve the quadratic equation for ray-cone intersection.
- * 
- * This function computes the solutions to the quadratic equation that arises
- * from the intersection of a ray with a cone. It then determines the closest
- * valid intersection point.
- * 
- * @param co Pointer to the cone structure.
- * @param r Direction vector of the ray.
- * @param v Vector from the ray's origin to the cone's vertex.
- * @param ray The intersecting ray.
- * 
- * @return The closest intersection point's t-value, or INFINITY if no intersection.
- */
-
 static double	solve_equation(t_cone *co, t_vec d, t_vec v, t_ray ray)
 {
 	double	a;
@@ -120,18 +79,6 @@ static double	solve_equation(t_cone *co, t_vec d, t_vec v, t_ray ray)
 	x = sqrt(x);
 	return (calc_tmin((-b + x) / (2 * a), (-b - x) / (2 * a), co, ray));
 }
-
-/**
- * @brief Determine the intersection of a ray with a cone.
- * 
- * This function calculates the intersection point of a ray with a cone. It considers
- * both the conical surface and the base of the cone. If there's no intersection,
- * it sets the t-value to INFINITY.
- * 
- * @param ray The ray to be checked for intersection.
- * @param co Pointer to the cone structure.
- * @param t Pointer to store the intersection point's t-value.
- */
 
 void	intersect_co(t_ray ray, t_cone *co, t_point *t)
 {

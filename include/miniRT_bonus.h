@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/19 11:12:53 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:06:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define WIDTH 1080
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
-# define SPECULAR 1000
+# define SPECULAR 500
 
 //my_hooks.c
 void		my_hooks(t_data *vars);

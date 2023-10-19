@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_img.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:20:00 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:45:54 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:02:54 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ static void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 		*(unsigned int *)dst = colour;
 	}
 }
-
-/**
- * @brief Traces a ray through the scene to determine its color.
- * 
- * This function determines the closest object that a ray intersects with
- * and computes the color of the ray based on the properties of the intersected object.
- * 
- * @param ray The ray to be traced.
- * @param scene The scene containing objects, lights, etc.
- * 
- * @return The color of the ray after interacting with the scene.
- */
 
 static t_point3	trace_ray(t_ray ray, t_scene scene)
 {
@@ -64,17 +52,6 @@ static t_vec	init_viewport(t_point p, t_camera camera, t_image image)
 			p.y * camera.viewp.y / image.height,
 			camera.viewp.z));
 }
-
-/**
- * @brief Processes the image by tracing rays for each pixel.
- * 
- * This function iterates over each pixel in the image, computes the corresponding
- * ray, traces it through the scene to determine its color, and then sets the pixel's
- * color in the image.
- * 
- * @param data The data structure containing the image and other properties.
- * @param scene The scene containing objects, lights, etc.
- */
 
 void	process_img(t_data *data, t_scene *scene)
 {

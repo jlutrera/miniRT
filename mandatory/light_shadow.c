@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   light_shadow.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:12:17 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:47:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:02:12 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
-
-/**
- * @brief Determines the closest object that a ray intersects with.
- * 
- * This function iterates over all objects in the scene and checks for intersections
- * with the provided ray. It updates the closest object and the intersection distance
- * if a closer intersection is found.
- * 
- * @param ray The ray to check intersections for.
- * @param obj The list of objects in the scene.
- * @param closest_obj The closest intersected object (updated by the function).
- * @param t_closest The distance to the closest intersection (updated by the function).
- */
 
 void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 			double *t_closest)
@@ -52,18 +39,6 @@ void	get_closest(t_ray ray, t_lst_obj *obj, t_lst_obj **closest_obj,
 	}
 }
 
-/**
- * @brief Checks if a ray intersects with any object in the scene within a certain distance.
- * 
- * This function is used to determine if a point is in shadow. It checks if there's any
- * object between the point and the light source.
- * 
- * @param ray The ray originating from the point and pointing towards the light.
- * @param obj The list of objects in the scene.
- * 
- * @return true if there's an intersection within the specified distance, false otherwise.
- */
-
 static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 {
 	t_point	t;
@@ -83,19 +58,6 @@ static bool	get_closest_shadow(t_ray ray, t_lst_obj *obj)
 	return (false);
 }
 
-/**
- * @brief Computes the shadow intensity at a pixel in the scene.
- * 
- * This function determines how much a pixel is in shadow based on the objects
- * between the point and the light source.
- * 
- * @param scene The scene containing objects, lights, etc.
- * @param p The pixel in the scene.
- * @param n The normal at the pixel.
- * 
- * @return The shadow intensity at the pixel.
- */
-
 double	compute_shadows(t_scene scene, t_vec p, t_vec n)
 {
 	t_vec		l;
@@ -112,19 +74,6 @@ double	compute_shadows(t_scene scene, t_vec p, t_vec n)
 	}
 	return (intensity);
 }
-
-/**
- * @brief Computes the lighting intensity at a point in the scene.
- * 
- * This function determines the lighting contribution at a point based on the
- * angle between the surface normal and the direction to the light source.
- * 
- * @param scene The scene containing objects, lights, etc.
- * @param p The point in the scene.
- * @param n The normal at the point.
- * 
- * @return The lighting intensity at the point.
- */
 
 t_point3	compute_lighting(t_scene scene, t_vec p, t_vec n)
 {

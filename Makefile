@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+         #
+#    By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 11:10:11 by adpachec          #+#    #+#              #
-#    Updated: 2023/10/16 10:44:42 by adpachec         ###   ########.fr        #
+#    Updated: 2023/10/19 19:05:15 by jutrera-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,7 @@ EXE_NAME	=	miniRT
 RM 			=	rm -rf
 LIBFLAGS	=	-Llibft -lft
 W_FLAGS		=	-Wall -Wextra -Werror -Wpedantic -g3 -Wshadow
-# LEAKS		=	-fsanitize=address
+LEAKS		=	-fsanitize=address
 
 ifeq ($(shell uname -s), Darwin)
 	MLXFLAG = -lmlx -framework OpenGL -framework AppKit

@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/09 19:26:17 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:02:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	main(int argc, char **argv)
 	int			error;
 	int			n;
 
-	//atexit(ft_leaks);
 	if (argc != 2)
 		return (ft_errormsg(SYNTAX_E, 0));
 	if (WIDTH <= 0)
