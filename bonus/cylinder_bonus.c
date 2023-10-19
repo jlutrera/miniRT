@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:55:25 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 09:07:36 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 	t_point3	shadow;
 
 	op = vec_sub(p, point_to_vec(cy->coordinate));
-	i.x = vec_dot(op, cy->direction);
-	if (fabs(i.x - cy->height) < EPSILON)
+	i.x = vec_dot(op, vec_unit(cy->direction));
+	if (fabs(i.x - cy->height) <= EPSILON)
 		n = vec_unit(cy->direction);
-	else if (fabs(i.x) < EPSILON)
+	else if (fabs(i.x) <= EPSILON)
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
 		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i.x)));

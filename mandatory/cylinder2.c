@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 20:01:36 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:50:20 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 08:56:12 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,28 @@ static double	intersect_disk(t_ray ray, t_vec center,
 
 static double	calc_tmin(double t1, double t2, t_cylinder *cy, t_ray ray)
 {
-	t_vec	p1;
-	t_vec	p2;
-	double	h1;
-	double	h2;
+	t_vec	p;
+	double	h;
+	t_vec	d;
+	double	t_min;
 
-	p1 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t1));
-	p2 = vec_add(point_to_vec(ray.origin), vec_mul(ray.dir, t2));
-	h1 = vec_dot(vec_sub(p1, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	h2 = vec_dot(vec_sub(p2, point_to_vec(cy->coordinate)),
-			vec_unit(cy->direction));
-	if (h1 < EPSILON || h1 > cy->height)
+	if (t1 <= EPSILON)
 		t1 = INFINITY;
-	if (h2 < EPSILON || h2 > cy->height)
+	if (t2 <= EPSILON)
 		t2 = INFINITY;
-	if (t2 < t1)
-		return (t2);
-	return (t1);
+	if (t1 < t2)
+		t_min = t1;
+	else
+		t_min = t2;
+	if (t_min == INFINITY)
+		return (INFINITY);
+	d = vec_unit(cy->direction);
+	p = vec_add(point_to_vec(ray.origin),
+			vec_mul(ray.dir, t_min));
+	h = vec_dot(vec_sub(p, point_to_vec(cy->coordinate)), d);
+	if (h < EPSILON || h - cy->height > EPSILON)
+		return (INFINITY);
+	return (t_min);
 }
 
 /**
