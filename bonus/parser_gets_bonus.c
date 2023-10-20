@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:40:34 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:53:06 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:03:36 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	ft_get_vector(char *s, t_vec *direction)
 	double	values[3];
 
 	aux = ft_split(s, ',');
+	if (!aux)
+		exit(1);
 	i = -1;
 	while (aux[++i])
 		values[i] = ft_atod(aux[i]);
@@ -48,6 +50,8 @@ int	ft_get_point(char *s, t_point3 *position)
 	double	values[3];
 
 	aux = ft_split(s, ',');
+	if (!aux)
+		exit(1);
 	i = -1;
 	while (aux[++i])
 		values[i] = ft_atod(aux[i]);
@@ -68,6 +72,8 @@ int	ft_get_color(char *s, t_color *color)
 	int		values[3];
 
 	aux = ft_split(s, ',');
+	if (!aux)
+		exit(1);
 	i = -1;
 	error = 0;
 	while (aux[++i])
