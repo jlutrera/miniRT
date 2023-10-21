@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:55:43 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/21 10:54:45 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:41:25 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,11 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	bool		active;
-	t_point3	position;
-	t_vec		direction;
-	int			fov;
-	t_point3	viewp;
+	bool			active;
+	t_point3		position;
+	t_vec			direction;
+	int				fov;
+	t_point3		viewp;
 	struct s_camera	*next;
 }				t_camera;
 
