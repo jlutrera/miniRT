@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:51:27 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:53:32 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:04:25 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ double	ft_atod(char *s)
 	int		sign;	
 
 	aux = ft_split(s, '.');
+	if (!aux)
+		exit(1);
 	i = 0;
 	while (aux[i])
 		i++;
 	if (i != 1 && i != 2)
-	{
-		ft_free(aux);
-		return (0);
-	}
+		return (ft_free(aux), 0);
 	sign = 1;
 	if (aux[0][0] == '-')
 		sign = -1;
@@ -52,8 +51,7 @@ double	ft_atod(char *s)
 	value2 = 0;
 	if (aux[1])
 		value2 = ft_atol(aux[1]) / pow(10, ft_strlen2(aux[1]));
-	ft_free(aux);
-	return (value + value2 * sign);
+	return (ft_free(aux), value + value2 * sign);
 }
 
 int	check_comps(char **s, int n)

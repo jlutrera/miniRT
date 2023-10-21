@@ -6,7 +6,7 @@
 /*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:06:47 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/09 19:36:10 by jutrera-         ###   ########.fr       */
+/*   Updated: 2023/10/21 11:14:27 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,20 @@
 # ifdef __APPLE__
 #  include <mlx.h>
 #  define K_ESC   	53
+#  define K_LEFT  	123
+#  define K_RIGHT 	124
 # else
 #  include "../mlx_linux/mlx.h"
 #  define K_ESC   	0xFF1B
+#  define K_LEFT  	0xFF51
+#  define K_RIGHT 	0xFF53
 # endif
 
 //Window Size for the image
 # define WIDTH 1080
 # define ASPECT_RATIO 1.78  //16:9
 # define EPSILON 0.000001
-# define SPECULAR 1000
+# define SPECULAR 100
 
 //my_hooks.c
 void		my_hooks(t_data *vars);
@@ -127,7 +131,7 @@ void		ft_free(char **aux);
 
 //parser_loads.c
 int			ft_load_ambient(t_ambient *ambient, char **s);
-int			ft_load_camera(t_camera *camera, char **s);
+int			ft_load_camera(t_camera **camera, char **s);
 int			ft_load_light(t_light **light, char **s);
 
 //parser_lists.c

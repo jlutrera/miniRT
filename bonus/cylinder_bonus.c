@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:55:25 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:58:48 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT_bonus.h"
-
-/**
- * @brief Compute the color of a point on a cylinder under lighting conditions.
- * 
- * This function calculates the color of a point on a cylinder's surface based on
- * the lighting conditions in the scene. It considers the ambient light, the 
- * shadows cast by other objects, and the cylinder's own color. The function 
- * determines the normal at the point on the cylinder to compute the lighting 
- * effects accurately.
- * 
- * @param cy Pointer to the cylinder structure.
- * @param scene The scene containing lighting and other information.
- * @param p The point on the cylinder's surface for which the color is to be computed.
- * 
- * @return The computed color of the point on the cylinder.
- */
 
 t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 {
@@ -37,10 +21,10 @@ t_point3	compute_cy_colour_light(t_cylinder *cy, t_scene scene, t_vec p)
 	t_point3	shadow;
 
 	op = vec_sub(p, point_to_vec(cy->coordinate));
-	i.x = vec_dot(op, cy->direction);
-	if (fabs(i.x - cy->height) < EPSILON)
+	i.x = vec_dot(op, vec_unit(cy->direction));
+	if (fabs(i.x - cy->height) <= EPSILON)
 		n = vec_unit(cy->direction);
-	else if (fabs(i.x) < EPSILON)
+	else if (fabs(i.x) <= EPSILON)
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
 		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i.x)));

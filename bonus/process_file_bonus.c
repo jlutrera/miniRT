@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_file_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 11:35:58 by adpachec          #+#    #+#             */
-/*   Updated: 2023/10/15 20:54:19 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/21 10:53:30 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	end_msg(int error, t_scene **scene)
 		return (error);
 	if (!(*scene)->ambient.declared)
 		return (AMBIENT_NOT_DECLARED);
-	if (!(*scene)->camera.declared)
+	if (!(*scene)->camera)
 		return (CAMERA_NOT_DECLARED);
 	if (!(*scene)->light)
 		return (LIGHT_NOT_DECLARED);

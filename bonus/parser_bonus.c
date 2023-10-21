@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:54:41 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:53:39 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:03:13 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static char	**load_data(char *line)
 	while (bad_line(line_aux))
 		line_aux[ft_strlen2(line_aux) - 1] = '\0';
 	data = ft_split(line_aux, ' ');
+	if (!data)
+		exit(1);
 	free(line_aux);
 	return (data);
 }

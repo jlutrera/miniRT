@@ -6,7 +6,7 @@
 /*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:42:53 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:52:52 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:59:41 by adpachec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,35 @@ static void	ft_init(t_scene **scene)
 	if (!(*scene))
 		exit (1);
 	(*scene)->ambient.declared = false;
-	(*scene)->camera.declared = false;
 	(*scene)->light = NULL;
 	(*scene)->obj = NULL;
+	(*scene)->camera = NULL;
+}
+
+void	free_light_camera(t_light *light, t_camera *camera)
+{
+	t_light		*l;
+	t_camera	*c;
+
+	while (light)
+	{
+		l = light;
+		light = light->next;
+		free(l);
+	}
+	free(light);
+	while (camera)
+	{
+		c = camera;
+		camera = camera->next;
+		free(c);
+	}
+	free(camera);
 }
 
 void	free_memory(t_scene *scene)
 {
 	t_lst_obj	*aux;
-	t_light		*light;
 
 	if (scene->obj)
 	{
@@ -38,36 +58,35 @@ void	free_memory(t_scene *scene)
 			free(aux);
 		}
 	}
-	while (scene->light)
-	{
-		light = scene->light;
-		scene->light = scene->light->next;
-		free(light);
-	}
-	free(scene->light);
+	free_light_camera(scene->light, scene->camera);
 	free(scene);
 }
 
 static void	init_mlx(t_data *data, t_scene *scene)
 {
 	data->image.width = WIDTH;
+	if (WIDTH > 2500 || WIDTH < 100)
+		data->image.width = 2500;
 	data->image.height = floor(data->image.width / (ASPECT_RATIO));
 	if (data->image.height < 1)
 		data->image.height = 1;
 	data->vars.mlx = mlx_init();
+	if (!data->vars.mlx)
+		exit (1);
 	data->vars.win = mlx_new_window(data->vars.mlx, data->image.width,
 			data->image.height, "miniRT");
+	if (!data->vars.win)
+		exit (1);
 	data->image.img = mlx_new_image(data->vars.mlx, data->image.width,
 			data->image.height);
+	if (!data->image.img)
+		exit (1);
 	data->image.addr = mlx_get_data_addr(data->image.img,
 			&data->image.bits_per_pixel, &data->image.line_length,
 			&data->image.endian);
+	if (!data->image.addr)
+		exit (1);
 	data->scene = scene;
-}
-
-void	ft_leaks(void)
-{
-	system("leaks miniRT");
 }
 
 int	main(int argc, char **argv)
@@ -77,7 +96,6 @@ int	main(int argc, char **argv)
 	int			error;
 	int			n;
 
-	//atexit(ft_leaks);
 	if (argc != 2)
 		return (ft_errormsg(SYNTAX_E, 0));
 	if (WIDTH <= 0)

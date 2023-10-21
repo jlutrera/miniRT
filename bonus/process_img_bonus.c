@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_img_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:20:00 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:57:51 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/21 11:25:24 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,6 @@ static void	my_mlx_pixel_put(t_data *data, int x, int y, int colour)
 	}
 }
 
-/**
- * @brief Trace a ray through the scene to determine its color.
- * 
- * This function sends a ray into the scene and determines the color of the pixel
- * that the ray intersects based on the objects in the scene. It checks for intersections
- * with all objects and calculates the color based on the closest object it hits.
- * 
- * @param ray The ray being sent into the scene.
- * @param scene The scene containing objects, lights, and other relevant data.
- * 
- * @return The color of the pixel that the ray intersects.
- */
-
 static t_point3	trace_ray(t_ray ray, t_scene scene)
 {
 	t_lst_obj	*closest_obj;
@@ -90,23 +77,19 @@ static t_point3	trace_ray(t_ray ray, t_scene scene)
 	return ((t_point3){0, 0, 0});
 }
 
-static t_vec	init_viewport(t_point p, t_camera camera, t_image image)
+static t_camera	*init_cam(t_data *data, t_scene *scene)
 {
-	return (vec(p.x * camera.viewp.x / image.width,
-			p.y * camera.viewp.y / image.height,
-			camera.viewp.z));
-}
+	t_camera	*cam;
 
-/**
- * @brief Process the image by tracing rays for each pixel.
- * 
- * This function processes the entire image by sending a ray through each pixel
- * and determining its color based on the scene's objects and lighting conditions.
- * It then draws the computed color to the corresponding pixel in the image.
- * 
- * @param data Pointer to the data structure containing image and other relevant data.
- * @param scene Pointer to the scene containing objects, lights, and other relevant data.
- */
+	cam = scene->camera;
+	while (!cam->active)
+		cam = cam->next;
+	cam->viewp.z = 0.75;
+	cam->viewp.x = 2 * tan((cam->fov * M_PI) / 360);
+	cam->viewp.y = data->image.height * cam->viewp.x
+		/ data->image.width;
+	return (cam);
+}
 
 void	process_img(t_data *data, t_scene *scene)
 {
@@ -114,20 +97,20 @@ void	process_img(t_data *data, t_scene *scene)
 	t_vec		d;
 	t_point3	pixel_color;
 	t_point		p;
+	t_camera	*cam;
 
-	scene->camera.viewp.z = 0.75;
-	scene->camera.viewp.x = 2 * tan((scene->camera.fov * M_PI) / 360);
-	scene->camera.viewp.y = data->image.height * scene->camera.viewp.x
-		/ data->image.width;
+	cam = init_cam(data, scene);
 	p.y = -data->image.height / 2 - 1;
 	while (++p.y < data->image.height / 2)
 	{
 		p.x = -data->image.width / 2 - 1;
 		while (++p.x < data->image.width / 2)
 		{
-			viewp_point = init_viewport(p, scene->camera, data->image);
-			d = vec_rotate(viewp_point, scene->camera.direction);
-			pixel_color = trace_ray((t_ray){scene->camera.position, d}, *scene);
+			viewp_point = vec(p.x * cam->viewp.x / data->image.width,
+					p.y * cam->viewp.y / data->image.height,
+					cam->viewp.z);
+			d = vec_rotate(viewp_point, cam->direction);
+			pixel_color = trace_ray((t_ray){cam->position, d}, *scene);
 			my_mlx_pixel_put(data, data->image.width / 2 + p.x,
 				data->image.height / 2 - p.y, write_color(pixel_color));
 		}

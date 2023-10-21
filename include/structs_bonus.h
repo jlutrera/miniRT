@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:55:43 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/09 13:11:20 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/21 10:54:45 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,12 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	bool		declared;
+	bool		active;
 	t_point3	position;
 	t_vec		direction;
 	int			fov;
 	t_point3	viewp;
+	struct s_camera	*next;
 }				t_camera;
 
 typedef struct s_light
@@ -148,7 +149,7 @@ typedef struct s_light
 typedef struct s_scene
 {
 	t_ambient	ambient;
-	t_camera	camera;
+	t_camera	*camera;
 	t_light		*light;
 	t_lst_obj	*obj;
 }				t_scene;

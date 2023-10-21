@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 13:38:14 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/17 15:49:15 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:00:48 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
-
-/**
- * @brief Computes the lighting and shadow effects on a cylinder at a given point.
- * 
- * This function calculates the lighting and shadow effects on a cylinder at a specific point.
- * It determines the normal at the point, computes the lighting intensity, and adjusts for shadows.
- * 
- * @param cy The cylinder object.
- * @param scene The scene containing objects, lights, etc.
- * @param p The point on the cylinder.
- * 
- * @return The color of the cylinder at the point after considering lighting and shadows.
- */
 
 t_point3	compute_cy_light(t_cylinder *cy, t_scene scene, t_vec p)
 {
@@ -34,13 +21,13 @@ t_point3	compute_cy_light(t_cylinder *cy, t_scene scene, t_vec p)
 	double		shadow;
 
 	op = vec_sub(p, point_to_vec(cy->coordinate));
-	shadow = vec_dot(op, cy->direction);
-	if (fabs(shadow - cy->height) < EPSILON)
+	i.x = vec_dot(op, vec_unit(cy->direction));
+	if (fabs(i.x - cy->height) <= EPSILON)
 		n = vec_unit(cy->direction);
-	else if (fabs(shadow) < EPSILON)
+	else if (fabs(i.x) <= EPSILON)
 		n = vec_unit(vec_mul(cy->direction, -1));
 	else
-		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), shadow)));
+		n = vec_unit(vec_sub(op, vec_mul(vec_unit(cy->direction), i.x)));
 	i = compute_lighting(scene, p, n);
 	shadow = compute_shadows(scene, p, n);
 	intensity.x = i.x - shadow + scene.ambient.ratio
@@ -66,18 +53,6 @@ int	ft_load_cy(t_lst_obj **obj, char **s)
 	ft_add_back_obj(obj, (void **)&new_cylinder, CYLINDER, ft_get_dist());
 	return (SUCCESS);
 }
-
-/**
- * @brief Creates a new cylinder object from parsed data.
- * 
- * This function allocates memory for a new cylinder object and initializes it using
- * the parsed data. It checks for errors in the data and returns the cylinder if successful.
- * 
- * @param s The parsed data for the cylinder.
- * @param e Pointer to an error code variable.
- * 
- * @return A pointer to the new cylinder object if successful, NULL otherwise.
- */
 
 t_cylinder	*new_cy(char **s, int *e)
 {

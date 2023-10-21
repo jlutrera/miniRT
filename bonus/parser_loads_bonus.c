@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_loads_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adpachec <adpachec@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jutrera- <jutrera-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:48:22 by jutrera-          #+#    #+#             */
-/*   Updated: 2023/10/15 20:53:23 by adpachec         ###   ########.fr       */
+/*   Updated: 2023/10/21 11:18:19 by jutrera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,53 @@ int	ft_load_ambient(t_ambient *ambient, char **s)
 	return (SUCCESS);
 }
 
-int	ft_load_camera(t_camera *camera, char **s)
+t_camera	*new_camera(char **s, int *e)
 {
-	if (camera->declared)
-		return (MORE_THAN_ONE_CAMERA_E);
+	t_camera	*new_c;
+
+	new_c = ft_calloc(sizeof(t_camera), 1);
+	if (!new_c)
+	{
+		*e = MEMORY_E;
+		return (NULL);
+	}
+	*e = SUCCESS;
+	if (ft_get_point(s[1], &new_c->position) == -1)
+		*e = BAD_COORDINATES_E;
+	new_c->fov = ft_atoi(s[3]);
+	if (new_c->fov <= 0 || new_c->fov >= 180)
+		*e = FOV_E;
+	if (ft_get_vector(s[2], &new_c->direction) == -1)
+		*e = BAD_COORDINATES_E;
+	if (!is_normalized(new_c->direction))
+		*e = NORM_VECTOR_E;
+	new_c->next = NULL;
+	new_c->active = false;
+	if (*e == SUCCESS)
+		return (new_c);
+	return (free(new_c), NULL);
+}
+
+int	ft_load_camera(t_camera **camera, char **s)
+{
+	int			e;
+	t_camera	*new_c;
+	t_camera	*aux;
+
 	if (check_comps(s, 4))
 		return (NUM_COMPONENTS_E);
-	camera->declared = true;
-	if (ft_get_point(s[1], &camera->position) == -1)
-		return (BAD_COORDINATES_E);
-	camera->fov = ft_atoi(s[3]);
-	if (camera->fov <= 0 || camera->fov >= 180)
-		return (FOV_E);
-	if (ft_get_vector(s[2], &camera->direction) == -1)
-		return (BAD_COORDINATES_E);
-	if (!is_normalized(camera->direction))
-		return (NORM_VECTOR_E);
+	new_c = new_camera(s, &e);
+	if (!new_c)
+		return (e);
+	if (!camera || !*camera)
+	{
+		new_c->active = true;
+		return (*camera = new_c, SUCCESS);
+	}
+	aux = *camera;
+	while (aux->next != NULL)
+		aux = aux->next;
+	aux->next = new_c;
 	return (SUCCESS);
 }
 
